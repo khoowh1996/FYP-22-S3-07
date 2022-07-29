@@ -17,7 +17,7 @@ def user(name):
     list_of_files = os.listdir('./templates/')
     list_of_html_files = []
     for files in list_of_files:
-        if files.endswith('.html') and name+".html" == files:
+        if files.endswith('.html') and (name+".html" == files or name == files):
             return render_template(files)
     return redirect(url_for("pagenotfound"))
 
