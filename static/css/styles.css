@@ -1,0 +1,94 @@
+body {
+	background: #E5E5E5;
+	margin: auto; 
+}
+
+.header {
+	overflow: hidden;
+	background-color:rgba(54.00000058114529, 55.00000052154064, 64.00000378489494, 1);
+  width: 100%;
+  height: 10%;
+}
+.header-row {
+	height: 100%;
+}
+.header div:first-child {
+  text-align: center;
+
+}
+.header a{
+	text-align: center;
+	text-decoration: none;
+}
+.left-header-col:hover {
+  cursor: pointer;
+  color: rgba(164.00000542402267, 166.00000530481339, 179.000004529953, 1);
+}
+.left-header-col:active {
+  cursor: default;
+}
+.left-header-link{
+	padding: 5px;
+}
+.middle-header-col a{
+	margin-left: 5%;
+	margin-right: 5%;
+}
+.header-link {
+	color:rgba(164.00000542402267, 166.00000530481339, 179.000004529953, 1);
+	opacity:0.699999988079071;
+	font-family:Mulish;
+	text-align:center;
+	font-size:19px;
+	letter-spacing:0.4000000059604645;
+}
+/* Change the color of links on hover */
+.header-link:hover {
+  cursor: pointer;
+  color: rgba(164.00000542402267, 166.00000530481339, 179.000004529953, 1);
+}
+/* Add a color to the active/current link */
+.header-link:active {
+  cursor: default;
+}
+.right-header-col{
+	display: flex;
+}
+.button:hover {
+  cursor: pointer;
+  background-color: rgba(70.00000052154064, 100.00000277161598, 255, 1);
+}
+.button:active {
+  cursor: default;
+}
+.button {
+	box-shadow:0px 4px 12px rgba(55.00000052154064, 81.00000277161598, 255, 0.23999999463558197);
+	background-color:rgba(55.00000052154064, 81.00000277161598, 255, 1);
+	width:180px;
+	height:36px;
+	border-top-left-radius:8px;
+	border-top-right-radius:8px;
+	border-bottom-left-radius:8px;
+	border-bottom-right-radius:8px;
+	margin: 0 auto;
+	display: block;
+  padding-top: 7px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.btnText { 
+	color:rgba(255, 255, 255, 1);
+	width:136px;
+	height:20px;
+	font-family:Mulish;
+  display: inline-block;
+	font-size:14px;
+	letter-spacing:0.20000000298023224;
+	line-height:px;
+}
+.body{
+	height: 160%;
+	width: 75%;
+	background-color: #F7F8FC;
+}
