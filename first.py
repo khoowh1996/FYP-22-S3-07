@@ -1,5 +1,6 @@
 from flask import Flask,redirect, url_for,render_template,send_from_directory, request, session
 from blueprint.authentication import authentication
+from blueprint.upload import upload
 from datetime import timedelta
 import os
 import secrets
@@ -10,6 +11,7 @@ key = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in ra
 app.secret_key = key
 app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
+app.register_blueprint(upload)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
@@ -31,33 +33,6 @@ def browse(name):
 @app.route("/pagenotfound")
 def pagenotfound():
     return f"404 Error! Page Not Found"
-
-#@app.route("/login", methods=["POST","GET"])
-#def login():
-#    if request.method == "POST":
-#        session.permanent = True
-#        user = request.form["username"]
-#        password = request.form["password"]
-#        session["user"] = user
-#        session["password"] = password
-#        return redirect(url_for("user"))
-#    if "user" in session:
-#        return redirect(url_for("user"))
-#    return render_template("login.html")
-#
-#@app.route("/logout")
-#def logout():
-#    session.pop("user",None)
-#    session.pop("password",None)
-#    return redirect(url_for("login"))
-#
-#@app.route("/user")
-#def user():
-#    if "user" in session:
-#        user = session["user"]
-#        password = session["password"]
-#        return f"<h1>{user}</h1><h1>{password}</h1></n> <h1>{key}</h1>"
-#    return redirect(url_for("login"))
 
 @app.route("/admin")
 def admin():
