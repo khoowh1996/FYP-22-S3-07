@@ -1,5 +1,9 @@
 from flask import Blueprint,redirect, url_for,render_template,send_from_directory, request,session
 import pyrebase
+import pandas as pd
+from math import sqrt
+import matplotlib.pyplot as plt
+from algo import algorithm
 
 config = {
 "apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
@@ -23,5 +27,14 @@ def success():
     if request.method == "POST":  
         f = request.files['file']
         storage.child(f.filename).put(f)
-        return render_template("success.html", name = f.filename)  
+        return render_template("success.html", name = f.filename)
+     
+@upload.route("/chart")
+def submit_chart():    
+    return render_template('display_chart_form.html');
 
+@upload.route("/chart",methods=["POST"])
+def display_chart():
+    forward_message = algorithm.checkSimilarUsers('Nicholas', 6)
+    dataset = algorithm.checkSimilarUsers('Nicholas', 6)
+    return render_template('display_chart_form.html', forward_message=forward_message);
