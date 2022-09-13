@@ -155,7 +155,7 @@ def recommendation(target):
     return rList
 
 print("Enter the target person")
-tp = input().title()
+tp = input()
 if tp in dataset.keys():
     a = recommendation(tp)
     if a != -1:
