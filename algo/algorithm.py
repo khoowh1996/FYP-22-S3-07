@@ -19,10 +19,10 @@ dataset = {
                     'Dyson Fan': 5.0,
                         'HP Laptop': 3.0,
                             'Prism HD TV': 4.0},
-    'WeiHong': {'Prism HD TV': 5.0,
+    'Edwin': {'Prism HD TV': 5.0,
                     'Sony Washing Machine': 4.0,
                         'Dyson Vacuum Cleaner': 4.0},
-    'Edwin': {'Dyson Vacuum Cleaner': 4.0,
+    'WeiHong': {'Dyson Vacuum Cleaner': 4.0,
                 'Aftershock PC': 4.0,
                     'Sony Washing Machine': 4.0,
                         'Dyson Fan': 3.0,
@@ -90,7 +90,7 @@ def personCorelation(p1, p2):
 # To find which user is the most similar to the target
 def checkSimilarUsers(target, numOfUsers):
     # List comprehension for finding person similarity between users
-    scores = [(personCorelation(target,otherPerson),otherPerson) for otherPerson in dataset if otherPerson != target]
+    scores = [(personCorelation(target,otherPerson), otherPerson) for otherPerson in dataset if otherPerson != target]
 
     # Sort scores in descending order
     scores.sort(reverse = True)
@@ -98,4 +98,69 @@ def checkSimilarUsers(target, numOfUsers):
     # Return scores
     return scores[0:numOfUsers]
 
-print(checkSimilarUsers('Lionel', 6))
+# Check similar users to target person
+# print(checkSimilarUsers('Edwin', 6))
+
+# To see which items users have rated and not rated individually
+def seeRatedOrNot(target):
+    alist = []
+    uList = uniqueItems()
+    for i in dataset[target]:
+        alist.append(i)
+
+    s = set(uList)
+    notRated = list(s.difference(alist))
+    a = len(notRated)
+
+    if a == 0:
+        return 0
+    return notRated, alist
+
+# See which items target user has not rated and rated
+'''
+nr, r = seeRatedOrNot('WeiHong')
+dct = {"Unrated": nr, "Rated": r}
+pd.DataFrame(dct)
+print(dct)
+'''
+
+def recommendation(target):
+    # Gets recommendations for a person by using a weighted average of every other user's rankings
+    totals = {}  
+    simSums = {} 
+    for other in dataset:
+        if other == target:
+            continue
+        sim = personCorelation(target, other)
+
+        # ignore scores of zero or lower
+        if sim <= 0:
+            continue
+        for i in dataset[other]:
+            # only score movies i haven't seen yet
+            if i not in dataset[target]:
+                # Similarity * score
+                totals.setdefault(i, 0)
+                totals[i] += dataset[other][i] * sim
+                # sum of similarities
+                simSums.setdefault(i, 0)
+                simSums[i] += sim
+                # Create the normalized list
+
+    rankings = [(total / simSums[i], i) for i, total in totals.items()]
+    rankings.sort(reverse=True)
+
+    # Returns the recommended items
+    rList = [(i, score) for score, i in rankings]
+    return rList
+
+print("Enter the target person")
+tp = input()
+if tp in dataset.keys():
+    a = recommendation(tp)
+    if a != -1:
+        print("Recommendation Using User based Collaborative Filtering:  ")
+        for i, c in a:
+            print(i,'---->', c)
+else:
+    print("Person not found in the dataset..please try again")
