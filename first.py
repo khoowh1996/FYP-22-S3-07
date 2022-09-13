@@ -11,7 +11,7 @@ key = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in ra
 app.secret_key = key
 app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
-app.register_blueprint(upload)
+#app.register_blueprint(upload)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
