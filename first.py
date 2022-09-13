@@ -1,6 +1,6 @@
 from flask import Flask,redirect, url_for,render_template,send_from_directory, request, session
 from blueprint.authentication import authentication
-from blueprint.upload import upload
+#from blueprint.upload import upload
 from datetime import timedelta
 import os
 import secrets
