@@ -36,11 +36,13 @@ dataset = {
                     'HP Laptop': 1.0,
                         'Prism HD TV': 4.0}
 }
-
+# Read the CSV file
+dataset1 = pd.read_csv('Demo.csv')
+print(dataset1)
 # TO VIEW THE DATASET IN A TABLE AND SET 'NO RATINGS' TO NULL VALUES
-dataFrameOfDataSet = pd.DataFrame(dataset)
-dataFrameOfDataSet.fillna("No Ratings", inplace = True)
-print(dataFrameOfDataSet)
+# dataFrameOfDataSet = pd.DataFrame(dataset)
+# dataFrameOfDataSet.fillna("No Ratings", inplace = True)
+# print(dataFrameOfDataSet)
 
 # Get unique set of items bought
 def uniqueItems():
