@@ -154,13 +154,20 @@ def recommendation(target):
     rList = [(i, score) for score, i in rankings]
     return rList
 
-print("Enter the target person")
-tp = input()
-if tp in dataset.keys():
-    a = recommendation(tp)
-    if a != -1:
-        print("Recommendation Using User based Collaborative Filtering:  ")
-        for i, c in a:
-            print(i,'---->', c)
-else:
-    print("Person not found in the dataset..please try again")
+#tp = input("Enter the target person : ")
+def init(tp):
+    data_dict = {}
+    #print(dataset.keys())
+    if tp in dataset.keys():
+        a = recommendation(tp)
+        print(a)
+        if a != -1:
+            print("Recommendation Using User based Collaborative Filtering:  ")
+            for i, c in a:
+                print(i,'---->', c)
+                data_dict[i] = c
+        return data_dict
+
+    else:
+        print("Person not found in the dataset..please try again")
+        return None

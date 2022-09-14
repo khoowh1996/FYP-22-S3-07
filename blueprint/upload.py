@@ -35,6 +35,7 @@ def submit_chart():
 
 @upload.route("/chart",methods=["POST"])
 def display_chart():
-    forward_message = algorithm.checkSimilarUsers('Nicholas', 6)
-    dataset = algorithm.checkSimilarUsers('Nicholas', 6)
-    return render_template('display_chart_form.html', forward_message=forward_message);
+    user_input = request.form["user_input"]
+    forward_message = algorithm.init(user_input)
+    target = user_input
+    return render_template('display_chart_form.html', forward_message=forward_message,target=target);

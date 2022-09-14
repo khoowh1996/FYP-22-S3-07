@@ -3,9 +3,13 @@
     <title>upload</title>  
 </head>  
 <body>  
+	<h1>Display Chart Demo</h1>
+	<p>click on submit, with input to display</p>
     <form action = "/chart" method = "post">  
-        <button name="chartBtn" type="submit">Forward</button> 
+		<input type="text" name="user_input">
+        <button name="chartBtn" type="submit">Submit</button> 
     </form>  
+	<h2>User : {{ target }}</h2>
 	
 	{{ forward_message }}
 	{{	pie_chart	}}
