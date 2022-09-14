@@ -1,5 +1,7 @@
 import pandas as pd
 from math import sqrt
+import csv
+from collections import defaultdict
 
 # Sample Dataset
 dataset = {
@@ -36,13 +38,16 @@ dataset = {
                     'HP Laptop': 1.0,
                         'Prism HD TV': 4.0}
 }
+
 # Read the CSV file
-dataset1 = pd.read_csv('Demo.csv')
-print(dataset1)
-# TO VIEW THE DATASET IN A TABLE AND SET 'NO RATINGS' TO NULL VALUES
-# dataFrameOfDataSet = pd.DataFrame(dataset)
-# dataFrameOfDataSet.fillna("No Ratings", inplace = True)
-# print(dataFrameOfDataSet)
+reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+output = defaultdict(dict)
+for i in reader:
+    output[i['user name']][i['product_name']] = i['rating']
+
+dataFrame = pd.DataFrame(output)
+dataFrame.fillna('No Ratings', inplace = True)
+print (dataFrame)
 
 # Get unique set of items bought
 def uniqueItems():
@@ -120,7 +125,7 @@ def seeRatedOrNot(target):
 
 # See which items target user has not rated and rated
 '''
-nr, r = seeRatedOrNot('WeiHong')
+nr, r = seeRatedOrNot('Prem')
 dct = {"Unrated": nr, "Rated": r}
 pd.DataFrame(dct)
 print(dct)
