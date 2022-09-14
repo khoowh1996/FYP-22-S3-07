@@ -11,7 +11,7 @@ config = {
 "databaseURL": "https://fyp-22-s3-07-default-rtdb.asia-southeast1.firebasedatabase.app",
 "projectId": "fyp-22-s3-07",
 "storageBucket": "fyp-22-s3-07.appspot.com",
-"serviceAccount": "blueprint\serviceAccountKey.json"
+"serviceAccount": "serviceAccountKey.json"
 }
 
 firebase_storage = pyrebase.initialize_app(config)
