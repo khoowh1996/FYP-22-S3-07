@@ -1,5 +1,7 @@
-from flask import Blueprint,redirect, url_for,render_template,send_from_directory, request,session
+from flask import Blueprint,redirect, url_for,render_template,send_from_directory, request,session,flash
 import pyrebase
+import json
+import requests
 
 config = {
 	'apiKey': "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
@@ -23,17 +25,42 @@ def login():
 		session.permanent = True
 		username = request.form["username"]
 		password = request.form["password"]
+		print(request.form)
 		session["user"] = username
 		session["password"] = password
-		user = auth.sign_in_with_email_and_password(username,password)
-		if user == None:
-			return redirect(url_for("authentication.login"))
-		print(user)	
-		info = auth.get_account_info(user['idToken'])
-		print(info)			
+		try:
+			user = auth.sign_in_with_email_and_password(username,password)
+			print(user)	
+			info = auth.get_account_info(user['idToken'])
+			print(info)	
+		except requests.HTTPError as e:
+			error_json = e.args[1]
+			error = json.loads(error_json)['error']['message']
+			if error == "EMAIL_EXISTS":
+				print("Email already exists")
+				flash("Email already exists")
+			elif error == "INVALID_PASSWORD":
+				print("Invalid Password")
+				flash("Invalid Password...")            
+			elif error == "EMAIL_NOT_FOUND":
+				print("Email not found")
+				flash("Email does not exists")
+			elif error == "TOO_MANY_ATTEMPTS_TRY_LATER":
+				print("You have attempted too many times...")
+				flash("You have attempted too many times...")
+			session.pop("user",None)
+			session.pop("password",None)
+            
+		#if user == None:
+		#	return redirect(url_for("authentication.login"))
+		#print(user)	
+		#info = auth.get_account_info(user['idToken'])
+		#print(info)			
 		return redirect(url_for("authentication.user"))
 		if "user" in session:
 			return redirect(url_for("authentication.user"))
+	if "user" in session:
+		return redirect("/")
 	return render_template("login.html")
 
 @authentication.route("/logout")
