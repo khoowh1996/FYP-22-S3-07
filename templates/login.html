@@ -15,17 +15,7 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
             <link rel="stylesheet" href="css/login.css">
             
-           
-{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		<script>
-			var messages = {{ messages | safe }};
-			for (var i=0; i<messages.length; i++) {
-			alert(messages[i]);
-			}
-		</script>
-	{% endif %}
-{% endwith %}
+
 <script>
 function showPassword() {
   var x = document.getElementById("passwordInput");
@@ -39,6 +29,12 @@ function showPassword() {
           </head>
           
           <body>
+		  {% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  {{ message }}
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{% endfor %}
             <div class="container h-100 w-25 d-flex align-items-center">
                 <div class="row login-form justify-content-center">
                   <div class="row">
@@ -79,3 +75,4 @@ function showPassword() {
             </div>
           </body>
           </html>
+		             
