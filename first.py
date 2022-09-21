@@ -1,6 +1,7 @@
 from flask import Flask,redirect, url_for,render_template,send_from_directory, request, session
 from blueprint.authentication import authentication
 from blueprint.upload import upload
+from blueprint.requestDemo import requestDemo
 from datetime import timedelta
 import os
 import secrets
@@ -12,6 +13,7 @@ app.secret_key = key
 app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
 app.register_blueprint(upload)
+app.register_blueprint(requestDemo)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
