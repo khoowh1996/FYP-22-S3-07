@@ -1,0 +1,134 @@
+body {
+	background-color: #363740;
+	margin: auto; 
+	height: 100%;
+	width: 100%;
+
+}
+.register-form{
+	height: 90%;
+	width: 100%;
+	background-color: #FFFFFF;
+	border-radius: 15px;
+}
+.logo{
+	height: 50%;
+  width: 50%;
+  display: grid;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+  justify-items: center;
+}
+.logo-name{
+	color: rgba(164.00000542402267, 166.00000530481339, 179.000004529953, 1);
+  opacity: 0.699999988079071;
+  font-family: Mulish;
+  font-size: 20px;
+  letter-spacing: 0.7;
+  padding-top: 10px;
+  font-weight: bold;
+}
+.text-1{
+	color: rgba(37.00000159442425, 39.00000147521496, 51.00000075995922, 1);
+  font-family: Mulish;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bolder;
+  letter-spacing: 0.30000001192092896;
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+.text-2{
+	color: rgba(159.0000057220459, 162.00000554323196, 180.00000447034836, 1);
+  font-family: Mulish;
+  font-size: 16px;
+  letter-spacing: 0.30000001192092896;
+  margin-bottom: 0px;
+}
+.input-field-tag{
+	color: rgba(159.0000057220459, 162.00000554323196, 180.00000447034836, 1);
+  font-family: Mulish;
+  text-align: left;
+  font-size: 14px;
+  letter-spacing: 0.80000001192092896;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.input-field{
+	height: 12%;
+	width: 100%;
+	border-radius: 12px;
+	background-color: #FCFDFE;
+	border-color: #F0F1F7;
+	border-style: solid;
+	padding-left: 15px;
+}
+.input-field:focus{
+	background-color: #EEF1FE;
+	outline: none;
+	border-color: #6E81FF;
+}
+.input-field::placeholder {
+	color: #BEC1CB;
+	font-family: Mulish;
+	letter-spacing: 0.30000001192092896;
+}
+
+.toggle-icon {
+  position: absolute;  
+  /* These are set relative to the height of the input box to bound the box neatly inside. This is aesthetic to me but you may change the dimensions of course. */
+  right: 1.3rem;
+  top: -2.0rem;
+  cursor: pointer;
+  /* content in the icon div is centered, without bootstrap or font-awesome you may wish to add your own text in the span */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+.toggle-icon:active{
+	cursor: default;
+}
+#signupBtn{
+	box-shadow: 0px 4px 12px rgb(55 81 255 / 24%);
+  background-color: rgba(55.00000052154064, 81.00000277161598, 255, 1);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-color: rgba(55.00000052154064, 81.00000277161598, 255, 1);
+  border-style: solid;
+  color: white;
+  margin-top: 30px;
+  width: 95%;
+  outline: none;
+  font-weight: 600;
+}
+#signupBtn:hover{
+	background-color: rgba(70.00000052154064, 90.00000277161598, 255, 1);
+	border-color: rgba(70.00000052154064, 90.00000277161598, 255, 1);
+}
+.text-3{
+	font-weight: 400;
+	letter-spacing: 0.3;
+	text-decoration: none;
+	font-size: 16px;
+}
+#signupLink{
+	color: #5067FF;
+	font-weight: 600;
+}
+#signupLink:hover{	
+	cursor:pointer;
+	color: #6B7EFB;
+}
+#signupLink:active{
+	cursor: default;
+}
+.name-field{
+	height: 60%;
+	margin-bottom: 15px;
+	text-transform: capitalize;
+}
