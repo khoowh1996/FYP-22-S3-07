@@ -173,10 +173,19 @@ html{
     margin-top: 10px;
   }
 }
-@media only screen and (max-width: 1366px) {
+@media screen and (min-width: 1200px) and (max-width:1600px) {
 	.faq-display{
 		right:10%;
 	}
 	.faq-nav{
 		margin-left:10%!important;
+	}
+	}
+@media screen and (min-width: 1200px) and (max-width:1366px) {
+.faq-display{
+	right:4%;
+}
+.faq-nav{
+	margin-left:3%!important;
+}
 	}
