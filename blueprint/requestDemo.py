@@ -66,3 +66,11 @@ def register():
 	#	return redirect("/")
 	return render_template("request_demo.html")
 
+@requestDemo.route("/faq")
+def faq():
+    all_faqs = database.child("faqs").get()
+    faq_lists = []
+    test = ""
+    for user in all_faqs.each():
+        faq_lists.append({"question":user.key(),"answer":user.val()})
+    return render_template("faq.html",faq_lists=faq_lists)
