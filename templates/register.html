@@ -32,6 +32,20 @@ function showCfmPassword() {
     x.type = "password";
   }
 }
+var check = function() {
+  if (document.getElementById('passwordCfmInput').value == "")
+	{
+	document.getElementById('message').innerHTML = '';
+	}
+  else if (document.getElementById('passwordInput').value ==
+    document.getElementById('passwordCfmInput').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'matching';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'not matching';
+  }
+}
 </script>
           </head>
           
@@ -70,13 +84,14 @@ function showCfmPassword() {
                       <div class="row">
                         <div class="col"><p class="input-field-tag">PASSWORD</p></div>
                       </div>
-                      <input class="input-field" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32">
+                      <input class="input-field" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();">
                         <div style="position: relative;"><img class="toggle-icon" id="showPasswordBtn" src="images/passwordtoggle.png" onmousedown="showPassword()" onmouseup="showPassword()"></img></div>
                       </input>
                       <div class="row">
                         <div class="col"><p class="input-field-tag">CONFIRM PASSWORD</p></div>
                       </div>
-                      <input class="input-field" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required maxlength="32">
+                      <input class="input-field" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" maxlength="32" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();">
+					  <span id='message'></span>
                         <div style="position: relative;"><img class="toggle-icon" id="showCfmPasswordBtn" src="images/passwordtoggle.png" onmousedown="showCfmPassword()" onmouseup="showCfmPassword()"></img></div>
                       </input>
                       <div class="row justify-content-center sign-up-btn">
