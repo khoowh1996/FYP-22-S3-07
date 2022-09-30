@@ -86,17 +86,21 @@ def user():
 @authentication.route("/register", methods=["POST","GET"])
 def register():
 	if request.method == "POST":
-		session.permanent = True
+		#session.permanent = True
 		username = request.form["username"]
 		password = request.form["password"]
 		print(request.form)
-		session["user"] = username
-		session["password"] = password
+		#session["user"] = username
+		#session["password"] = password
 		try:
 			user = auth.create_user_with_email_and_password(username,password)
 			print(user)	
-			info = auth.get_account_info(user['idToken'])
+			info = auth.get_account_info(user['idToken'])			
+			auth.send_email_verification(user['idToken'])
 			print(info)	
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending"}
+			database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+			return redirect(url_for("authentication.login"))
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -106,15 +110,12 @@ def register():
 			elif error == "TOO_MANY_ATTEMPTS_TRY_LATER":
 				print("You have attempted too many times...")
 				flash("You have attempted too many times...")
-			session.pop("user",None)
-			session.pop("password",None)
-		finally:
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"]}
-			database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-		return redirect(url_for("authentication.user"))
-		if "user" in session:
-			return redirect(url_for("authentication.user"))
+			return redirect(url_for("authentication.register"))
+		finally:				
+			flash("Please register again...")
+			return redirect(url_for("authentication.register"))		
 	if "user" in session:
 		return redirect("/")
 	return render_template("register.html")
+
 

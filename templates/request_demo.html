@@ -16,6 +16,12 @@
             <link rel="stylesheet" href="css/styles.css">
     </head>
     <body style="background-color:rgba(54.00000058114529, 55.00000052154064, 64.00000378489494, 1);">
+	{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	{{ message }}
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	{% endfor %}
             <div class="container-fluid header overflow-hidden">
               <div class="row header-row">
                 <div class="col-sm-2 align-self-center left-header-col">

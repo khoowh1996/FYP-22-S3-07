@@ -39,8 +39,7 @@ var check = function() {
 	}
   else if (document.getElementById('passwordInput').value ==
     document.getElementById('passwordCfmInput').value) {
-    document.getElementById('message').style.color = 'green';
-    document.getElementById('message').innerHTML = 'matching';
+    document.getElementById('message').innerHTML = '';
   } else {
     document.getElementById('message').style.color = 'red';
     document.getElementById('message').innerHTML = 'not matching';
@@ -50,6 +49,12 @@ var check = function() {
           </head>
           
           <body>
+			{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
             <div class="container h-100 d-flex align-items-center" style="width:35%;">
                 <div class="row register-form justify-content-center">
                   <div class="row" style="height: 0%;">
