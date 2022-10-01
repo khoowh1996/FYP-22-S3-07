@@ -84,3 +84,4 @@ def get_faqs():
     faq_lists = []
     for user in all_faqs.each():
         faq_lists.append({"question":user.key(),"answer":user.val()})
+    return faq_lists

@@ -3,6 +3,7 @@ from flask_mail import Mail, Message
 from blueprint.authentication import authentication
 from blueprint.upload import upload
 from blueprint.requestDemo import requestDemo
+from blueprint.subscriptionPlan import subscriptionPlan
 from datetime import timedelta
 import os
 import secrets
@@ -16,6 +17,7 @@ app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
 app.register_blueprint(upload)
 app.register_blueprint(requestDemo)
+app.register_blueprint(subscriptionPlan)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
@@ -69,7 +71,8 @@ def sendmail():
                     )
         msg.body = 'Hello {},\n\nThe following is the demo account information to login to our Demo Dashboard.\nDemo Username : {} \nDemo Password : {} \n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name,demo_username,demo_password)
         conn.send(msg)
-    return 'Sent'
+    flash("Demo Email Sent...")
+    return redirect(url_for("authentication.login"))
 
 if __name__ == "__main__":
     app.run()
