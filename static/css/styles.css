@@ -3,15 +3,31 @@
 	background-color:rgba(55.00000052154064, 81.00000277161598, 255, 1);
 	width:180px;
 	height:36px;
+	border: none;
 	border-top-left-radius:8px;
 	border-top-right-radius:8px;
 	border-bottom-left-radius:8px;
 	border-bottom-right-radius:8px;
 	margin: 0 auto;
-	display: block;
-  	padding-top: 7px;
+	display: block;	
   	display: table-cell;
+	vertical-align: middle;
   	text-align: center;
+}
+
+.active-btn .text{
+	width: 75px;
+	height: 32px;
+	left: 474px;
+	top: 277px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: normal;
+	font-size: 10px;
+	line-height: 15px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	color: #FFFFFF;
 }
 
 body {
@@ -23,15 +39,28 @@ body {
 	background-color:#E2E3ED;
 	width:180px;
 	height:36px;
+	border: none;
 	border-top-left-radius:8px;
 	border-top-right-radius:8px;
 	border-bottom-left-radius:8px;
 	border-bottom-right-radius:8px;
 	margin: 0 auto;
 	display: block;
-  	padding-top: 7px;
+	vertical-align: middle;
   	display: table-cell;
   	text-align: center;
+}
+
+.inactive-btn .text {
+	height: 20px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 15px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	color: #8C8EA0;
 }
 
 .header {
@@ -113,7 +142,7 @@ body {
 	width:136px;
 	height:20px;
 	font-family:Mulish;
-  display: inline-block;
+  	display: inline-block;
 	font-size:14px;
 	letter-spacing:0.20000000298023224;
 	line-height:px;
@@ -141,6 +170,16 @@ body {
 	line-height: 20px;
 	letter-spacing: 0.2px;
 	color: #000000;
+}
+
+.mnheadline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 30px;
+	letter-spacing: 0.3px;
+	color: #252733;
 }
 
 .ml-4{
@@ -260,17 +299,6 @@ body {
 	opacity: 0.7;
 }
 
-select:invalid, select option[value=""]{
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: 0.3px;
-	color: #4B506D;
-	opacity: 0.4;
-}
-
 .rdbox{
 	width: 290px;
 	padding: 12px;
@@ -332,6 +360,101 @@ select:invalid, select option[value=""]{
 	clear: both;
 }
 
+.sb-box{
+	height: 500px;
+	/* width: 200px; */
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding: 10px;
+}
+
+#sb_content{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 40px;
+	text-align: center;
+	letter-spacing: 0.1px;
+	color: #000000;
+}
+
+.sbheadline{
+	display: inline-block;
+	width: 119px;
+	height: 24px;
+	left: 76px;
+	top: 41px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	padding-left: 3px;
+	color: #A4A6B3;
+	opacity: 0.7;
+}
+
+#sb_title{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 36px;
+	line-height: 45px;
+	text-align: center;
+	letter-spacing: 0.4px;
+	color: #000000;
+	text-align: right;
+	display: inline-block;
+}
+
+#sb_subtitle{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
+	letter-spacing: 0.1px;
+	display: inline-block;
+	color: #9FA2B4;
+}
+
+select:invalid, select option[value=""]{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.3px;
+	color: #4B506D;
+	opacity: 0.4;
+}
+
+.sidebar ul li{
+	height: 50px;
+	width: 100%;
+	list-style: none;
+}
+
+.sidebar ul li a{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #A4A6B3;
+	text-decoration: none;
+}
+
+.sidebar ul li img{
+	margin-right: 7px;
+}
+
 #tna{
 	width: 280px;
 	height: 109px;
@@ -344,4 +467,15 @@ select:invalid, select option[value=""]{
 	line-height: 20px;
 	letter-spacing: 0.3px;
 	color: #3F3F3F;
+}
+
+.wrapper .sidebar{
+	background: #363740;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 255px;
+	height: 100%;
+	padding: 20px 0;
+	transition: all 0.5s ease;
 }
