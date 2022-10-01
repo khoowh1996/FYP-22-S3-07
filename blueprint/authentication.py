@@ -1,34 +1,7 @@
 from flask import Blueprint,redirect, url_for,render_template,send_from_directory, request,session,flash
-import pyrebase
 import json
 import requests
-import hashlib
-
-config = {
-	'apiKey': "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
-	'authDomain': "fyp-22-s3-07.firebaseapp.com",
-	'projectId': "fyp-22-s3-07",
-	'storageBucket': "fyp-22-s3-07.appspot.com",
-	'messagingSenderId': "787854218747",
-	'appId': "1:787854218747:web:85731507643d24aa3e275e",
-	'measurementId': "G-R5DHSG3RTK",
-	'databaseURL':''
-
-}
-
-databaseconfig = {
-"apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
-"authDomain": "fyp-22-s3-07.firebaseapp.com",
-"databaseURL": "https://fyp-22-s3-07-default-rtdb.asia-southeast1.firebasedatabase.app",
-"projectId": "fyp-22-s3-07",
-"storageBucket": "fyp-22-s3-07.appspot.com",
-"serviceAccount": "serviceAccountKey.json"
-}
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-
-firebase = pyrebase.initialize_app(databaseconfig)
-database = firebase.database()
+from blueprint.database import *
 
 authentication = Blueprint('authentication', __name__, template_folder='templates')
 @authentication.route("/login", methods=["POST","GET"])
@@ -41,10 +14,13 @@ def login():
 		session["user"] = username
 		session["password"] = password
 		try:
-			user = auth.sign_in_with_email_and_password(username,password)
-			print(user)	
-			info = auth.get_account_info(user['idToken'])
-			print(info)	
+			#user = auth.sign_in_with_email_and_password(username,password)
+			#print(user)	
+			#info = auth.get_account_info(user['idToken'])
+			#print(info)	
+			user = login_user(username,password)
+			print(user)
+			print(firebase_user_information(user))
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -93,13 +69,14 @@ def register():
 		#session["user"] = username
 		#session["password"] = password
 		try:
-			user = auth.create_user_with_email_and_password(username,password)
-			print(user)	
-			info = auth.get_account_info(user['idToken'])			
-			auth.send_email_verification(user['idToken'])
-			print(info)	
+			#user = auth.create_user_with_email_and_password(username,password)
+			#print(user)	
+			#info = auth.get_account_info(user['idToken'])			
+			#auth.send_email_verification(user['idToken'])
+			#print(info)	
 			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending"}
-			database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+			register_user(username,password)
+			set_user_information(username,user_information)
 			return redirect(url_for("authentication.login"))
 		except requests.HTTPError as e:
 			error_json = e.args[1]
@@ -112,8 +89,8 @@ def register():
 				flash("You have attempted too many times...")
 			return redirect(url_for("authentication.register"))
 		finally:				
-			flash("Please register again...")
-			return redirect(url_for("authentication.register"))		
+			flash("Registration Success! Please login to your newly created account")
+			return redirect(url_for("authentication.login"))		
 	if "user" in session:
 		return redirect("/")
 	return render_template("register.html")

@@ -1,4 +1,5 @@
 from flask import Flask,redirect, url_for,render_template,send_from_directory, request, session
+from flask_mail import Mail, Message
 from blueprint.authentication import authentication
 from blueprint.upload import upload
 from blueprint.requestDemo import requestDemo
@@ -6,6 +7,7 @@ from datetime import timedelta
 import os
 import secrets
 import string
+from blueprint.database import *
 
 app = Flask(__name__)
 key = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(32))
@@ -39,6 +41,35 @@ def pagenotfound():
 @app.route("/admin")
 def admin():
     return redirect(url_for("pagenotfound"))
+
+
+mail = Mail(app) # instantiate the mail class
+
+# configuration of mail
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'myrecommendservices@gmail.com'
+app.config['MAIL_PASSWORD'] = 'lltmhynhbspezyqu'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['TESTING'] = False
+app.config['MAIL_SUPPRESS_SEND'] = False
+app.config['DEBUG'] = False
+mail = Mail(app)
+
+@app.route("/mail")
+def sendmail():
+    username = request.args.get("user")
+    name,demo_username,demo_password = get_demo_information(username)
+    with mail.connect() as conn:
+        msg = Message(
+                        'Hello This is MyRecommend Notification for Demo',
+                        sender ='myrecommendservices@gmail.com',
+                        recipients = ['khoowh1996@gmail.com']
+                    )
+        msg.body = 'Hello {},\n\nThe following is the demo account information to login to our Demo Dashboard.\nDemo Username : {} \nDemo Password : {} \n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name,demo_username,demo_password)
+        conn.send(msg)
+    return 'Sent'
 
 if __name__ == "__main__":
     app.run()
