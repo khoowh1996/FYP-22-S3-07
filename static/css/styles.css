@@ -173,13 +173,215 @@ body {
 	color: #000000;
 }
 
-.mnheadline{
+.lpbox-s{
+	height: 282px;
+	width: 377px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+.lpbox-s #content {
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.lpbox-s #headline {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	display: inline-block;
+	color: #252733;
+}
+
+.lpbox-s #link {
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.lpbox-s #link:hover {
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.lpbox-s #status {
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.lpbox-m{
+	height: 282px;
+	width: 720px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+.lpbox-m #content{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.lpbox-m #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.lpbox-m #link {
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.lpbox-m #link:hover {
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.lpbox-m #status{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.lpbox-m #subhead{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.lpbox-l{
+	height: 282px;
+	width: 1130px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+.lpbox-l #content{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	display: inline-block;
+	color: #252733;
+}
+
+.lpbox-l #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.lpbox-l #link{
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.lpbox-l #link:hover{
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.lpbox-l #subtitle{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.1px;
+	color: #9FA2B4;
+}
+
+#mnheadline {
 	font-family: 'Mulish';
 	font-style: normal;
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 30px;
 	letter-spacing: 0.3px;
+	color: #252733;
+}
+
+#mnsubhead{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+	letter-spacing: 0.2px;
 	color: #252733;
 }
 
@@ -435,13 +637,8 @@ select:invalid, select option[value=""]{
 	opacity: 0.4;
 }
 
-.sidebar ul li{
-	height: 50px;
-	width: 100%;
-	list-style: none;
-}
-
-.sidebar ul li a{
+.sidebar #link_sb{
+	display: inline-block;
 	font-family: 'Mulish';
 	font-style: normal;
 	font-weight: 400;
@@ -452,7 +649,21 @@ select:invalid, select option[value=""]{
 	text-decoration: none;
 }
 
-.sidebar ul li img{
+.sidebar .active {
+	background-color: rgba(159, 162, 180, 0.08);
+	padding-left: 3px;
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #DDE2FF;
+	text-decoration: none;
+}
+
+.sidebar #img_sb{
 	margin-right: 7px;
 }
 
@@ -473,10 +684,8 @@ select:invalid, select option[value=""]{
 .wrapper .sidebar{
 	background: #363740;
 	position: absolute;
-	top: 0px;
-	left: 0px;
 	width: 255px;
-	height: 100%;
+	height: 1303px;
 	padding: 20px 0;
 	transition: all 0.5s ease;
 }
