@@ -21,7 +21,7 @@ def login():
 			user,role = login_user(username,password)
 			print(user)
 			print(firebase_user_information(user))
-            session["role"] = role 
+			session["role"] = role 
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
