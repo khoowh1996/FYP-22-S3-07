@@ -42,7 +42,8 @@ def set_user_information(username,user_information):
 
 def login_user(username,password):
     user = auth.sign_in_with_email_and_password(username,password)
-    return user
+    role = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get().val()["role"]
+    return user,role
 
 def firebase_user_information(user):
     return auth.get_account_info(user['idToken'])
@@ -85,3 +86,34 @@ def get_faqs():
     for user in all_faqs.each():
         faq_lists.append({"question":user.key(),"answer":user.val()})
     return faq_lists
+   
+def get_monthly_pricing():
+    all_pricing = database.child("pricing").child("monthly").get()
+    all_monthly_pricing_list = {}
+    for user in all_pricing.each():
+        all_monthly_pricing_list[user.key()] = user.val()
+    return all_monthly_pricing_list
+
+def get_yearly_pricing():
+    all_pricing = database.child("pricing").child("yearly").get()
+    all_yearly_pricing_list = {}
+    for user in all_pricing.each():
+        all_yearly_pricing_list[user.key()] = user.val()
+    return all_yearly_pricing_list
+
+def get_plan_pricing(amt):
+    amount = int(amt)
+    if amount <= 109:
+        all_pricing = database.child("pricing").child("monthly").get()
+        for plan in all_pricing.each():
+            if plan.val() == amount:
+                return {"plan": {"type" : "monthly", "cost":plan.key(),"amount":amount}}
+    else:
+        all_pricing = database.child("pricing").child("yearly").get()
+        for plan in all_pricing.each():
+            if plan.val() == amount:
+                return {"plan": {"type" : "yearly", "cost":plan.key(),"amount":amount}}
+                
+def update_payment(username,amount):
+    current_plan = get_plan_pricing(amount)
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)

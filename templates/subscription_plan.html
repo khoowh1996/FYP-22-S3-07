@@ -37,23 +37,29 @@
 	function yearly(){
 		if (document.getElementById("price-title-1").innerText != "year")
 		{			
-			document.getElementById("price-1").innerHTML = "$699";
+			document.getElementById("price-1").innerHTML = "${{ yearly_pricing["Basic"]|tojson  }}";
 			document.getElementById("price-title-1").innerHTML = "/ year";
-			document.getElementById("price-2").innerHTML = "$759";
+			document.getElementById("price-2").innerHTML = "${{ yearly_pricing["Pro"]|tojson }}";
 			document.getElementById("price-title-2").innerHTML = "/ year";
-			document.getElementById("price-3").innerHTML = "$1,099";
+			document.getElementById("price-3").innerHTML = "${{ yearly_pricing["Premium"]|tojson }}";
 			document.getElementById("price-title-3").innerHTML = "/ year";
 			document.getElementById("monthly-btn").classList.add("active-btn");
 			document.getElementById("monthly-btn").classList.remove("inactive-btn");
 			document.getElementById("yearly-btn").classList.add("inactive-btn");
 			document.getElementById("yearly-btn").classList.remove("active-btn");
-			document.getElementById("button-1").value = 699;
-			document.getElementById("button-2").value = 759;
-			document.getElementById("button-3").value = 1099;
+			document.getElementById("button-1").value = {{ yearly_pricing["Basic"]|tojson  }};
+			document.getElementById("button-2").value = {{ yearly_pricing["Pro"]|tojson }};
+			document.getElementById("button-3").value = {{ yearly_pricing["Premium"]|tojson  }};
 		}
 	}
 	</script>
     <body style="background-color:rgba(54.00000058114529, 55.00000052154064, 64.00000378489494, 1);">
+	{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
         <div class="container-fluid header overflow-hidden">
             <div class="row header-row">
               <div class="col-sm-2 align-self-center left-header-col">
@@ -104,7 +110,7 @@
                   </div>
                 </div>
                 <div class="text-center pt-5">
-                  <span class="pt-5 sb_title" id="price-1">$59</span>
+                  <span class="pt-5 sb_title" id="price-1">${{ monthly_pricing["Basic"] }}</span>
                   <span class="pb-5 sb_subtitle" id="price-title-1">/ month</span>
                   <button class="rdbutton" id="button-1" name="subscribe" value="59" type="submit">Choose</button>
                 </div>
@@ -127,7 +133,7 @@
                   </div>
                 </div>
                 <div class="text-center pt-5">
-                  <span class="pt-5 sb_title" id="price-2">$79</span>
+                  <span class="pt-5 sb_title" id="price-2">${{ monthly_pricing["Pro"] }}</span>
                   <span class="pb-5 sb_subtitle" id="price-title-2">/ month</span>
                   <button class="rdbutton" id="button-2" name="subscribe" value="79" type="submit">Choose</button>
                 </div>
@@ -150,7 +156,7 @@
                   </div>
                 </div>
                 <div class="text-center pt-5">
-                  <span class="pt-5 sb_title" id="price-3">$109</span>
+                  <span class="pt-5 sb_title" id="price-3">${{ monthly_pricing["Premium"] }}</span>
                   <span class="pb-5 sb_subtitle" id="price-title-3">/ month</span>
                   <button class="rdbutton" id="button-3" name="subscribe" value="109" type="submit">Choose</button>
                 </div>

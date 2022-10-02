@@ -6,16 +6,41 @@ from blueprint.database import *
 subscriptionPlan = Blueprint('subscriptionPlan', __name__, template_folder='templates')
 @subscriptionPlan.route("/subscription")
 def subscription(): 
-    return render_template("subscription_plan.html")
+    monthly_pricing = get_monthly_pricing()
+    yearly_pricing = get_yearly_pricing()
+    return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,yearly_pricing=yearly_pricing)
 
 @subscriptionPlan.route("/payment")
-def payment():    
-    if "user" in session:
-        render_template("payment.html")
-    redirect(url_for("authentication.login"))
+def payment():
+    if "role" not in session:
+        flash("Not available for demo account")
+        return redirect(url_for("/authentication.login"))
+        
+    subscription_type = request.args.get("subscribe")
+    session["subscription_type"] = subscription_type
     
-@subscriptionPlan.route("/paymentFinalized")
+    if "user" in session and "subscription_type" in session:
+        return render_template("payment.html",subscription_type=session["subscription_type"])
+    elif "user" in session and "subscription_type" not in session:
+        flash("Please choose a subscription plan first")
+        return redirect(url_for("subscriptionPlan.subscription"))
+    flash("Please login for payment.")
+    session["url"] = url_for("payment")
+    return redirect(url_for("authentication.login"))
+    
+    
+@subscriptionPlan.route("/paymentFinalized",methods=["POST","GET"])
 def payment_finalized():
-    flash("Payment success, Subscription has started. Email will be send to you for notification")    
-    redirect("/")
-    
+    if "user" in session and "subscription_type" in session:
+        session.pop("subscription_type",None)
+        username = session["user"]
+        print(request.form["pay"])
+        update_payment(username,request.form["pay"])
+        flash("Payment success, Subscription has started. Email will be send to you for notification")    
+        return redirect("/")
+    elif "user" in session and "subscription_type" not in session:
+        flash("Please choose a subscription plan first")
+        return redirect(url_for("subscriptionPlan.subscription"))
+    else:
+        return redirect(url_for("authentication.login"))
+        

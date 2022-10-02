@@ -47,26 +47,26 @@
                             <p id="pyscreen">Payment Screen</p>
                             <span id="pydesc">Enter your relevant information in the fields</span>
                         </div>
-                        <form>
+                        <form action="/paymentFinalized" method="POST">
                           <div class="pt-2 ml-4">
                             <span id="rdinput">NAME</span><br/>
-                            <input class="pybox" type="text" placeholder="Enter name shown on your credit card" size="50">
+                            <input class="pybox" type="text" placeholder="Enter name shown on your credit card" size="50" maxlength="50" required>
                             <p></p>
                             <span id="rdinput">CARD NUMBER</span><br/>
-                            <input class="pybox" type="text" placeholder="Enter card number shown on your credit card" size="50">
+                            <input class="pybox" type="text" placeholder="Enter card number shown on your credit card" size="50" maxlength="16" pattern="[0-9\s]{16}" placeholder="XXXX XXXX XXXX XXXX without spaces" required>
                             <p></p>
                             <span id="rdinput">CVV</span><br/>
-                            <input class="pybox" type="text" placeholder="Enter card CVV shown on the back" size="50">
+                            <input class="pybox" type="password" placeholder="Enter card CVV shown on the back" size="50" maxlength="3" pattern="^[0-9]{3}$" required>
                             <p></p>
                             <span id="rdinput">CREDIT CARD DATE</span><br/>
-                            <input class="pybox" type="text" placeholder="Enter the expiry date" size="50">
+                            <input class="pybox" type="month" placeholder="Enter the expiry date" size="50" min="2022-12"  required>
                             <p></p>
                           </div>
                           <div class="pt-5" style="margin-left:26px; margin-top:60px;">
                             <!-- <div id="pybutton">
                                 <button class="btnText" type="submit">Submit</span>
                             </div> -->
-                              <button id="pybutton" name="pay" type="submit">Submit</button>
+                              <button id="pybutton" name="pay" type="submit" value="{{subscription_type}}">Submit</button>
                           </div>
                         </form>
                     </div>

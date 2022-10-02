@@ -18,16 +18,14 @@ def login():
 			#print(user)	
 			#info = auth.get_account_info(user['idToken'])
 			#print(info)	
-			user = login_user(username,password)
+			user,role = login_user(username,password)
 			print(user)
 			print(firebase_user_information(user))
+            session["role"] = role 
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
-			if error == "EMAIL_EXISTS":
-				print("Email already exists")
-				flash("Email already exists")
-			elif error == "INVALID_PASSWORD":
+			if error == "INVALID_PASSWORD":
 				print("Invalid Password")
 				flash("Invalid Password...")            
 			elif error == "EMAIL_NOT_FOUND":
@@ -38,6 +36,12 @@ def login():
 				flash("You have attempted too many times...")
 			session.pop("user",None)
 			session.pop("password",None)
+			flash("Please try again, in a short while.")
+			return redirect(url_for("authentication.login"))
+		if "url" in session:
+			curr_url = session["url"]
+			session.pop("url",None)
+			return redirect(curr_url)
 		return redirect(url_for("authentication.user"))
 		if "user" in session:
 			return redirect(url_for("authentication.user"))
@@ -74,7 +78,7 @@ def register():
 			#info = auth.get_account_info(user['idToken'])			
 			#auth.send_email_verification(user['idToken'])
 			#print(info)	
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending"}
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending","approval":"pending","role":"store_owner"}
 			register_user(username,password)
 			set_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")
