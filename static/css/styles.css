@@ -163,6 +163,85 @@ body {
 	width: 55%;
 }
 
+.cpbox{
+	height: 406px;
+	width: 1130px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+.cpbox .createbtn{
+	background: #3751FF;
+	border: none;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border-radius: 8px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	height: 42px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	color: #FFFFFF;
+	width: 1052px;
+}
+
+.cpbox .cpinput-l{
+	width: 1052px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+
+.cpbox .cpinput-s{
+	width: 489px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+
+.cpbox #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	display: inline-block;
+	color: #252733;
+}
+
+.cpbox #inputhead {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: #9FA2B4;
+	display: block;
+}
+
+#cpsubhead{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
 #desc{
 	font-family: 'Mulish';
 	font-style: normal;
@@ -330,7 +409,7 @@ body {
 .lpbox-l #headline{
 	font-family: 'Mulish';
 	font-style: normal;
-	font-weight: bold;
+	font-weight: bolder;
 	font-size: 19px;
 	line-height: 24px;
 	letter-spacing: 0.4px;
@@ -438,7 +517,6 @@ body {
   	display: table-cell;
   	text-align: center;
 	border: 0px;
-
 	color:rgba(255, 255, 255, 1);
 	font-family:Mulish;
 	font-size:14px;
@@ -530,7 +608,6 @@ body {
   	display: table-cell;
   	text-align: center;
 	border: 0px;
-
 	color:rgba(255, 255, 255, 1);
 	font-family:Mulish;
 	font-size:14px;
@@ -565,7 +642,6 @@ body {
 
 .sb-box{
 	height: 500px;
-	/* width: 200px; */
 	box-sizing: border-box;
 	background: #FFFFFF;
 	border: 1px solid #DFE0EB;
