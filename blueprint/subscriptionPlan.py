@@ -8,3 +8,14 @@ subscriptionPlan = Blueprint('subscriptionPlan', __name__, template_folder='temp
 def subscription(): 
     return render_template("subscription_plan.html")
 
+@subscriptionPlan.route("/payment")
+def payment():    
+    if "user" in session:
+        render_template("payment.html")
+    redirect(url_for("authentication.login"))
+    
+@subscriptionPlan.route("/paymentFinalized")
+def payment_finalized():
+    flash("Payment success, Subscription has started. Email will be send to you for notification")    
+    redirect("/")
+    

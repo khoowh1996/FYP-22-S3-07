@@ -76,7 +76,8 @@ def register():
 			#print(info)	
 			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending"}
 			register_user(username,password)
-			set_user_information(username,user_information)
+			set_user_information(username,user_information)			
+			flash("Registration Success! Please login to your newly created account")
 			return redirect(url_for("authentication.login"))
 		except requests.HTTPError as e:
 			error_json = e.args[1]
@@ -87,10 +88,7 @@ def register():
 			elif error == "TOO_MANY_ATTEMPTS_TRY_LATER":
 				print("You have attempted too many times...")
 				flash("You have attempted too many times...")
-			return redirect(url_for("authentication.register"))
-		finally:				
-			flash("Registration Success! Please login to your newly created account")
-			return redirect(url_for("authentication.login"))		
+			return redirect(url_for("authentication.register"))	
 	if "user" in session:
 		return redirect("/")
 	return render_template("register.html")

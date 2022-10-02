@@ -35,14 +35,19 @@ function showCfmPassword() {
 var check = function() {
   if (document.getElementById('passwordCfmInput').value == "")
 	{
-	document.getElementById('message').innerHTML = '';
+		document.getElementById('message').innerHTML = '';
+		document.getElementById("showCfmPasswordBtn").removeAttribute("style");
 	}
   else if (document.getElementById('passwordInput').value ==
     document.getElementById('passwordCfmInput').value) {
     document.getElementById('message').innerHTML = '';
+	document.getElementById("signupBtn").disabled = false;
+	document.getElementById("showCfmPasswordBtn").removeAttribute("style");
   } else {
     document.getElementById('message').style.color = 'red';
     document.getElementById('message').innerHTML = 'not matching';
+	document.getElementById("signupBtn").disabled = true;
+	document.getElementById("showCfmPasswordBtn").style.top = "-55px";
   }
 }
 </script>
@@ -105,7 +110,8 @@ var check = function() {
                     </form>
                   </div>
                   <div class="row align-items-center">
-                    <p class="text-center input-field-tag text-3" style=>Have an account? <a id="signupLink" href="/login">Login</a></p>
+                    <p class="text-center input-field-tag text-3" style=>Have an account? <a id="signupLink" href="/login">Login</a>&emsp;<a id="signupLink" href="/">Go Back</a></p>
+					
                   </div>
                   
                 </div>
