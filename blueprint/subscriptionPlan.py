@@ -15,9 +15,10 @@ def payment():
     if "role" not in session:
         flash("Not available for demo account")
         return redirect(url_for("/authentication.login"))
-        
-    subscription_type = request.args.get("subscribe")
-    session["subscription_type"] = subscription_type
+    if request.args.get("subscribe") != None:    
+        subscription_type = request.args.get("subscribe")
+        print("is not empty")
+        session["subscription_type"] = subscription_type
     
     if "user" in session and "subscription_type" in session:
         return render_template("payment.html",subscription_type=session["subscription_type"])
