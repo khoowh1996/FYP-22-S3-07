@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-sm-2 align-self-center right-header-col">
                   <div class="button">
-                    <span  class="btnText">Request Demo</span>
+                    <span><a href="/demo" class="btnText">Request Demo</a></span>
                   </div>
                 </div>
               </div>
@@ -57,16 +57,16 @@
                                 <h2 class="lh-sm" style="color:#252733;font-size:24px;">Request demo<h2/>
                                     <form class="pt-3" method="POST" action="/demo">
                                         <span id="rdinput">FIRST NAME</span><br/>
-                                        <input class="rdbox" name="fname" type="text" placeholder="First name">
+                                        <input class="rdbox" name="fname" type="text" placeholder="First name" required>
                                         <p></p>
                                         <span id="rdinput">LAST NAME</span><br/>
-                                        <input class="rdbox" name="lname" type="text" placeholder="Last name" size="17">
+                                        <input class="rdbox" name="lname" type="text" placeholder="Last name" size="17" required>
                                         <p></p>
                                         <span id="rdinput">EMAIL</span><br/>
-                                        <input class="rdbox" name="email" type="text" placeholder="Email Address" size="17">
+                                        <input class="rdbox" name="email" type="text" placeholder="Email Address" size="17" required>
                                         <p></p>
                                         <span id="rdinput">PHONE NUMBER</span><br/>
-                                        <input class="rdbox" name="phone_number" type="text" placeholder="Phone Number" size="17">
+                                        <input class="rdbox" name="phone_number" type="text" placeholder="Phone Number" size="17" required>
                                         <p></p>
                                         <span id="rdinput">COUNTRY</span><br/>
                                         <select style="background: #FCFDFE;" required id="country" name="country" class="rdbox">
@@ -318,7 +318,7 @@
                                         </select>
                                         <p></p>
                                         <span id="rdinput">WEBSITE URL</span><br/>
-                                        <input class="rdbox" name="url" type="text" placeholder="Enter your website url" size="15">
+                                        <input class="rdbox" name="url" type="text" placeholder="Enter your website url" size="15" required>
                                         <p></p>
                                         <span id="rdinput">HOW DID YOU HEAR ABOUT US?</span><br/>
                                         <textarea class="rdbox" name="comment" placeholder="How did you hear about MyRecommend, and why are you interested in a demo?" rows=5></textarea>
@@ -331,7 +331,7 @@
                                         </div>
                                         <span class="pt-4" id="privacy_notice">By clicking on "Request Demo", you acknowledge having read and agreed on our <a href=#>Privacy Notice</a></span>
                                         <div class="ml-5 pt-5">
-                                            <button id="rdbutton" name="pay" type="submit">Request Demo</button>
+                                            <button class="rdbutton" name="pay" type="submit">Request Demo</button>
                                             <!-- <div class="button">
                                                 <span class="btnText">Request Demo</span>
                                             </div> -->

@@ -74,7 +74,7 @@ def demo_user_exist(username):
     
 def get_demo_information(email):
     user = database.child("demo_users").child(hashlib.sha256(email.encode()).hexdigest()).get()
-    demo_name = user.val()["fname"]+" " + user.val()["lname"]
+    name = user.val()["firstname"]+" " + user.val()["lastname"]
     demo_username = user.val()["demo_username"]
     demo_password = user.val()["demo_password"]
     return name,demo_username,demo_password
