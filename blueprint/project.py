@@ -40,7 +40,7 @@ def manageprojects(): #need get rating and performance score oso
     else:
         return redirect("/")
 
-@project.route("/deleteproject"):
+@project.route("/deleteproject")
 def deleteproject():
     if "role" in session and session["role"] == "store_owner" and request.form["deleteProject"] != None:
         username = session["username"]

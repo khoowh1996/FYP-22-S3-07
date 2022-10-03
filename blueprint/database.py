@@ -134,7 +134,7 @@ def retreive_all_project(username):
         all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         all_project_list = []
         for proj in all_project.each():
-            all_project_list.append({"id"=proj.key(),"pname":proj.val()["pname"],"category":proj.val()["category"],"url":proj.val()["url"]})
+            all_project_list.append({"id":proj.key(),"pname":proj.val()["pname"],"category":proj.val()["category"],"url":proj.val()["url"]})
         return all_project_list
     except TypeError as e:
         return []
