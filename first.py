@@ -4,6 +4,7 @@ from blueprint.authentication import authentication
 from blueprint.upload import upload
 from blueprint.requestDemo import requestDemo
 from blueprint.subscriptionPlan import subscriptionPlan
+from blueprint.project import project
 from datetime import timedelta
 import os
 import secrets
@@ -18,6 +19,7 @@ app.register_blueprint(authentication)
 app.register_blueprint(upload)
 app.register_blueprint(requestDemo)
 app.register_blueprint(subscriptionPlan)
+app.register_blueprint(project)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"

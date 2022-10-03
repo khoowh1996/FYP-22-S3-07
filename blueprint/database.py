@@ -35,7 +35,7 @@ storage =firebase.storage()
 
 def register_user(username,password):
     user = auth.create_user_with_email_and_password(username,password)
-    auth.send_email_verification(user['idToken'])
+    #auth.send_email_verification(user['idToken'])
 
 def set_user_information(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
@@ -117,3 +117,37 @@ def get_plan_pricing(amt):
 def update_payment(username,amount):
     current_plan = get_plan_pricing(amount)
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
+    
+def retrieve_project_id(username):
+    try:
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
+        print(all_project)
+        index = 0;
+        for proj in all_project.each():
+            index+=1
+        return index
+    except TypeError as e:
+        return 1
+
+def retreive_all_project(username):
+    try:
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
+        all_project_list = []
+        for proj in all_project.each():
+            all_project_list.append({"id"=proj.key(),"pname":proj.val()["pname"],"category":proj.val()["category"],"url":proj.val()["url"]})
+        return all_project_list
+    except TypeError as e:
+        return []
+    
+def set_project(username, project_information):
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update(project_information)
+    
+def delete_project_by_id(username, project_id):
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).remove()
+
+def get_store_owner_information(username):
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    name = user.val()["firstname"]+" " + user.val()["lastname"]
+    cname = user.val()["company"]
+    email = user.val()["username"]
+    return {"name":name,"email":email,"url": "","company": cname}

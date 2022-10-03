@@ -13,7 +13,7 @@ def subscription():
 @subscriptionPlan.route("/payment")
 def payment():
     if "role" not in session:
-        flash("Not available for demo account")
+        flash("login before choosing!")
         return redirect("/login")
     if request.args.get("subscribe") != None:    
         subscription_type = request.args.get("subscribe")
