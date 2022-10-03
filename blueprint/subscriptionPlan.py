@@ -14,7 +14,7 @@ def subscription():
 def payment():
     if "role" not in session:
         flash("Not available for demo account")
-        return redirect(url_for("/authentication.login"))
+        return redirect("/login")
     if request.args.get("subscribe") != None:    
         subscription_type = request.args.get("subscribe")
         print("is not empty")
@@ -27,7 +27,7 @@ def payment():
         return redirect(url_for("subscriptionPlan.subscription"))
     flash("Please login for payment.")
     session["url"] = url_for("payment")
-    return redirect(url_for("authentication.login"))
+    return redirect("/login")
     
     
 @subscriptionPlan.route("/paymentFinalized",methods=["POST","GET"])

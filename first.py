@@ -71,7 +71,7 @@ def sendmail():
                     )
         msg.body = 'Hello {},\n\nThe following is the demo account information to login to our Demo Dashboard.\nDemo Username : {} \nDemo Password : {} \n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name,demo_username,demo_password)
         conn.send(msg)
-    flash("Demo Email Sent...")
+    flash("Request Demo Email Sent... Please login with your demo account")
     return redirect(url_for("authentication.login"))
 
 if __name__ == "__main__":
