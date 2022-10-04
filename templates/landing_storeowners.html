@@ -121,17 +121,21 @@
                                         <a href="/manageprojects" id="link">View Details</a>
                                     </div>
                                 </div>
-								{%	for n in range(0,2)	%}
-                                <!-- second row -->
-                                <div class="row">
-                                    <div class="col border-bottom">
-                                        <span class="pt-4 ms-3" id="content">{{ all_projects[n]["pname"] }}</span>
-                                    </div>
-                                    <div class="col border-bottom" style="text-align: right;">
-                                        <span class="pt-4" id="status">{{ all_projects[n]["rating"] }}</span>
-                                    </div>
-                                </div>								
-								{%	endfor	%}
+								{% if all_projects | length != 0 %}
+									{%	for n in range(0, all_projects | length)	%}
+									<!-- second row -->
+									{% if n < 3 %}
+									<div class="row">
+										<div class="col border-bottom">
+											<span class="pt-4 ms-3" id="content">{{ all_projects[n]["pname"] }}</span>
+										</div>
+										<div class="col border-bottom" style="text-align: right;">
+											<span class="pt-4" id="status">{{ all_projects[n]["rating"] }}</span>
+										</div>
+									</div>		
+									{% endif %}
+									{%	endfor	%}
+								{% endif %}
                                 <!-- third row 
                                 <div class="row">
                                     <div class="col border-bottom">
