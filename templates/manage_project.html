@@ -113,13 +113,33 @@
                         <div class="row">
                             <div class="col-9"></div>
                             <div class="col-3">
-							<form action="/deleteproject" method="POST">
-                                <button class="ms-lg-5 deletebtn" name="deleteProject" value="{{ project_lists[n]['id'] }}">Delete Project</button>
-							</form>
+							<!--<form action="/deleteproject" method="POST">-->
+                                <button class="ms-lg-5 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ project_lists[n]['id'] }}">Delete Project</button>
+							<!--</form>-->
                             </div>
                         </div>
                     </div>
                 </div>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal-{{ project_lists[n]['id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Delete project</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						Delete this project?
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<form action="/deleteproject" method="POST">
+						<button type="submit" class="btn btn-primary"  name="deleteProject" value="{{ project_lists[n]['id'] }}">Confirm deletion</button>
+						</form>
+					  </div>
+					</div>
+				  </div>
+				</div>
 				{%	endfor	%}
             </div>
         </div>
