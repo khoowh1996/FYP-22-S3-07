@@ -26,7 +26,7 @@ def payment():
         flash("Please choose a subscription plan first")
         return redirect(url_for("subscriptionPlan.subscription"))
     flash("Please login for payment.")
-    session["url"] = url_for("payment")
+    session["url"] = "/payment"
     return redirect("/login")
     
     

@@ -129,18 +129,19 @@ def retrieve_project_id(username):
     except TypeError as e:
         return 1
 
-def retreive_all_project(username):
+def retrieve_all_project(username):
     try:
         all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         all_project_list = []
-        for proj in all_project.each():
-            all_project_list.append({"id":proj.key(),"pname":proj.val()["pname"],"category":proj.val()["category"],"url":proj.val()["url"]})
+        for proj in all_project.val():
+            if proj != None:
+                all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"]})
         return all_project_list
     except TypeError as e:
         return []
     
 def set_project(username, project_information):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update(project_information)
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_information["id"]).update(project_information)
     
 def delete_project_by_id(username, project_id):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).remove()
