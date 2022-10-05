@@ -8,7 +8,7 @@ project = Blueprint('project', __name__, template_folder='templates')
 @project.route("/createproject", methods=["POST","GET"])
 def createproject():
     print(session["role"])
-    print(sessio["user"])
+    print(session["user"])
     if request.method == "POST":
         project_name = request.form["pname"]
         category = request.form["category"]
@@ -32,7 +32,7 @@ def createproject():
 @project.route("/projectoverview")    
 def projectoverview(): #need get rating and performance score oso
     print(session["role"])
-    print(sessio["user"])
+    print(session["user"])
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
         store_owner_information = get_store_owner_information(username)
@@ -47,7 +47,7 @@ def projectoverview(): #need get rating and performance score oso
 @project.route("/manageprojects")    
 def manageprojects(): #need get rating and performance score oso
     print(session["role"])
-    print(sessio["user"])
+    print(session["user"])
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
         project_lists = retrieve_all_project(username)
