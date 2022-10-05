@@ -18,10 +18,11 @@ def login():
 			#print(user)	
 			#info = auth.get_account_info(user['idToken'])
 			#print(info)	
-			user,role = login_user(username,password)
+			user,user_information = login_user(username,password)
 			print(user)
 			print(firebase_user_information(user))
-			session["role"] = role 
+			session["role"] = user_information["role"] 
+			session["fullname"] = user_information["fullname"] 
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -60,7 +61,8 @@ def user():
     if "user" in session:
         user = session["user"]
         password = session["password"]
-        return f"<h1>{user}</h1><h1>{password}</h1>"
+        role = session["role"]
+        return f"<h1>{user}</h1><h1>{password}</h1><h1>{role}</h1>"
     return redirect(url_for("authentication.login"))
 
 @authentication.route("/register", methods=["POST","GET"])

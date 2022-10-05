@@ -23,8 +23,18 @@ app.register_blueprint(project)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
+    #login_as_store_owner_now()
     return render_template("index.html")
 
+def login_as_store_owner_now():
+    session["user"] = "khoowh1996@gmail.com"
+    session["password"] = "qwertyuiop!2"
+    user = session["user"]
+    password = session["password"]
+    user,user_information = login_user(user,password)
+    session["role"] = user_information["role"] 
+    session["fullname"] = user_information["fullname"] 
+    
 @app.route('/<path:path>')
 def static_file(path):
     return app.send_static_file(path)

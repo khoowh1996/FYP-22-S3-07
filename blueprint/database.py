@@ -42,8 +42,14 @@ def set_user_information(username,user_information):
 
 def login_user(username,password):
     user = auth.sign_in_with_email_and_password(username,password)
-    role = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get().val()["role"]
-    return user,role
+    user_information = get_general_user_information(username)
+    return user,user_information
+
+def get_general_user_information(username): #have a function that returns name, role dictionary object
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    name = user.val()["firstname"]+" " + user.val()["lastname"]
+    role = user.val()["role"]
+    return {"fullname":name,"role":role}
 
 def firebase_user_information(user):
     return auth.get_account_info(user['idToken'])
@@ -146,9 +152,25 @@ def set_project(username, project_information):
 def delete_project_by_id(username, project_id):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).remove()
 
+def get_project_by_id_exists(username,project_id):
+    try:
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
+        return all_project.val() != None
+    except TypeError as e:
+        return False
+    
 def get_store_owner_information(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     name = user.val()["firstname"]+" " + user.val()["lastname"]
     cname = user.val()["company"]
     email = user.val()["username"]
     return {"name":name,"email":email,"url": "","company": cname}
+    
+def get_project_by_id(username,project_id):
+    try:
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
+        if all_project.val() != None:
+            return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"]}
+        return None
+    except TypeError as e:
+        return None

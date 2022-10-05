@@ -19,8 +19,13 @@ def createproject():
             #after setting project start to do crawl here
         except:
             print("failed to set project")
+    elif "role" in session and session["role"] == "store_owner":
+        return render_template("create_project.html",fullname=session["fullname"])
+    elif "role" in session:
+        return redirect("/")
     else:
-        return render_template("create_project.html")
+        flash("Please login, before accessing to project dashboard")
+        return redirect("/login") #if default user redirect to login first
 
 @project.route("/projectoverview")    
 def projectoverview(): #need get rating and performance score oso
@@ -32,33 +37,48 @@ def projectoverview(): #need get rating and performance score oso
     elif "role" in session:
         return redirect("/")
     else:
-        return redirect("/")
+        flash("Please login, before accessing to project dashboard")
+        return redirect("/login") #if default user redirect to login first
 
 @project.route("/manageprojects")    
 def manageprojects(): #need get rating and performance score oso
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
         project_lists = retrieve_all_project(username)
-        return render_template("manage_project.html",project_lists=project_lists)
+        return render_template("manage_project.html",project_lists=project_lists,fullname=session["fullname"])
     elif "role" in session:
-        return redirect("/")
+        return redirect("/") #if logged in non store owner user redirect to main page
     else:
-        return redirect("/")
+        flash("Please login, before accessing to project dashboard")
+        return redirect("/login") #if default user redirect to login first
 
 @project.route("/deleteproject", methods=["POST","GET"])
 def deleteproject():#need do a check if deleteprojectID does nto exist or project is empty
     if request.method == "POST":
-        if "role" in session and session["role"] == "store_owner" and request.form["deleteProject"] != None:
+        if request.form["deleteProject"] != None:
             username = session["user"]
             deleteProjectID = request.form["deleteProject"] 
-            delete_project_by_id(username,deleteProjectID)
-            flash("Project Deleted...")
-            return redirect("/manageprojects")
-        elif "role" in session:
-            return redirect("/")
-        else:
-            return redirect("/")
-    else:
-        return redirect("/")
+            if get_project_by_id_exists(username,deleteProjectID): #check if the ProjectID exists,
+                delete_project_by_id(username,deleteProjectID)
+                flash("Project Deleted...")
+                return redirect("/manageprojects")
+            else:
+                flash("Project does not exist...")
+                return redirect("/manageprojects")
+    elif "role" in session and session["role"] == "store_owner":
+        return redirect("/manageprojects")
+    elif "role" in session:
+        return redirect("/") #if default user redirect to login first
+    else:    
+        flash("Please login, before any attempt for delete")
+        return redirect("/") #user shouldnt be able to enter without the post.
     
-#@project.route() need a dynamic view detail pages that takes in username and project id
+@project.route("/project/<project_id>") #input username hash and project id to get the exact project details
+def viewproject(project_id):
+    if "role" in session and session["role"] == "store_owner":
+        username = session["user"]
+        if get_project_by_id_exists(username,project_id) != None: #to be redefined again database.py line 166
+            project_information = get_project_by_id(username,project_id)
+            return render_template("view_project.html",project_information=project_information,fullname=session["fullname"])
+        return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
+    return redirect("/") #if not store owner redirect to homepage
