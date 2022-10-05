@@ -23,7 +23,7 @@ app.register_blueprint(project)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
-    login_as_store_owner_now()
+    #login_as_store_owner_now()
     return render_template("index.html")
 
 def login_as_store_owner_now():
