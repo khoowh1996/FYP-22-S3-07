@@ -1084,6 +1084,90 @@ select:invalid, select option[value=""]{
 	color: #3F3F3F;
 }
 
+.vpbox-l{
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	height: 860px;
+	width: 1115px; 
+}
+
+.vpbox-l #button{
+	background: #3751FF;
+	border: none;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border-radius: 8px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	height: 42px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	color: #FFFFFF;
+	width: 200px; 
+}
+
+.vpbox-l #content{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.vpbox-l #contenthead{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+}
+
+.vpbox-l #headline{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.vpbox-l #link {
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.vpbox-l #link:hover {
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.vpbox-l #subtitle{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.1px;
+	color: #9FA2B4;
+}
+
 .wrapper .sidebar{
 	background: #363740;
 	position: absolute;
