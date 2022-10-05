@@ -113,14 +113,14 @@ def get_plan_pricing(amt):
         all_pricing = database.child("pricing").child("monthly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "monthly", "cost":plan.key(),"amount":amount}}
+                return {"plan": {"type" : "monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
     else:
         all_pricing = database.child("pricing").child("yearly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "yearly", "cost":plan.key(),"amount":amount}}
+                return {"plan": {"type" : "monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
                 
-def update_payment(username,amount):
+def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
     current_plan = get_plan_pricing(amount)
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
     

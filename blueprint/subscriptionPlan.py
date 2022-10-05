@@ -36,7 +36,7 @@ def payment_finalized():
         session.pop("subscription_type",None)
         username = session["user"]
         print(request.form["pay"])
-        update_payment(username,request.form["pay"])
+        set_subscription(username,request.form["pay"])
         flash("Payment success, Subscription has started. Email will be send to you for notification")    
         return redirect("/")
     elif "user" in session and "subscription_type" not in session:
