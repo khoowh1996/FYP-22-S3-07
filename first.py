@@ -11,7 +11,7 @@ import secrets
 import string
 from blueprint.database import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 key = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(32))
 app.secret_key = key
 app.permanent_session_lifetime = timedelta(hours=1)
@@ -23,7 +23,7 @@ app.register_blueprint(project)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
-    #login_as_store_owner_now()
+    login_as_store_owner_now()
     return render_template("index.html")
 
 def login_as_store_owner_now():
@@ -37,8 +37,12 @@ def login_as_store_owner_now():
     
 @app.route('/<path:path>')
 def static_file(path):
-    return app.send_static_file(path)
-    
+    return send_from_directory(app.static_folder, path)
+
+@app.route('/project/<path:path>')
+def static_file_for_project(path):
+    return send_from_directory(app.static_folder, path) 
+  
 @app.route("/<name>")
 def browse(name):
     list_of_files = os.listdir('./templates/')

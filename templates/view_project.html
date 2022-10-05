@@ -61,13 +61,13 @@
             <!-- overview header -->
             <div class="row pb-4">
                 <div class="col-8">
-                    <span id="mnheadline">Project 1</span>
+                    <span id="mnheadline">Project {{ project_information["id"] }}</span>
                 </div>
                 <div class="col-2 text-end">
                     <img class="me-4" src="images/notif_header.png" />
                 </div>
                 <div class="col-2 border-start text-end">
-                    <span class="me-5" id="mnsubhead">Store Owner</span>
+                    <span class="me-5" id="mnsubhead">{{ fullname }}</span>
                 </div>
             </div>
             <div class="row pt-4 pb-2">
@@ -96,11 +96,11 @@
                 <div class="row pbox-l">
                     <!-- first row -->
                     <div class="row pt-4">
-                        <span class="ms-3" id="headline">Project Name 1</span>
+                        <span class="ms-3" id="headline">{{	project_information["pname"] }}</span>
                     </div>
                     <!-- second row -->
                     <div class="row">
-                        <span class="ms-3 pb-2" id="subhead">Type of Project: Shoes</span>
+                        <span class="ms-3 pb-2" id="subhead">Type of Project: {{	project_information["category"] }}</span>
                     </div>
                     <!-- third row -->
                     <div class="row pt-3 pb-3">
