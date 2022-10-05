@@ -14,6 +14,7 @@ from blueprint.database import *
 app = Flask(__name__, static_folder="static")
 key = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(32))
 app.secret_key = key
+app.config["SESSION_COOKIE_PATH"] = "/"
 app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
 app.register_blueprint(upload)
