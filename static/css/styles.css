@@ -592,6 +592,62 @@ body {
 	width: 316px;
 }
 
+.msbox{
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	height: 352px;
+	width: 1130px;
+}
+
+.msbox #content{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.msbox #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.msbox #link {
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.msbox #link:hover {
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.msbox #subtitle{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.1px;
+	color: #9FA2B4
+}
+
 .pb-2{
 	padding-bottom: 0.5rem;
 }
