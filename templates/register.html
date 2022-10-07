@@ -87,10 +87,18 @@ var check = function() {
                         <p class="input-field-tag">LAST NAME</p>
                         <input class="input-field  name-field" type="text" name="lname" placeholder="Last name" required maxlength="32"></input></div>
                       </div>
-                      <p class="input-field-tag">COMPANY</p>
-                      <input class="input-field" type="text" name="cname" placeholder="Company name" required maxlength="32"></input>
-                      <p class="input-field-tag">COMPANY'S INDUSTRY</p>
-                      <input class="input-field" type="text" name="industry" placeholder="Industry e.g Shoes, Watch, Clothes etc" required maxlength="32"></input>
+					  <p class="input-field-tag">Contact Number</p>
+                      <input class="input-field" type="tel" name="contact" placeholder="Contact Number +(country code)(number)" required maxlength="15" pattern="[+]{1}[0-9]{10,14}"></input>
+					  <div class="row">
+                        <div class="col">
+                        <p class="input-field-tag">COMPANY</p>
+                        <input class="input-field name-field" type="text" name="cname" placeholder="Company name" required maxlength="32"></input></div>
+                      <div class="col">
+                        <p class="input-field-tag">COMPANY'S INDUSTRY</p>
+                        <input class="input-field  name-field" type="text" name="industry" placeholder="e.g Shoes, Watch, Clothes etc" required maxlength="32"></input></div>
+                      </div>
+					   <p class="input-field-tag">STORE URL ADDRESS</p>
+                      <input class="input-field" type="text" name="url" placeholder="Store URL" required maxlength="50"></input>
                       <div class="row">
                         <div class="col"><p class="input-field-tag">PASSWORD</p></div>
                       </div>

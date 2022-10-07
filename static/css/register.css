@@ -37,7 +37,7 @@ body {
   font-weight: bolder;
   letter-spacing: 0.30000001192092896;
   margin-bottom: 0px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 .text-2{
 	color: rgba(159.0000057220459, 162.00000554323196, 180.00000447034836, 1);
@@ -57,7 +57,7 @@ body {
   margin-top: 10px;
 }
 .input-field{
-	height: 12%;
+	height: 10%;
 	width: 100%;
 	border-radius: 12px;
 	background-color: #FCFDFE;
@@ -133,7 +133,7 @@ body {
 	text-transform: capitalize;
 }
 .sign-up-btn{
-	height: 30%;
+	height: 20%;
 }
 @media screen and (min-height: 800px) and (max-height: 950px) {
 	.logo{
@@ -180,7 +180,7 @@ body {
 		margin-top:8px
 	}
 	.input-field{
-		height:11%;
+		height:9.5%;
 		border-radius:5px;
 		font-size:14px;
 	}
@@ -193,6 +193,7 @@ body {
 		right:0.45rem;
 	}	
 	.sign-up-btn{
-		height: 25%;
+		height: 15%;
+		font-size: 12px;
 	}
 }

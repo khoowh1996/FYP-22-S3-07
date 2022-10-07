@@ -5,6 +5,7 @@ from blueprint.upload import upload
 from blueprint.requestDemo import requestDemo
 from blueprint.subscriptionPlan import subscriptionPlan
 from blueprint.project import project
+from blueprint.profile import profile
 from datetime import timedelta
 import os
 import secrets
@@ -23,10 +24,11 @@ app.register_blueprint(upload)
 app.register_blueprint(requestDemo)
 app.register_blueprint(subscriptionPlan)
 app.register_blueprint(project)
+app.register_blueprint(profile)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
-    #login_as_store_owner_now()
+    login_as_store_owner_now()
     return render_template("index.html")
 
 def login_as_store_owner_now():

@@ -18,6 +18,12 @@
 </head>
 
 <body style="background: #F7F8FC;">
+			{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
     <div class="row">
         <div class="col col-2">
             <div class="wrapper">
@@ -29,11 +35,11 @@
                         </div>
                     </div>
                     <div class="ms-sm-0 row">
-                        <a class="ps-4 p-3 pb-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pb-4" id="link_sb" href="/projectoverview">
                             <img class="icon_sb" src="images/overview_sidebar.png" />
                             <span>Overview</span>
                         </a>
-                        <a class="ps-4 p-3" id="link_sb" href="#">
+                        <a class="ps-4 p-3" id="link_sb" href="/manageprojects">
                             <img class="icon_sb" src="images/manage_projects_sidebar.png" />
                             <span>Manage Projects</span>
                         </a>
@@ -57,7 +63,8 @@
                 </div>
             </div>
         </div>
-        <div class="col ml-5 pt-4">
+        <div class="col ml-5 pt-4">		
+		<form method="POST" action="/updateprofile">
             <!-- overview header -->
             <div class="row pb-1">
                 <div class="col-8">
@@ -67,7 +74,7 @@
                     <img class="me-4" src="images/notif_header.png" />
                 </div>
                 <div class="col-2 border-start text-end">
-                    <span class="me-5" id="mnsubhead">Store Owner</span>
+                    <span class="me-5" id="mnsubhead">{{ store_owner_information["name"] }}</span>
                 </div>
             </div>
             <!-- first box -->
@@ -78,9 +85,11 @@
                         <div class="col">
                             <span class="ms-3" id="headline">Store Owner Name</span>
                         </div>
+						<!--
                         <div class="col" style="text-align: right;">
                             <a class="me-3" href="#" id="link">View Details</a>
                         </div>
+						-->
                     </div>
                     <!-- second row -->
                     <div class="row pb-4">
@@ -96,7 +105,8 @@
                             <span class="ms-3 pb-3" id="contenthead">First Name: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">first name</span>
+                            <span class="pb-3" id="content">
+							<input type="text" maxlength="32" name="fname" value='{{ store_owner_information["fname"] }}' placeholder='{{ store_owner_information["fname"] }}' required></input></span>
                         </div>
                     </div>
                     <!-- fifth row -->
@@ -105,7 +115,8 @@
                             <span class="ms-3 pb-3" id="contenthead">Last Name: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">last name</span>
+                            <span class="pb-3" id="content">
+							<input name="lname" type="text" maxlength="32" required value='{{ store_owner_information["lname"] }}' placeholder='{{ store_owner_information["lname"] }}'></input></span>
                         </div>
                     </div>
                      <!-- sixth row -->
@@ -114,7 +125,8 @@
                             <span class="ms-3 pb-3" id="contenthead">Email: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">email@hotmail.com</span>
+                            <span class="pb-3" id="content">
+							{{ store_owner_information["email"] }}</span>
                         </div>
                     </div>
                     <!-- seventh row -->
@@ -123,7 +135,8 @@
                             <span class="ms-3 pb-3" id="contenthead">Contact Number: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">999</span>
+                            <span class="pb-3" id="content">
+							<input name="contact" type="tel" maxlength="15" pattern="[+]{1}[0-9]{10,14}" value='{{ store_owner_information["contact"] }}' placeholder='{{ store_owner_information["contact"] }}'></input></span>
                         </div>
                     </div>
                     <!-- eigth row -->
@@ -136,7 +149,8 @@
                             <span class="ms-3 pb-3" id="contenthead">Store Name: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">Shoe Store</span>
+                            <span class="pb-3" id="content">
+							<input name="cname" type="text" maxlength="50" required value='{{ store_owner_information["company"] }}' placeholder='{{ store_owner_information["company"] }}'></input></span>
                         </div>
                     </div>
                     <!-- tenth row -->
@@ -145,7 +159,8 @@
                             <span class="ms-3 pb-3" id="contenthead">Store URL: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">ShoeStore.com</span>
+                            <span class="pb-3" id="content">
+							<input name="url" type="text" maxlength="50" required value='{{ store_owner_information["url"] }}' placeholder='{{ store_owner_information["url"] }}'></input></span>
                         </div>
                     </div>
                     <!-- eleventh row -->
@@ -154,27 +169,22 @@
                             <span class="ms-3 pb-3" id="contenthead">Type of Store: </span>
                         </div>
                         <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">Shoe</span>
+                            <span class="pb-3" id="content">
+							<input name="industry" type="text" maxlength="32" required value='{{ store_owner_information["industry"] }}' placeholder='{{ store_owner_information["industry"] }}'></input></span>
                         </div>
-                    </div>
-                    <!-- twelveth row -->
-                    <div class="row pt-3 pb-3">
-                        <div class="col-2 border-bottom">
-                            <span class="ms-3 pb-3" id="contenthead">Contact Number: </span>
-                        </div>
-                        <div class="col-10 border-bottom">
-                            <span class="pb-3" id="content">999</span>
-                        </div>
-                    </div>
-                    <!-- thirteenth row -->
+                    </div>                    
+                    <!-- twelvth row -->
                     <div class="row pt-3 pb-4">
                         <button class="ms-4" id="button">Update</button>
                     </div>
                 </div>
             </div>
+			</form>
             <!-- third row -->
             <div class="row ms-4 pt-4 pb-5">
+			<a href="/managesubscription">
                 <button id="pbutton">Manage Subscription</button>
+				</a>
             </div>
         </div>
     </div>

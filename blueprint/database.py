@@ -40,6 +40,9 @@ def register_user(username,password):
 def set_user_information(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
 
+def update_user_information(username,user_information):
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
+
 def login_user(username,password):
     user = auth.sign_in_with_email_and_password(username,password)
     user_information = get_general_user_information(username)
@@ -162,9 +165,15 @@ def get_project_by_id_exists(username,project_id):
 def get_store_owner_information(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     name = user.val()["firstname"]+" " + user.val()["lastname"]
+    fname = user.val()["firstname"]
+    lname = user.val()["lastname"]
     cname = user.val()["company"]
+    url = user.val()["url"]
     email = user.val()["username"]
-    return {"name":name,"email":email,"url": "","company": cname}
+    contact = user.val()["contact"]
+    industry = user.val()["industry"]
+    
+    return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
     
 def get_project_by_id(username,project_id):
     try:

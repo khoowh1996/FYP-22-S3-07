@@ -80,7 +80,7 @@ def register():
 			#info = auth.get_account_info(user['idToken'])			
 			#auth.send_email_verification(user['idToken'])
 			#print(info)	
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"emailverification":"pending","approval":"pending","role":"store_owner"}
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending","role":"store_owner"}
 			register_user(username,password)
 			set_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")
