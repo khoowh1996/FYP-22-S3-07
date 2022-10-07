@@ -28,7 +28,7 @@ app.register_blueprint(profile)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"
-    login_as_store_owner_now()
+    #login_as_store_owner_now()
     return render_template("index.html")
 
 def login_as_store_owner_now():
@@ -36,9 +36,9 @@ def login_as_store_owner_now():
     session["password"] = "qwertyuiop!2"
     user = session["user"]
     password = session["password"]
-    user,user_information = login_user(user,password)
-    session["role"] = user_information["role"] 
-    session["fullname"] = user_information["fullname"] 
+    #user,user_information = login_user(user,password)
+    session["role"] = "store_owner"#user_information["role"] 
+    session["fullname"] = "joe mama"#user_information["fullname"] 
     
 @app.route('/<path:path>')
 def static_file(path):

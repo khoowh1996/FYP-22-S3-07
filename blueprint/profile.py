@@ -7,8 +7,6 @@ profile = Blueprint('profile', __name__, template_folder='templates')
 
 @profile.route("/userprofile")    
 def userprofile(): #need get rating and performance score oso
-    print(session["role"])
-    print(session["user"])
     if "role" in session:
         username = session["user"]
         store_owner_information = get_store_owner_information(username)
@@ -34,3 +32,14 @@ def updateprofile():
     else:    
         flash("Please login, before any attempt for update")
         return redirect("/") #user shouldnt be able to enter without the post.
+        
+@profile.route("/managesubscription")    
+def managesubscription(): #need get rating and performance score oso
+    if "role" in session and session["role"] == "store_owner":
+        username = session["user"]
+        return render_template("manage_subscription.html",subscription_information=get_owner_subscription_information(username),fullname=session["fullname"])
+    elif "role" in session:
+        return redirect("/") #if logged in non store owner user redirect to main page
+    else:
+        flash("Please login, before accessing to project dashboard")
+        return redirect("/login") #if default user redirect to login first

@@ -116,12 +116,12 @@ def get_plan_pricing(amt):
         all_pricing = database.child("pricing").child("monthly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
+                return {"plan": {"type" : "Monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
     else:
         all_pricing = database.child("pricing").child("yearly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
+                return {"plan": {"type" : "Yearly", "desc":plan.key(),"cost":amount,"expiry":""}}
                 
 def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
     current_plan = get_plan_pricing(amount)
@@ -174,6 +174,19 @@ def get_store_owner_information(username):
     industry = user.val()["industry"]
     
     return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
+
+def get_owner_subscription_information(username):
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    name = user.val()["firstname"]+" " + user.val()["lastname"]
+    cname = user.val()["company"]
+    url = user.val()["url"]
+    email = user.val()["username"]
+    
+    subscription = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
+    accounttype = subscription.val()["desc"]
+    subscriptiontype = subscription.val()["type"]
+    expirydate = subscription.val()["expiry"]
+    return {"name":name,"email":email,"url": url,"company": cname,"accounttype":accounttype,"subscriptiontype":subscriptiontype,"expirydate":expirydate}
     
 def get_project_by_id(username,project_id):
     try:

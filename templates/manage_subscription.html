@@ -67,7 +67,7 @@
                     <img class="me-4" src="images/notif_header.png" />
                 </div>
                 <div class="col-2 border-start text-end">
-                    <span class="me-5" id="mnsubhead">Store Owner</span>
+                    <span class="me-5" id="mnsubhead">{{ fullname }}</span>
                 </div>
             </div>
             <!-- first box -->
@@ -79,7 +79,7 @@
                             <span class="ms-3" id="headline">Welcome Store Owner</span>
                         </div>
                         <div class="col" style="text-align: right;">
-                            <a class="me-3" href="#" id="link">Update Details</a>
+                            <a class="me-3" href="/userprofile" id="link">Update Details</a>
                         </div>
                     </div>
                     <!-- second row -->
@@ -96,12 +96,12 @@
                         <div class="col border-bottom">
                             <span class="ms-3 pb-3" id="content">Name:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">Store Owner 1</span>
+                            <span class="pb-3" id="content">{{ fullname }}</span>
                         </div>
                         <div class="col border-bottom">
                             <span class="pb-3" id="content">Name:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">Store</span>
+                            <span class="pb-3" id="content">{{ subscription_information["company"] }}</span>
                         </div>
                     </div>
                     <!-- fifth row -->
@@ -109,12 +109,12 @@
                         <div class="col border-bottom">
                             <span class="ms-3 pb-3" id="content">Email:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">StoreOwner@gmail.com</span>
+                            <span class="pb-3" id="content">{{ subscription_information["email"] }}</span>
                         </div>
                         <div class="col border-bottom">
                             <span class="pb-3" id="content">Store URL:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">store.com</span>
+                            <span class="pb-3" id="content">{{ subscription_information["url"] }}</span>
                         </div>
                     </div>
                     <!-- sixth row -->
@@ -122,12 +122,12 @@
                         <div class="col border-bottom">
                             <span class="ms-3 pb-3" id="content">Account Type:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">Premium</span>
+                            <span class="pb-3" id="content">{{ subscription_information["accounttype"] }}</span>
                         </div>
                         <div class="col border-bottom">
                             <span class="pb-3" id="content">Subscription Type:</span>
                             <!-- content -->
-                            <span class="pb-3" id="content">Monthly</span>
+                            <span class="pb-3" id="content">{{ subscription_information["subscriptiontype"] }}</span>
                         </div>
                     </div>
                     <!-- seventh row -->
