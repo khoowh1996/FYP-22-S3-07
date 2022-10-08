@@ -861,6 +861,76 @@ body {
 	opacity: 0.4;
 }
 
+.prbox{
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	height: 804px;
+	padding: 20px 0;
+	width: 1165px;
+}
+
+.prbox #headline{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	text-align: center;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.prbox .problem{
+	width: 946px;
+	height: 239px;
+	padding: 12px;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+	font-size: 12px;
+	margin: auto;
+	resize: none;
+}
+
+.prbox #submit{
+	background: #3751FF;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border: none;
+	border-radius: 8px;
+	color: #FFFFFF;
+	height: 42px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	margin: auto;
+	width: 200px;
+}
+
+.prbox #upload{
+	background: #3751FF;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border: none;
+	border-radius: 8px;
+	color: #FFFFFF;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	height: 48px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	margin: auto;
+	width: 255px;
+}
+
 #privacy_notice{
 	width: 316px;
 	height: 75px;
