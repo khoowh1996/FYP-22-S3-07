@@ -83,7 +83,7 @@ def deleteproject():#need do a check if deleteprojectID does nto exist or projec
 def viewproject(project_id):
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
-        if get_project_by_id_exists(username,project_id) != None: #to be redefined again database.py line 166
+        if get_project_by_id_exists(username,project_id): #to be redefined again database.py line 166
             project_information = get_project_by_id(username,project_id)
             return render_template("view_project.html",project_information=project_information,fullname=session["fullname"])
         return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
