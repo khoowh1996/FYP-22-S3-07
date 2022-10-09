@@ -45,8 +45,10 @@ def login():
 			session.pop("url",None)
 			return redirect(curr_url)
 		return redirect("/projectoverview")
-		if "user" in session:
+		if "user" in session and session["role"] == "store_owner":
 			return redirect("/projectoverview")
+        else:
+            return redirect("/")
 	if "user" in session:
 		return redirect("/")
 	return render_template("login.html")
