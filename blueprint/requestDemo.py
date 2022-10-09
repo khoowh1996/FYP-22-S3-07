@@ -21,5 +21,5 @@ def request_demo():
 
 @requestDemo.route("/faq")
 def faq():
-    faq_lists = get_general_faqs()
+    faq_lists = get_faqs("default_user")
     return render_template("faq.html",faq_lists=faq_lists)

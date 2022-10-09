@@ -103,5 +103,5 @@ def viewitem(project_id,item_id):
     
 @project.route("/projectfaqs")
 def projectfaq():
-    faq_lists = get_store_owner_faqs()
+    faq_lists = get_faqs("store_owner")
     return render_template("store_owner_faqs.html",faq_lists=faq_lists,fullname=session["fullname"])

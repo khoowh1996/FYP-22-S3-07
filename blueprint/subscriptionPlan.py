@@ -6,8 +6,8 @@ from blueprint.database import *
 subscriptionPlan = Blueprint('subscriptionPlan', __name__, template_folder='templates')
 @subscriptionPlan.route("/subscription")
 def subscription(): 
-    monthly_pricing = get_monthly_pricing()
-    yearly_pricing = get_yearly_pricing()
+    monthly_pricing = get_pricing("monthly")
+    yearly_pricing = get_pricing("yearly")
     return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,yearly_pricing=yearly_pricing)
 
 @subscriptionPlan.route("/payment")

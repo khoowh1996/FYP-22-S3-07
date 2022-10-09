@@ -37,15 +37,20 @@ def register_user(username,password):
     user = auth.create_user_with_email_and_password(username,password)
     #auth.send_email_verification(user['idToken'])
 
+def reset_password(username):
+    auth.send_password_reset_email(username)
+
 def set_sign_up_user_information(username,user_information):
     database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     
 def approve_reject_user(username,action):
     database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"approval":action})
-    sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-    user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":True,"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
-    if action:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    demo_user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    if demo_user.val()["approval"]:
+        sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":True,"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)        
+        database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
     
 def update_user_information(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
@@ -57,9 +62,15 @@ def login_user(username,password):
 
 def get_general_user_information(username): #have a function that returns name, role dictionary object
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-    name = user.val()["firstname"]+" " + user.val()["lastname"]
-    role = user.val()["role"]
-    return {"fullname":name,"role":role}
+    if user.val() != None:
+        name = user.val()["firstname"]+" " + user.val()["lastname"]
+        role = user.val()["role"]
+        return {"fullname":name,"role":role}
+    else:
+        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        name = user.val()["firstname"]+" " + user.val()["lastname"]
+        role = user.val()["role"]
+        return {"fullname":name,"role":role}
 
 def firebase_user_information(user):
     return auth.get_account_info(user['idToken'])
@@ -96,33 +107,33 @@ def get_demo_information(email):
     demo_password = user.val()["demo_password"]
     return name,demo_username,demo_password
 
-def get_general_faqs():
-    all_faqs = database.child("faqs").child("generalfaqs").get()
-    faq_lists = []
-    for user in all_faqs.each():
-        faq_lists.append({"question":user.key(),"answer":user.val()})
-    return faq_lists
-    
-def get_store_owner_faqs():
-    all_faqs = database.child("faqs").child("storeownerfaqs").get()
-    faq_lists = []
-    for user in all_faqs.each():
-        faq_lists.append({"question":user.key(),"answer":user.val()})
-    return faq_lists
+def get_faqs(user):    
+    if user == "default_user":
+        all_faqs = database.child("faqs").child("generalfaqs").get()
+        faq_lists = []
+        for user in all_faqs.each():
+            faq_lists.append({"question":user.key(),"answer":user.val()})
+        return faq_lists
+    if user == "store_owner":
+        all_faqs = database.child("faqs").child("storeownerfaqs").get()
+        faq_lists = []
+        for user in all_faqs.each():
+            faq_lists.append({"question":user.key(),"answer":user.val()})
+        return faq_lists
    
-def get_monthly_pricing():
-    all_pricing = database.child("pricing").child("monthly").get()
-    all_monthly_pricing_list = {}
-    for user in all_pricing.each():
-        all_monthly_pricing_list[user.key()] = user.val()
-    return all_monthly_pricing_list
-
-def get_yearly_pricing():
-    all_pricing = database.child("pricing").child("yearly").get()
-    all_yearly_pricing_list = {}
-    for user in all_pricing.each():
-        all_yearly_pricing_list[user.key()] = user.val()
-    return all_yearly_pricing_list
+def get_pricing(subscriptiontype):
+    if subscriptiontype == "monthly":
+        all_pricing = database.child("pricing").child("monthly").get()
+        all_monthly_pricing_list = {}
+        for user in all_pricing.each():
+            all_monthly_pricing_list[user.key()] = user.val()
+        return all_monthly_pricing_list
+    if subscriptiontype == "yearly":
+        all_pricing = database.child("pricing").child("yearly").get()
+        all_yearly_pricing_list = {}
+        for user in all_pricing.each():
+            all_yearly_pricing_list[user.key()] = user.val()
+        return all_yearly_pricing_list
 
 def get_plan_pricing(amt):
     amount = int(amt)

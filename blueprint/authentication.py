@@ -23,6 +23,7 @@ def login():
 			print(firebase_user_information(user))
 			session["role"] = user_information["role"] 
 			session["fullname"] = user_information["fullname"] 
+            flash("Login Successfully!")
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -43,9 +44,9 @@ def login():
 			curr_url = session["url"]
 			session.pop("url",None)
 			return redirect(curr_url)
-		return redirect(url_for("authentication.user"))
+		return redirect("/projectoverview")
 		if "user" in session:
-			return redirect(url_for("authentication.user"))
+			return redirect("/projectoverview")
 	if "user" in session:
 		return redirect("/")
 	return render_template("login.html")
@@ -102,4 +103,19 @@ def register():
 		return redirect("/")
 	return render_template("register.html")
 
-
+@authentication.route("/forgotpassword", methods=["POST","GET"])
+def forgotpassword:
+    if request.method=="POST":
+        email = request.form["email"]
+        try:
+            reset_password(email)
+            flash("reset email has been sent to your email.Please login to your email to reset your password.")
+            return redirect("/login")
+        except requests.HTTPError as e:
+			error_json = e.args[1]
+			error = json.loads(error_json)['error']['message']         
+			if error == "EMAIL_NOT_FOUND":
+				print("Email not found")
+				flash("Email does not exists")
+            return redirect("/forgotpassword")
+    return render_template("forgot_password.html")
