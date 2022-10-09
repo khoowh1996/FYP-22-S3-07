@@ -12,7 +12,7 @@ def subscription():
 
 @subscriptionPlan.route("/payment")
 def payment():
-    if "role" not in session:
+    if "user" not in session:
         flash("login before choosing!")
         return redirect("/login")
     if request.args.get("subscribe") != None:    

@@ -37,9 +37,16 @@ def register_user(username,password):
     user = auth.create_user_with_email_and_password(username,password)
     #auth.send_email_verification(user['idToken'])
 
-def set_user_information(username,user_information):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-
+def set_sign_up_user_information(username,user_information):
+    database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    
+def approve_reject_user(username,action):
+    database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"approval":action})
+    sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":True,"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
+    if action:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    
 def update_user_information(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
 
@@ -89,8 +96,15 @@ def get_demo_information(email):
     demo_password = user.val()["demo_password"]
     return name,demo_username,demo_password
 
-def get_faqs():
-    all_faqs = database.child("faqs").get()
+def get_general_faqs():
+    all_faqs = database.child("faqs").child("generalfaqs").get()
+    faq_lists = []
+    for user in all_faqs.each():
+        faq_lists.append({"question":user.key(),"answer":user.val()})
+    return faq_lists
+    
+def get_store_owner_faqs():
+    all_faqs = database.child("faqs").child("storeownerfaqs").get()
     faq_lists = []
     for user in all_faqs.each():
         faq_lists.append({"question":user.key(),"answer":user.val()})
@@ -196,3 +210,18 @@ def get_project_by_id(username,project_id):
         return None
     except TypeError as e:
         return None
+        
+def retrieve_item_id(username,project_id):
+    try:
+        all_project_item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
+        index = 0;
+        print("all_project_item val " + all_project_item.val())
+        print("all_project_item key " + all_project_item.key())
+        for proj in all_project_item.each():
+            print("proj val " + proj.val())
+            print("all_project_item key " + proj.key())
+            index+=1
+        return index
+    except TypeError as e:
+        return 1
+        

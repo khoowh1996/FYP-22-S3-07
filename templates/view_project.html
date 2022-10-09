@@ -49,7 +49,7 @@
                             <img class="icon_sb" src="images/faq_sidebar.png" />
                             <span>FAQ</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/logout">
                             <img class="icon_sb" src="images/logout_sidebar.png" />
                             <span>Log out</span>
                         </a>
@@ -210,7 +210,9 @@
             <!-- third row -->
             <div class="row pt-5 pb-5">
                 <span class="pb-4" id="pheadline">Test item to see rating</span>
+				<a href="/project/{{ project_information['id'] }}/item/{{ item_id }}">
                 <button class="ms-2" id="pbutton">Test Item Rating</button>
+				</a>
             </div>
         </div>
     </div>

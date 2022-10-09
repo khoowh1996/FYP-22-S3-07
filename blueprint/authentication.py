@@ -54,7 +54,10 @@ def login():
 def logout():
     session.pop("user",None)
     session.pop("password",None)
-    return redirect(url_for("authentication.login"))
+    session.pop("fullname",None)
+    flash("You have logged out successfully.")
+    return redirect("/")
+    #return redirect(url_for("authentication.login"))
 
 @authentication.route("/user")
 def user():
@@ -80,9 +83,9 @@ def register():
 			#info = auth.get_account_info(user['idToken'])			
 			#auth.send_email_verification(user['idToken'])
 			#print(info)	
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending","role":"store_owner"}
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending"} #removed role so that, signed up user does not have acccess to page
 			register_user(username,password)
-			set_user_information(username,user_information)			
+			set_sign_up_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")
 			return redirect(url_for("authentication.login"))
 		except requests.HTTPError as e:

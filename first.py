@@ -36,9 +36,9 @@ def login_as_store_owner_now():
     session["password"] = "qwertyuiop!2"
     user = session["user"]
     password = session["password"]
-    #user,user_information = login_user(user,password)
-    session["role"] = "store_owner"#user_information["role"] 
-    session["fullname"] = "joe mama"#user_information["fullname"] 
+    user_information = get_general_user_information(user)
+    session["role"] = user_information["role"] 
+    session["fullname"] = user_information["fullname"] 
     
 @app.route('/<path:path>')
 def static_file(path):
@@ -47,7 +47,7 @@ def static_file(path):
 @app.route('/project/<path:path>')
 def static_file_for_project(path):
     return send_from_directory(app.static_folder, path) 
-  
+
 @app.route("/<name>")
 def browse(name):
     list_of_files = os.listdir('./templates/')
