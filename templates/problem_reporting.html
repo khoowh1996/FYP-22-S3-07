@@ -16,7 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
+{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  {{ message }}
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{% endfor %}
 <body style="background: #F7F8FC;">
     <div class="row">
         <div class="col col-2">
@@ -41,7 +46,7 @@
                             <img class="icon_sb" src="images/profile_sidebar_active.png" />
                             <span>View Profile</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/problemreporting">
                             <img class="icon_sb" src="images/problem_reporting_sidebar.png" />
                             <span>Problem Reporting</span>
                         </a>
@@ -57,7 +62,9 @@
                 </div>
             </div>
         </div>
+		
         <div class="col ml-5 pt-4">
+		<form action = "/uploadissues" method = "post" enctype="multipart/form-data">	
             <!-- overview header -->
             <div class="row pb-4">
                 <div class="col-8">
@@ -67,7 +74,7 @@
                     <img class="me-4" src="images/notif_header.png" />
                 </div>
                 <div class="col-2 border-start text-end">
-                    <span class="me-5" id="mnsubhead">Store Owner</span>
+                    <span class="me-5" id="mnsubhead"><a style="text-decoration:none;color:black;" href="/userprofile">{{ fullname }}</a></span>
                 </div>
             </div>
             <!-- first box -->
@@ -80,9 +87,11 @@
                     </div>
                     <div class="row pt-3 pb-4">
                         <span id="headline">Screenshots</span>
-                    </div>
-                    <div class="row">
-                        <button id="upload">Upload</button>
+						<div class="image-preview"></div>
+                    </div>				
+                    <div class="row">	
+						<input type="file" id="files" name="file" multiple style="display:none" accept="image/gif, image/jpeg, image/jpg, image/png"/>
+                        <button type="button" id="upload" onclick="document.getElementById('files').click()">Upload</button>
                     </div>
                     <div class="row">
                         <button id="submit">Submit</button>
@@ -91,7 +100,30 @@
                 </div>
             </div>
             <div class="container pt-5"></div>
+			
+		</form>
         </div>
 </body>
+<script>
+let file_input = document.querySelector('#files');
+let image_preview = document.querySelector('.image-preview');
+
+const handle_file_preview = (e) => {
+  let files = e.target.files;
+  let length = files.length;
+
+  for(let i = 0; i < length; i++) {
+      let image = document.createElement('img');
+	  image.width='250';
+	  image.height='200';
+	  image.style.padding = "0 0 0 50px"
+      image.src = window.URL.createObjectURL(files[i]);
+      image_preview.appendChild(image);
+  }
+}
+
+file_input.addEventListener('change', handle_file_preview);
+
+</script>
 
 </html>

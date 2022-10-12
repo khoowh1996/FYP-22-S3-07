@@ -10,7 +10,7 @@ def login():
 		session.permanent = True
 		username = request.form["username"]
 		password = request.form["password"]
-		print(request.form)
+		#print(request.form)
 		session["user"] = username
 		session["password"] = password
 		try:

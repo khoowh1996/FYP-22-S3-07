@@ -6,6 +6,7 @@ from blueprint.requestDemo import requestDemo
 from blueprint.subscriptionPlan import subscriptionPlan
 from blueprint.project import project
 from blueprint.profile import profile
+from blueprint.problemReport import problemReport
 from datetime import timedelta
 import os
 import secrets
@@ -25,6 +26,7 @@ app.register_blueprint(requestDemo)
 app.register_blueprint(subscriptionPlan)
 app.register_blueprint(project)
 app.register_blueprint(profile)
+app.register_blueprint(problemReport)
 @app.route("/")
 def home():
     #return "<h1>Hello</h1>"

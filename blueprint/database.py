@@ -70,12 +70,14 @@ def get_general_user_information(username): #have a function that returns name, 
     if user.val() != None:
         name = user.val()["firstname"]+" " + user.val()["lastname"]
         role = user.val()["role"]
-        if renew_subscription(username) == None:
-            return {"fullname":name,"role":role}
-        elif renew_subscription(username):
-            return {"fullname":name,"role":role}
-        else:
-            return {"fullname":name,"role":"sign_up_user"}
+        try:
+            #print(renew_subscription(username))
+            if renew_subscription(username) == None:
+                return {"fullname":name,"role":role}
+            elif renew_subscription(username):
+                return {"fullname":name,"role":role}
+        finally:
+            return {"fullname":name,"role":role}#{"fullname":name,"role":"sign_up_user"}
     else:
         user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
         name = user.val()["firstname"]+" " + user.val()["lastname"]
@@ -119,13 +121,13 @@ def get_demo_information(email):
 
 def get_faqs(user):    
     if user == "default_user":
-        all_faqs = database.child("faqs").child("generalfaqs").get()
+        all_faqs = database.child("faqs").child("default_user").get()
         faq_lists = []
         for user in all_faqs.each():
             faq_lists.append({"question":user.key(),"answer":user.val()})
         return faq_lists
     if user == "store_owner":
-        all_faqs = database.child("faqs").child("storeownerfaqs").get()
+        all_faqs = database.child("faqs").child("store_owner").get()
         faq_lists = []
         for user in all_faqs.each():
             faq_lists.append({"question":user.key(),"answer":user.val()})
@@ -191,11 +193,13 @@ def set_subscription(username,amount):#need to define for expiry, once approve t
 def retrieve_project_id(username):
     try:
         all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
-        print(all_project)
-        index = 0;
+        index_list = []
         for proj in all_project.each():
-            index+=1
-        return index
+            index_list.append(proj.key())
+        if all_project.val() == None:
+            return 1
+        else:
+            return max(index_list)+1
     except TypeError as e:
         return 1
 
@@ -282,14 +286,45 @@ def get_project_by_id(username,project_id):
 def retrieve_item_id(username,project_id):
     try:
         all_project_item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
-        index = 0;
-        print("all_project_item val " + all_project_item.val())
-        print("all_project_item key " + all_project_item.key())
+        index_list = [];
         for proj in all_project_item.each():
-            print("proj val " + proj.val())
-            print("all_project_item key " + proj.key())
-            index+=1
-        return index
+            index_list.append(proj.key())
+        if all_project_item.val() == None:
+            return 1
+        else:
+            return max(index_list)+1
     except TypeError as e:
         return 1
-        
+
+def retrieve_issue_id(username):
+    try:
+        all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
+        index_list = []
+        for proj in all_issues.each():
+            index_list.append(proj.key())
+        if all_issues.val() == None:
+            return 1
+        else:
+            return max(index_list)+1
+    except TypeError as e:
+        return 1
+
+def retrieve_all_user_issues(username):
+    try:
+        all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
+        all_issues_list = []
+        for issue in all_issues.val():
+            if issue != None:
+                all_issues_list.append({"id":issue["id"],"status":issue["status"],"description":issue["description"],"images":issue["images"]})
+        return all_issues_list
+    except TypeError as e:
+        return []
+
+def upload_issue(username,uploaded_files,issue_information):
+    uploaded_files_url = []
+    for file in uploaded_files:
+        storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
+        file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+        uploaded_files_url.append(file_url)
+    issue_information["images"] = uploaded_files_url
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child(issue_information["id"]).set(issue_information)

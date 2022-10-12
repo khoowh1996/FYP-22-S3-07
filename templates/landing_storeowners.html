@@ -39,7 +39,7 @@
                                 <img class="icon_sb" src="images/profile_sidebar.png" />
                                 <span>View Profile</span>
                             </a>
-                            <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                            <a class="ps-4 p-3 pt-4" id="link_sb" href="/problemreporting">
                                 <img class="icon_sb" src="images/problem_reporting_sidebar.png" />
                                 <span>Problem Reporting</span>
                             </a>
@@ -127,7 +127,7 @@
 									{% if n < 3 %}
 									<div class="row">
 										<div class="col border-bottom">
-											<span class="pt-4 ms-3" id="content">{{ all_projects[n]["pname"] }}</span>
+											<span class="pt-4 ms-3" id="content"><a style="text-decoration:none;color:black;" href="/project/{{ all_projects[n]['id'] }}">{{ all_projects[n]["pname"] }}</a></span>
 										</div>
 										<div class="col border-bottom" style="text-align: right;">
 											<span class="pt-4" id="status">{{ all_projects[n]["rating"] }}</span>
@@ -157,7 +157,7 @@
                                         <span class="ms-3" id="headline">Problems reported</span>
                                     </div>
                                     <div class="col" style="text-align: right;">
-                                        <a href="/reportaproblem" id="link">Report Problem</a> 
+                                        <a href="/problemreporting" id="link">Report Problem</a> 
                                     </div>
                                 </div>
                                 <!-- second row -->
@@ -167,24 +167,22 @@
                                         <span class="pt-3" id="subhead">Status</span>
                                     </div>
                                 </div>
-                                <!-- third row -->
-                                <div class="row">
+								
+								{% if all_issues | length != 0 %}
+									{%	for n in range(0, all_issues | length)	%}
+									<!-- second row -->
+									{% if n < 3 %}
+								<div class="row">
                                     <div class="col border-bottom">
-                                        <span class="ms-3 pt-4" id="content">Problem 1</span>
+                                        <span class="ms-3 pt-4" id="content">Problem {{ all_issues[n]["id"] }}</span>
                                     </div>
                                     <div class="col border-bottom" style="text-align: right;">
-                                        <span class="pt-4" id="status">Resolved</span>
+                                        <span class="pt-4" id="status">{{ all_issues[n]["status"] }}</span>
                                     </div>
-                                </div>
-                                <!-- fourth row -->
-                                <div class="row">
-                                    <div class="col border-bottom">
-                                        <span class="ms-3 pt-4" id="content">Problem 2</span>
-                                    </div> 
-                                    <div class="col border-bottom" style="text-align: right;">
-                                        <span class="pt-4" id="status">Processing</span>
-                                    </div>
-                                </div>
+                                </div>	
+									{% endif %}
+									{%	endfor	%}
+								{% endif %}
                             </div>
                         </div>
                     </div>

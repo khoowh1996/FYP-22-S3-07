@@ -31,6 +31,12 @@ function if_checked()
 }
 
 </script>
+{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  {{ message }}
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{% endfor %}
 <body style="background: #F7F8FC;">
     <div class="row">
         <div class="col col-2">
@@ -55,7 +61,7 @@ function if_checked()
                             <img class="icon_sb" src="images/profile_sidebar_active.png" />
                             <span>View Profile</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/problemreporting">
                             <img class="icon_sb" src="images/problem_reporting_sidebar.png" />
                             <span>Problem Reporting</span>
                         </a>
@@ -81,7 +87,7 @@ function if_checked()
                     <img class="me-4" src="images/notif_header.png" />
                 </div>
                 <div class="col-2 border-start text-end">
-                    <span class="me-5" id="mnsubhead">{{ fullname }}</span>
+                    <span class="me-5" id="mnsubhead"><a style="text-decoration:none;color:black;" href="/userprofile">{{ fullname }}</a></span>
                 </div>
             </div>
             <!-- first box -->
