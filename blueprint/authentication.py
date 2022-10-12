@@ -14,10 +14,6 @@ def login():
 		session["user"] = username
 		session["password"] = password
 		try:
-			#user = auth.sign_in_with_email_and_password(username,password)
-			#print(user)	
-			#info = auth.get_account_info(user['idToken'])
-			#print(info)	
 			user,user_information = login_user(username,password)
 			print(user)
 			print(firebase_user_information(user))
@@ -74,19 +70,11 @@ def user():
 @authentication.route("/register", methods=["POST","GET"])
 def register():
 	if request.method == "POST":
-		#session.permanent = True
 		username = request.form["username"]
 		password = request.form["password"]
 		print(request.form)
-		#session["user"] = username
-		#session["password"] = password
 		try:
-			#user = auth.create_user_with_email_and_password(username,password)
-			#print(user)	
-			#info = auth.get_account_info(user['idToken'])			
-			#auth.send_email_verification(user['idToken'])
-			#print(info)	
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending"} #removed role so that, signed up user does not have acccess to page
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending","role":"sign_up_user"} #role = sign_up_user
 			register_user(username,password)
 			set_sign_up_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")

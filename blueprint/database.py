@@ -2,7 +2,8 @@ import pyrebase
 import requests
 import hashlib
 import json
-from datetime import date
+from datetime import date,datetime
+from dateutil.relativedelta import relativedelta
 import random
 import string
 
@@ -45,13 +46,17 @@ def set_sign_up_user_information(username,user_information):
     
 def approve_reject_user(username,action):
     database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"approval":action})
-    demo_user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-    if demo_user.val()["approval"]:
-        sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+
+def shift_approved_user(username):
+    sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    sign_up_users_plan = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
+    if sign_up_users.val()["approval"] and sign_up_users_plan.val() != None:
+        plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
         user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":True,"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)        
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").set(plan)              
         database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
-    
+        
 def update_user_information(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
 
@@ -65,7 +70,12 @@ def get_general_user_information(username): #have a function that returns name, 
     if user.val() != None:
         name = user.val()["firstname"]+" " + user.val()["lastname"]
         role = user.val()["role"]
-        return {"fullname":name,"role":role}
+        if renew_subscription(username) == None:
+            return {"fullname":name,"role":role}
+        elif renew_subscription(username):
+            return {"fullname":name,"role":role}
+        else:
+            return {"fullname":name,"role":"sign_up_user"}
     else:
         user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
         name = user.val()["firstname"]+" " + user.val()["lastname"]
@@ -141,13 +151,39 @@ def get_plan_pricing(amt):
         all_pricing = database.child("pricing").child("monthly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "Monthly", "desc":plan.key(),"cost":amount,"expiry":""}}
+                return {"plan": {"type" : "Monthly", "desc":plan.key(),"cost":amount,"expiry":"","renew":True}}
     else:
         all_pricing = database.child("pricing").child("yearly").get()
         for plan in all_pricing.each():
             if plan.val() == amount:
-                return {"plan": {"type" : "Yearly", "desc":plan.key(),"cost":amount,"expiry":""}}
+                return {"plan": {"type" : "Yearly", "desc":plan.key(),"cost":amount,"expiry":"","renew":True}}
+
+def set_expiry_date(plantype):
+    if plantype == "Monthly":
+        expiry = date.today() + relativedelta(months=+1)
+        return expiry.strftime("%d/%m/%Y")
+    else:
+        expiry = date.today() + relativedelta(months=+12)
+        return expiry.strftime("%d/%m/%Y")
+
+def get_start_date(expiry_date,plantype):
+    if plantype == "Monthly":
+        start_date = datetime.strptime(expiry_date,"%d/%m/%Y") - relativedelta(months=+1)
+        return start_date.strftime("%d/%m/%Y")
+    else:
+        start_date = datetime.strptime(expiry_date,"%d/%m/%Y") - relativedelta(months=+12)
+        return start_date.strftime("%d/%m/%Y")
                 
+def check_user_subscription(username,amt,role):
+    amount = int(amt)
+    if role == "store_owner":
+        user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
+        return amount == user.val()["cost"]
+    elif role == "sign_up_user":
+        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
+        return amount == user.val()["cost"]
+
+    
 def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
     current_plan = get_plan_pricing(amount)
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
@@ -211,8 +247,29 @@ def get_owner_subscription_information(username):
     accounttype = subscription.val()["desc"]
     subscriptiontype = subscription.val()["type"]
     expirydate = subscription.val()["expiry"]
-    return {"name":name,"email":email,"url": url,"company": cname,"accounttype":accounttype,"subscriptiontype":subscriptiontype,"expirydate":expirydate}
+    renew = subscription.val()["renew"]
+    return {"name":name,"email":email,"url": url,"company": cname,"accounttype":accounttype,"subscriptiontype":subscriptiontype,"expirydate":expirydate,"renew":renew,"startdate":get_start_date(expirydate,subscriptiontype)}
     
+def update_auto_renew_subscription(username,value):
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"renew":value})
+
+def renew_subscription(username):
+    user_plan = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
+    today_date = datetime.strptime((date.today().strftime("%d/%m/%Y")),'%d/%m/%Y')
+    expiry_date = datetime.strptime(user_plan.val()["expiry"],'%d/%m/%Y')
+    if user_plan.val()["renew"] and today_date >= expiry_date: #auto renew is on, expiry date reached
+        current_expiry = user_plan.val()["expiry"]
+        current_plantype = user_plan.val()["type"]
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date(current_plantype)})
+        return True
+    elif not user_plan.val()["renew"] and today_date > expiry_date:   
+        user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        user_information= {"username":user.val()["username"], "firstname":user.val()["firstname"],"lastname":user.val()["lastname"],"company":user.val()["company"],"industry":user.val()["industry"],"contact":user.val()["contact"],"url":user.val()["url"],"approval":False,"emailverification":user.val()["emailverification"],"role":"sign_up_user"}
+        database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)   
+        #database.child("users").remove(hashlib.sha256(username.encode()).hexdigest()) this will delete user from users
+        return False
+    return None
+        
 def get_project_by_id(username,project_id):
     try:
         all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()

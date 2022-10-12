@@ -13,19 +13,36 @@ def subscription():
 @subscriptionPlan.route("/payment")
 def payment():
     if "user" not in session:
-        flash("login before choosing!")
+        flash("Please login before payment.")
         return redirect("/login")
     if request.args.get("subscribe") != None:    
         subscription_type = request.args.get("subscribe")
         print("is not empty")
         session["subscription_type"] = subscription_type
     
-    if "user" in session and "subscription_type" in session:
-        return render_template("payment.html",subscription_type=session["subscription_type"])
-    elif "user" in session and "subscription_type" not in session:
+    if "user" in session and session["role"] == "store_owner" and "subscription_type" in session:
+        if check_user_subscription(session["user"],session["subscription_type"],session["role"]):        
+            return render_template("payment.html",subscription_type=session["subscription_type"])
+        else:
+            flash("You are currently subscribed to the same plan as you had chosen.")
+            session.pop("subscription_type",None)
+            return redirect("/subscription")
+    elif "user" in session and session["role"] == "store_owner" and "subscription_type" not in session:
         flash("Please choose a subscription plan first")
         return redirect(url_for("subscriptionPlan.subscription"))
-    flash("Please login for payment.")
+        
+    if "user" in session and session["role"] == "sign_up_user" and "subscription_type" in session:
+        if check_user_subscription(session["user"],session["subscription_type"],session["role"]):        
+            return render_template("payment.html",subscription_type=session["subscription_type"])
+        else:
+            flash("You are currently subscribed to the same plan as you had chosen.")
+            session.pop("subscription_type",None)
+            return redirect("/subscription")
+    elif "user" in session and session["role"] == "sign_up_user" and "subscription_type" not in session:
+        flash("Please choose a subscription plan first")
+        return redirect(url_for("subscriptionPlan.subscription"))
+
+    flash("Please login before payment.")
     session["url"] = "/payment"
     return redirect("/login")
     
@@ -43,5 +60,6 @@ def payment_finalized():
         flash("Please choose a subscription plan first")
         return redirect(url_for("subscriptionPlan.subscription"))
     else:
+        flash("Please login before payment.")
         return redirect(url_for("authentication.login"))
         

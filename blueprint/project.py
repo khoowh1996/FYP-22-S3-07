@@ -103,5 +103,9 @@ def viewitem(project_id,item_id):
     
 @project.route("/projectfaqs")
 def projectfaq():
-    faq_lists = get_faqs("store_owner")
-    return render_template("store_owner_faqs.html",faq_lists=faq_lists,fullname=session["fullname"])
+    if "role" in session and session["role"] == "store_owner":
+        faq_lists = get_faqs("store_owner")
+        return render_template("store_owner_faqs.html",faq_lists=faq_lists,fullname=session["fullname"])
+    else:
+        flash("Please login before accessing project FAQS")
+        return redirect("/login")

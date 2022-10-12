@@ -7,7 +7,7 @@ profile = Blueprint('profile', __name__, template_folder='templates')
 
 @profile.route("/userprofile")    
 def userprofile(): #need get rating and performance score oso
-    if "role" in session:
+    if "role" in session and session["role"] == "store_owner":
         username = session["user"]
         store_owner_information = get_store_owner_information(username)
         return render_template("view_profile.html",store_owner_information=store_owner_information)
@@ -43,3 +43,18 @@ def managesubscription(): #need get rating and performance score oso
     else:
         flash("Please login, before accessing to project dashboard")
         return redirect("/login") #if default user redirect to login first
+        
+@profile.route("/autorenew",methods=["POST","GET"])
+def autorenew():
+    if request.method == "POST":       
+        username = session["user"]
+        if request.form["renew"] == "false": #using string cause not sure how to take actual boolean
+            print("set auto renew to false")
+            update_auto_renew_subscription(username,False)
+        elif request.form["renew"] == "true": #using string cause not sure how to take actual boolean
+            print("set auto renew to true")
+            update_auto_renew_subscription(username,True)
+        flash("Auto Renew Subscription has been updated.")
+        return redirect("/managesubscription")
+    return redirect("/managesubscription")
+    
