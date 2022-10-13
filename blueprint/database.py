@@ -189,24 +189,15 @@ def check_user_subscription(username,amt,role):
 def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
     current_plan = get_plan_pricing(amount)
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
-    
-def retrieve_project_id(username):
-    try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
-        index_list = []
-        for proj in all_project.each():
-            index_list.append(proj.key())
-        if all_project.val() == None:
-            return 1
-        else:
-            return max(index_list)+1
-    except TypeError as e:
-        return 1
-
+        
 def retrieve_all_project(username):
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
         all_project_list = []
+        if len(all_project.val()) == 1:#if there is only 1 item in the list
+            for proj in all_project.val():
+                all_project_list.append({"id":all_project.val()[proj]["id"],"pname":all_project.val()[proj]["pname"],"category":all_project.val()[proj]["category"],"url":all_project.val()[proj]["url"]})
+            return all_project_list
         for proj in all_project.val():
             if proj != None:
                 all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"]})
@@ -215,14 +206,18 @@ def retrieve_all_project(username):
         return []
     
 def set_project(username, project_information):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_information["id"]).update(project_information)
+    if project_information["id"] == 1:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
+    else:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
     
 def delete_project_by_id(username, project_id):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).remove()
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).remove()
 
 def get_project_by_id_exists(username,project_id):
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         return all_project.val() != None
     except TypeError as e:
         return False
@@ -276,55 +271,111 @@ def renew_subscription(username):
         
 def get_project_by_id(username,project_id):
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         if all_project.val() != None:
             return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"]}
         return None
     except TypeError as e:
         return None
         
-def retrieve_item_id(username,project_id):
+def retrieve_project_id(username):
     try:
-        all_project_item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child(project_id).get()
-        index_list = [];
-        for proj in all_project_item.each():
-            index_list.append(proj.key())
-        if all_project_item.val() == None:
-            return 1
-        else:
-            return max(index_list)+1
+        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
+        return all_project.val()["counter"]+1 #if got counter, return counter+1
+    except TypeError as e:#if no counter, set counter as 1
+        #database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
+        return 1 
+        
+def retrieve_item_id(username,project_id):
+    project_id = str(project_id)
+    try:
+        all_project_item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+        return all_project_item.val()["counter"]+1
+    except KeyError as e:#if no counter, set counter as 1
+        return 1 
     except TypeError as e:
-        return 1
+        return 1 
+        
+def set_project_item(username,project_id,item_id,item_information):
+    project_id = str(project_id)
+    item_id = str(item_id)
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+    category = user.val()["category"]
+    item_information["imageurl"] = generate_image_for_item(item_information["brand"] + category)
+    if item_information["id"] == 1:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":1})
+    else:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":item_information["id"]})
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").child(item_id).update(item_information)
+
+def generate_image_for_item(query):
+    # get the API KEY here: https://developers.google.com/custom-search/v1/overview
+    API_KEY = "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc"
+    # get your Search Engine ID on your CSE control panel
+    SEARCH_ENGINE_ID = "92c7cbcd5818645e5"
+
+    # the search query you want
+    #query = "adidas shoes"
+    startIndex = "1"
+    print(f"query = {query}")
+    searchUrl = "https://www.googleapis.com/customsearch/v1?q=" + \
+        query + "&start=" + startIndex + "&key=" + API_KEY + "&cx=" + SEARCH_ENGINE_ID + \
+        "&searchType=image"
+    r = requests.get(searchUrl)
+    response = r.content.decode('utf-8')
+    result = json.loads(response)
+    random_number = random.randint(0, (len(result['items'])-1))
+    return result['items'][random_number]['link']
+
+def retrieve_all_project_items(username,project_id):
+    try:
+        all_project_items = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").get()
+        all_project_items_list = []
+        if len(all_project_items.val()) == 1:#if there is only 1 item in the list
+            for item in all_project_items.val():
+                all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+            return all_project_items_list
+        for item in all_project_items.val():
+            if item != None:
+                all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+                #all_project_items_list.append({"id":item["id"],"name":item["name"],"brand":item["brand"],"price":item["price"],"gender":item["gender"],"age_group":item["age_group"],"imageurl":item["imageurl"]})
+        return all_project_items_list
+    except TypeError as e:
+        return []     
+
 
 def retrieve_issue_id(username):
     try:
         all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
-        index_list = []
-        for proj in all_issues.each():
-            index_list.append(proj.key())
-        if all_issues.val() == None:
-            return 1
-        else:
-            return max(index_list)+1
+        return all_issues.val()["counter"]+1
     except TypeError as e:
-        return 1
+        return 1 
 
 def retrieve_all_user_issues(username):
     try:
-        all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
+        all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
         all_issues_list = []
+        if len(all_issues.val()) == 1:#if there is only 1 item in the list
+            for proj in all_issues.val():
+                all_issues_list.append({"id":all_issues.val()[proj]["id"],"status":all_issues.val()[proj]["status"],"description":all_issues.val()[proj]["description"],"images":all_issues.val()[proj]["images"]})
+            return all_issues_list
         for issue in all_issues.val():
             if issue != None:
                 all_issues_list.append({"id":issue["id"],"status":issue["status"],"description":issue["description"],"images":issue["images"]})
         return all_issues_list
     except TypeError as e:
-        return []
-
+        return []        
+        
 def upload_issue(username,uploaded_files,issue_information):
+    if issue_information["id"] == 1:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").set({"counter":1})
+    else:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").update({"counter":issue_information["id"]})
+        
     uploaded_files_url = []
     for file in uploaded_files:
         storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
         file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
         uploaded_files_url.append(file_url)
     issue_information["images"] = uploaded_files_url
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child(issue_information["id"]).set(issue_information)
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).set(issue_information)

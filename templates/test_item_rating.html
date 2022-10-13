@@ -59,9 +59,11 @@
         </div>
         <div class="col ml-5 pt-4">
             <!-- overview header -->
+			
+			<form action="/createitem" method="post">
             <div class="row pb-1">
                 <div class="col-8">
-                    <span id="mnheadline">Project {{ project_information["id"] }}</span>
+                    <span id="mnheadline">Project <input type="hidden" name="project_id" value="{{ project_information['id'] }}">{{ project_information["id"] }}</input></span>
                 </div>
                 <div class="col-2 text-end">
                     <img class="me-4" src="{{ 	url_for('static', filename='images/notif_header.png')	}}" />
@@ -76,7 +78,6 @@
             <!-- first box -->
             <div class="container pt-3">
                 <div class="row cpbox">
-                    <form>
                         <!-- first row -->
                         <div class="row pb-4">
                             <span class="ms-3" id="headline">Enter Item Details</span>
@@ -84,24 +85,42 @@
                         <!-- second row -->
                         <div class="row">
                             <span class="ms-3 pb-2" id="inputhead">Item Name</span>
-                            <input class="ms-4 cpinput-l" type="text" placeholder="Name">
+                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="name" required>
                         </div>
                         <!-- third row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead">Item Price</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Price">
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Price" name="price" required>
                             </div>
                             <div class="col">
-                                <span class="pb-2" id="inputhead">Target User Group</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Target User Group">
+                            <span class="pb-2" id="inputhead">Target User Age Group</span>
+								<select class="ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" required>
+									<option value="" disabled selected hidden>Age Group</option>
+									<option value="10">below 20s</option>
+									<option value="20">20-29</option>
+									<option value="30">30-39</option>
+									<option value="40">40-49</option>
+									<option value="50">50-59</option>
+									<option value="60">60-69</option>
+									<option value="70">70-79</option>
+									<option value="80">above 80s</option>
+								</select>
                             </div>
                         </div>
                         <!-- fourth row -->
                         <div class="row">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead">Brand</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Brand">
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Brand" name="brand" required>
+                            </div>
+							<div class="col">
+                                <span class="pb-2" id="inputhead">Gender</span>
+                                <select class="ps-2 cpinput-s" required id="gender" name="gender" class="rdbox" required>
+									<option value="" disabled selected hidden>Gender</option>
+									<option value="Males">Males</option>
+									<option value="Females">Females</option>
+								</select>
                             </div>
                         </div>
                         <!-- fifth row -->
@@ -109,7 +128,6 @@
                             <button class="ms-4 createbtn" name="test" type="submit">Test</button>
                         </div>
                         <div class="row"></div>
-                    </form>
                 </div>
             </div>
             <!-- second box -->
@@ -164,6 +182,7 @@
             <div class="row pt-4 pb-5">
                 <button class="ms-2" id="pbutton">View All</button>
             </div>
+		</form>
         </div>
     </div>
 </body>

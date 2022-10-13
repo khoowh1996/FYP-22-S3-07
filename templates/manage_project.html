@@ -16,7 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
+{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  {{ message }}
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+		{% endfor %}
 <body style="background: #F7F8FC;">
     <div class="row">
         <div class="col col-2">

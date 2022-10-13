@@ -118,26 +118,27 @@
                         </div>
                     </div>
                     <!-- fourth row -->
+					{%	for n in range(0,item_lists | length)	%}
+					{% if item_lists | length == 0%}
+					No Products currently...
+					{% endif %}
                     <div class="row pt-3">
                         <div class="col-4 pb-3 border-bottom">
-                            <img class="ms-3" src="images/shoe1.png">
-                            <span class="ms-4" id="content">Shoe 1</span>
+                            <img class="ms-3" style="width: 72;height: 64;"src="{{ item_lists[n]['imageurl'] }}">
+                            <span class="ms-4" id="content">Shoe {{ item_lists[n]['id'] }}</span>
                         </div>
                         <div class="col-3 border-bottom">
-                            <span id="content">Females in 40s</span><br/>
-                            <span id="content">Males in 30s</span><br />
-                            <span id="content">Females in 20s</span>
+                            <span id="content">{{ item_lists[n]['gender'] }} in {{ item_lists[n]['age_group'] }}s</span>
                         </div>
                         <div class="col-3 border-bottom">
-                            <span id="content">10%</span><br />
-                            <span id="content">12%</span><br />
-                            <span id="content">50%</span>
+                            <span id="content">{{ item_lists[n]['rating'] }}</span>
                         </div>
                         <div class="col-2 border-bottom">
                             <span class="pt-4" id="recommendation">Females in 20s</span>
                         </div>
                     </div>
-                    <!-- fifth row -->
+					{%	endfor	%}
+                    <!-- fifth row 
                     <div class="row pt-4 pb-5">
                         <div class="col-4 pb-3 border-bottom">
                             <img class="ms-3" src="images/shoe2.png">
@@ -156,7 +157,7 @@
                         <div class="col-2 border-bottom">
                             <span class="pt-4" id="recommendation">Females in 20s</span>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <!-- second box -->
