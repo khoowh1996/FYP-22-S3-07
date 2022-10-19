@@ -1365,3 +1365,147 @@ select:invalid, select option[value=""]{
 	padding: 20px 0;
 	transition: all 0.5s ease;
 }
+.msobox{
+	height: 512px;
+	width: 1130px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+.msobox-2{
+	height: 100px;
+	width: 1130px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+.msobox .createbtn{
+	background: #3751FF;
+	border: none;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border-radius: 8px;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	height: 42px;
+	line-height: 20px;
+	text-align: center;
+	letter-spacing: 0.2px;
+	color: #FFFFFF;
+	width: 1052px;
+}
+
+.msobox .cpinput-l{
+	width: 1052px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+
+.msobox .cpinput-s{
+	width: 489px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+.msobox #input-text{
+	font-size:14px;
+	letter-spacing:0.4px;
+	color:#4B506D;
+	float:right;
+}
+.msobox hr{
+	margin: 0;
+	height:1px;
+	color:#DFE0EB;
+	border-bottom: 2px solid #4B506D;
+}
+#input-text img{
+	width:16px;
+	height:16px;
+	margin-left:5px;
+	margin-right:5px;
+}
+#profile-picture{
+	padding-right:15px;
+}
+.esobox span{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 21px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+}
+.esobox {
+	width: 1130px;
+	
+}
+.eso-name{
+	font-size:16px;
+}
+.action-button{
+	box-shadow:0px 4px 12px #B5B9C8;
+	width:96px;
+	height:30px;
+	border-top-left-radius:24px;
+	border-top-right-radius:24px;
+	border-bottom-left-radius:24px;
+	border-bottom-right-radius:24px;
+	margin: 0 auto;
+	display: block;
+  	display: table-cell;
+  	text-align: center;
+	border: 0px;
+	color:#FFFFFF;
+	letter-spacing:0.20000000298023224;
+}
+.action-button:active {
+            transform: scale(0.98);
+            /* Scaling button to 0.98 to its original size */
+            box-shadow: 3px 2px 12px rgba(0, 0, 0, 0.24);
+            /* Lowering the shadow */
+        }
+.msobox #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	display: inline-block;
+	color: #252733;
+}
+
+.msobox #inputhead {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: #9FA2B4;
+	display: block;
+}
+
+#cpsubhead{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
