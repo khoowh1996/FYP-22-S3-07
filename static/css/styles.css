@@ -1366,17 +1366,7 @@ select:invalid, select option[value=""]{
 	transition: all 0.5s ease;
 }
 .msobox{
-	height: 512px;
-	width: 1130px;
-	box-sizing: border-box;
-	background: #FFFFFF;
-	border: 1px solid #DFE0EB;
-	border-radius: 8px;
-	padding-top: 1.5rem;
-	padding-bottom: 3rem;
-}
-.msobox-2{
-	height: 100px;
+	height: 620px;
 	width: 1130px;
 	box-sizing: border-box;
 	background: #FFFFFF;
