@@ -127,7 +127,7 @@ def checkSimilarUsers(target, numOfUsers):
     return scores[0:numOfUsers]
 
 # Check similar users to target person
-# print(checkSimilarUsers('Edwin', 6))
+# print(checkSimilarUsers('Amy', 6))
 
 # To see which items users have rated and not rated individually
 def seeRatedOrNot(target):
