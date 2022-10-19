@@ -20,7 +20,42 @@
 	<style>
 .pagination li{position:relative;display:block;color:#0d6efd;text-decoration:none;background-color:#fff;border:1px solid #dee2e6}.pagination li:hover{z-index:2;color:#024dbc;background-color:#e9ecef;border-color:#dee2e6}.pagination li:focus{z-index:3;outline:0;box-shadow:0 0 0 .2rem rgba(13,110,253,.25)}.page-item:not(:first-child) .pagination li{margin-left:-1px}.page-item.active .pagination li{z-index:3;color:#fff;background-color:#0d6efd;border-color:#0d6efd}.page-item.disabled .pagination li{color:#6c757d;pointer-events:none;background-color:#fff;border-color:#dee2e6}.pagination li{padding:.375rem .75rem}.page-item:first-child .pagination li{border-top-left-radius:.25rem;border-bottom-left-radius:.25rem}.page-item:last-child .pagination li{border-top-right-radius:.25rem;border-bottom-right-radius:.25rem}.pagination-lg .pagination li{padding:.75rem 1.5rem;font-size:1.25rem}.pagination-lg .page-item:first-child .pagination li{border-top-left-radius:.3rem;border-bottom-left-radius:.3rem}.pagination-lg .page-item:last-child .pagination li{border-top-right-radius:.3rem;border-bottom-right-radius:.3rem}.pagination-sm .pagination li{padding:.25rem .5rem;font-size:.875rem}.pagination-sm .page-item:first-child .pagination li{border-top-left-radius:.2rem;border-bottom-left-radius:.2rem}.pagination-sm .page-item:last-child .pagination li{border-top-right-radius:.2rem;border-bottom-right-radius:.2rem}
 </style>
-
+<script>
+function showPassword() {
+  var x = document.getElementById("passwordInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+function showCfmPassword() {
+  var x = document.getElementById("passwordCfmInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+var check = function() {
+  if (document.getElementById('passwordCfmInput').value == "")
+	{
+		document.getElementById('message').innerHTML = '';
+		document.getElementById("showCfmPasswordBtn").removeAttribute("style");
+	}
+  else if (document.getElementById('passwordInput').value ==
+    document.getElementById('passwordCfmInput').value) {
+    document.getElementById('message').innerHTML = '';
+	document.getElementById("signupBtn").disabled = false;
+	document.getElementById("showCfmPasswordBtn").removeAttribute("style");
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'not matching';
+	document.getElementById("signupBtn").disabled = true;
+	document.getElementById("showCfmPasswordBtn").style.top = "-55px";
+  }
+}
+</script>
 </head>
 {% for message in get_flashed_messages() %}
 			<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -92,50 +127,51 @@
                         <!-- second row -->
                         <div class="row">
                             <span class="ms-3 pb-2" id="inputhead">EMAIL</span>
-                            <input class="ms-4 cpinput-l" type="text" placeholder="Email" name="email" required>
+                            <input class="ms-4 cpinput-l" type="email" placeholder="Email" name="username" required>
                         </div>
                         <!-- third row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >FIRST NAME</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="First name" name="fname" required>
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="First name" name="fname" required maxlength="32">
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">LAST NAME</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Last name" name="lname" required>
+                                <input class="ps-2 cpinput-s" type="text" placeholder="Last name" name="lname" required maxlength="32">
                             </div>
                         </div>
 						<!-- fourth row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >CONTACT NUMBER</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Contact Number +(country code)(number)" name="cname" required>
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="tel" placeholder="Contact Number +(country code)(number)" name="contact" required maxlength="15" pattern="[+]{1}[0-9]{10,14}">
                             </div>
                             <div class="col">
-                                <span class="pb-2" id="inputhead">STORE URL</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Industry e.g Shoes, Watch, Clothes, etc." name="industry" required>
+                                <span class="pb-2" id="inputhead">STORE URL ADDRESS</span>
+                                <input class="ps-2 cpinput-s" type="text" placeholder="Store URL" name="url" required maxlength="50">
                             </div>
                         </div>
 						<!-- fourth row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >COMPANY</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Company name" name="cname" required>
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Company name" name="cname" required maxlength="32">
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">COMPANY's INDUSTRY</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Industry e.g Shoes, Watch, Clothes, etc." name="industry" required>
+                                <input class="ps-2 cpinput-s" type="text" placeholder="Industry e.g Shoes, Watch, Clothes, etc." name="industry" required maxlength="32">
                             </div>
                         </div>
 						<!-- fifth row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >PASSWORD</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Category" name="category" required>
+                                <input class="ms-sm-3 ps-2 cpinput-s" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><div style="position: relative;"><img class="toggle-icon" id="showPasswordBtn" src="images/passwordtoggle.png" onmousedown="showPassword()" onmouseup="showPassword()"></img></div></input>
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">CONFIRM PASSWORD</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" required>
+                                <input class="ps-2 cpinput-s" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" maxlength="32" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><span id='message'></span>
+                        <div style="position: relative;"><img class="toggle-icon" id="showCfmPasswordBtn" src="images/passwordtoggle.png" onmousedown="showCfmPassword()" onmouseup="showCfmPassword()"></img></div></input>
                             </div>
                         </div>
                         <!-- sixth row -->
@@ -160,11 +196,11 @@
 								<span class="ms-3 pb-2" id="inputhead">Customer Name</span>
 							</div>
 							<div class="col-2">
-							<span class="ms-3 pb-2" id="inputhead">Company Name</span>
+							<span class="ms-4 pb-2" id="inputhead">Company Name</span>
 							</div>
 							
-							<div class="col-3">
-							<span class="ms-3 pb-2" id="inputhead">Status</span>
+							<div class="col-3 ms-2">
+							<span class="ms-4 pb-2" id="inputhead">Status</span>
 							</div>
                         </div>
 						<hr>
@@ -188,11 +224,11 @@
 										</div>
 										<!--col 2-->
 										<div class="col-2">
-										<span class="company ms-1" id="inputhead"></span>
+										<span class="company" id="inputhead"></span>
 										</div>
 										<!--col 3-->
-										<div class="col-3">
-										<span class="ms-1 pb-2"><img class="status" /></span>
+										<div class="ms-1 col-2">
+										<span class="pb-2"><img class="status" /></span>
 										</div>
 										<!--col 4-->
 										<div class="col-2">
@@ -207,7 +243,7 @@
 										</button>
 										</div>
 										<!--col 6-->
-										<div class="col-1">
+										<div class="ms-5 col-1">
 										<span class="ms-3 pb-2"><img class="action" src="images/ellipsis.png"/></span>
 										</div>
 									</div>
