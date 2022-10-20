@@ -454,6 +454,59 @@ body {
 	color: #9FA2B4;
 }
 
+.mbox{
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	width: 546px;
+	height: 336px;
+}
+
+.mbox #content{
+	display: block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 100;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.mbox #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.mbox #link{
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.mbox #header{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
 #mnheadline {
 	font-family: 'Mulish';
 	font-style: normal;
