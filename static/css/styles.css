@@ -1,6 +1,7 @@
 .account:hover{
 	background-color: rgba(55, 81, 255, 0.04);
 }
+
 .active-btn{
 	box-shadow:0px 4px 12px rgba(55.00000052154064, 81.00000277161598, 255, 0.23999999463558197);
 	background-color:rgba(55.00000052154064, 81.00000277161598, 255, 1);
