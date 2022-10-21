@@ -74,7 +74,7 @@ def register():
 		password = request.form["password"]
 		print(request.form)
 		try:
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":"pending","approval":"pending","role":"sign_up_user"} #role = sign_up_user
+			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
 			register_user(username,password)
 			set_sign_up_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")

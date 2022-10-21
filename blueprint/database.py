@@ -43,16 +43,40 @@ def reset_password(username):
 
 def set_sign_up_user_information(username,user_information):
     database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-    
-def approve_reject_user(username,action):
-    database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"approval":action})
 
-def shift_approved_user(username):
+def create_store_owner(username,user_information):
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    set_subscription(username,599) #when create store owner, we will give it a basic 1 year plan with auto renew = true
+
+def create_moderator(username,user_information):
+    database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+
+def freeze_unfreeze_store_owner(username):
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    if user.val()["status"]:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":False})
+    else:
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":True})
+    
+def delete_store_owner(username):#does not delete from firebase authentication currently
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
+    
+def delete_moderator(username):#does not delete from firebase authentication currently
+    database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).remove()
+
+def approve_reject_user(username,action):#maybe send email to user that it has been approved
+    database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"approval":action})
+    if action:
+        database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"approved"})
+    else:
+        database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"rejected"})
+
+def shift_approved_user(username): #maybe can do a automatic trigger?
     sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     sign_up_users_plan = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
-    if sign_up_users.val()["approval"] and sign_up_users_plan.val() != None:
+    if sign_up_users.val()["approval"] and sign_up_users.val()["status"] == "approved" and sign_up_users_plan.val() != None:
         plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
-        user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":True,"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
+        user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").set(plan)              
         database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
@@ -67,6 +91,10 @@ def login_user(username,password):
 
 def get_general_user_information(username): #have a function that returns name, role dictionary object
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    signed_user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    moderator = database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    administrator = database.child("administrators").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    
     if user.val() != None:
         name = user.val()["firstname"]+" " + user.val()["lastname"]
         role = user.val()["role"]
@@ -78,11 +106,19 @@ def get_general_user_information(username): #have a function that returns name, 
                 return {"fullname":name,"role":role}
         finally:
             return {"fullname":name,"role":role}#{"fullname":name,"role":"sign_up_user"}
-    else:
-        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-        name = user.val()["firstname"]+" " + user.val()["lastname"]
-        role = user.val()["role"]
+    elif signed_user.val() != None:
+        name = signed_user.val()["firstname"]+" " + signed_user.val()["lastname"]
+        role = signed_user.val()["role"]
         return {"fullname":name,"role":role}
+    elif moderator.val() != None:
+        name = moderator.val()["firstname"]+" " + moderator.val()["lastname"]
+        role = moderator.val()["role"]
+        return {"fullname":name,"role":role}
+    elif administrator.val() != None:
+        name = administrator.val()["firstname"]+" " + administrator.val()["lastname"]
+        role = administrator.val()["role"]
+        return {"fullname":name,"role":role}
+
 
 def firebase_user_information(user):
     return auth.get_account_info(user['idToken'])
@@ -221,7 +257,82 @@ def get_project_by_id_exists(username,project_id):
         return all_project.val() != None
     except TypeError as e:
         return False
+
+def get_all_store_owner_information_for_manage_store_owner():
+    all_users = database.child("users").get()
+    all_users_list = []
+    try:
+        for user in all_users.each():
+            fullname = user.val()["firstname"] + " " + user.val()["lastname"]
+            if user.val()["status"]:
+                image = "images/active.png"
+                freezetext = "Freeze"
+            else:
+                image = "images/inactive.png"
+                freezetext = "Unfreeze"
+            all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+user.val()["username"].split("@")[0],"deletemodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"deletemodalbox":"dmodal"+user.val()["username"].split("@")[0],"freezemodalbox":"fmodal"+user.val()["username"].split("@")[0]})
+        return all_users_list
+    except TypeError as e:
+        return []
+
+def get_all_store_owner_information_for_approve_reject():
+    all_users = database.child("sign_up_users").get()
+    all_users_list = []
+    try:
+        for user in all_users.each():
+            if user.val()["status"] == "pending":
+                fullname = user.val()["firstname"] + " " + user.val()["lastname"]
+                all_users_list.append({"industry":user.val()["industry"],"approvebutton":user.val()["username"],"rejectbutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"approvemodaltarget":"#fmodal"+user.val()["username"].split("@")[0],"rejectmodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"rejectmodalbox":"dmodal"+user.val()["username"].split("@")[0],"approvemodalbox":"fmodal"+user.val()["username"].split("@")[0]})
+        return all_users_list
+    except TypeError as e:
+        return []  
+        
+
+def get_all_store_owner_information_for_admin_overview():
+    all_users = database.child("users").get()
+    all_sign_users = database.child("sign_up_users").get()
+    moderators = database.child("moderators").get()
+    all_users_list = {"active":0,"inactive":0,"frozen":0,"pending":0,"moderator":0}
+    try:
+        for user in all_users.each():
+            if user != None:                
+                if user.val()["status"]:
+                    all_users_list["active"] +=1
+                else:
+                    all_users_list["frozen"] +=1
+    except TypeError as e:
+        print(e)
     
+    try:
+        for user in all_sign_users.each():
+            if user != None:                
+                if user.val()["approval"]:
+                    all_users_list["inactive"] +=1
+                elif user.val()["status"] == "pending":
+                    all_users_list["pending"] +=1
+    except TypeError as e:
+        print(e)
+        
+    try:
+        for user in moderators.each():
+            if user != None:                
+                all_users_list["moderator"] +=1
+    except TypeError as e:
+        print(e)
+        
+    return all_users_list
+
+def get_all_moderator_information_for_manage_moderator():
+    all_moderators = database.child("moderators").get()
+    all_moderators_list = []
+    try:
+        for user in all_moderators.each():
+            fullname = user.val()["firstname"] + " " + user.val()["lastname"]
+            all_moderators_list.append({"deletebutton":user.val()["username"],"name":fullname,"deletemodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"deletemodalbox":"dmodal"+user.val()["username"].split("@")[0]})
+        return all_moderators_list
+    except TypeError as e:
+        return []
+
 def get_store_owner_information(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     name = user.val()["firstname"]+" " + user.val()["lastname"]
@@ -263,7 +374,7 @@ def renew_subscription(username):
         return True
     elif not user_plan.val()["renew"] and today_date > expiry_date:   
         user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-        user_information= {"username":user.val()["username"], "firstname":user.val()["firstname"],"lastname":user.val()["lastname"],"company":user.val()["company"],"industry":user.val()["industry"],"contact":user.val()["contact"],"url":user.val()["url"],"approval":False,"emailverification":user.val()["emailverification"],"role":"sign_up_user"}
+        user_information= {"username":user.val()["username"], "firstname":user.val()["firstname"],"lastname":user.val()["lastname"],"company":user.val()["company"],"industry":user.val()["industry"],"contact":user.val()["contact"],"url":user.val()["url"],"approval":True,"status":"approved","emailverification":user.val()["emailverification"],"role":"sign_up_user"}
         database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)   
         #database.child("users").remove(hashlib.sha256(username.encode()).hexdigest()) this will delete user from users
         return False

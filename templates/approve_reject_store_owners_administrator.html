@@ -77,7 +77,7 @@ var check = function() {
                         </div>
                     </div>
                     <div class="ms-sm-0 row">
-                        <a class="ps-4 p-3 pb-4" id="link_sb" href="/administratoroverview">
+                        <a class="ps-4 p-3 pb-4" id="link_sb" href="/adminoverview">
                             <img class="icon_sb" src="images/overview_sidebar.png" />
                             <span>Overview</span>
                         </a>
@@ -85,12 +85,12 @@ var check = function() {
                             <img class="icon_sb" src="images/profile_sidebar.png" />
                             <span>Manage Moderators</span>
                         </a>
-                        <a class="active ps-4 p-3 pt-4  border-start border-3" id="link_sb" href="/userprofile">
-                            <img class="icon_sb" src="images/profile_sidebar_active.png" />
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/managestoreowners">
+                            <img class="icon_sb" src="images/profile_sidebar.png" />
                             <span>Manage Store Owners</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/approverejectstoreowners">
-                            <img class="icon_sb" src="images/profile_sidebar.png" />
+                        <a class="active ps-4 p-3 pt-4  border-start border-3" id="link_sb" href="/problemreporting">
+                            <img class="icon_sb" src="images/profile_sidebar_active.png" />
                             <span>Approve / Reject Store Owners</span>
                         </a>
                         <a class="ps-4 p-3 pt-4" id="link_sb" href="/logout">
@@ -105,7 +105,7 @@ var check = function() {
             <!-- overview header -->
             <div class="row">
                 <div class="col-8">
-                    <span id="mnheadline">Manage Store Owner</span>
+                    <span id="mnheadline">Approve / Reject Store Owners</span>
                 </div>
                 <div class="col-2 text-end">
                     <img class="me-4" src="images/notif_header.png" />
@@ -117,95 +117,19 @@ var check = function() {
             <div class="row pt-4">
             </div>
 
-            <div class="container pt-2">
-                <div class="row msobox">
-                    <form method="POST" action="/createstoreowner">
-                        <!-- first row -->
-                        <div class="row pb-4">
-                            <span class="ms-3" id="headline">Create Store Owner</span>
-                        </div>
-                        <!-- second row -->
-                        <div class="row">
-                            <span class="ms-3 pb-2" id="inputhead">EMAIL</span>
-                            <input class="ms-4 cpinput-l" type="email" placeholder="Email" name="username" required>
-                        </div>
-                        <!-- third row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >FIRST NAME</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="First name" name="fname" required maxlength="32">
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">LAST NAME</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Last name" name="lname" required maxlength="32">
-                            </div>
-                        </div>
-						<!-- fourth row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >CONTACT NUMBER</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="tel" placeholder="Contact Number +(country code)(number)" name="contact" required maxlength="15" pattern="[+]{1}[0-9]{10,14}">
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">STORE URL ADDRESS</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Store URL" name="url" required maxlength="50">
-                            </div>
-                        </div>
-						<!-- fourth row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >COMPANY</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Company name" name="cname" required maxlength="32">
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">COMPANY's INDUSTRY</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Industry e.g Shoes, Watch, Clothes, etc." name="industry" required maxlength="32">
-                            </div>
-                        </div>
-						<!-- fifth row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >PASSWORD</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><div style="position: relative;"><img class="toggle-icon" style="right:3.3rem;" id="showPasswordBtn" src="images/passwordtoggle.png" onmousedown="showPassword()" onmouseup="showPassword()"></img></div></input>
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">CONFIRM PASSWORD</span>
-                                <input class="ps-2 cpinput-s" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" maxlength="32" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><span id='message'></span>
-                        <div style="position: relative;"><img class="toggle-icon" id="showCfmPasswordBtn" src="images/passwordtoggle.png" onmousedown="showCfmPassword()" onmouseup="showCfmPassword()"></img></div></input>
-                            </div>
-                        </div>
-                        <!-- sixth row -->
-                        <div class="row pt-3">
-                            <button class="ms-4 createbtn" name="create" type="submit">Create Account</button>
-                        </div>
-                        <div class="row"></div>
-                    </form>
-                </div>
-            </div>
-			
 			<!--second row-->
 			<div class="container pt-2">
-                <div class="row msobox">
+                <div class="row msobox" style="min-height:300px; max-height:1200px;">
                         <!-- first row -->
 						
 						<div id="mylist">
 							<div class="row pb-4">
 								<span class="ms-3" id="headline">Existing Store Owners
-									<span id="input-text">
-										<div class="dropdown">
-										  <a class="btn dropdown-toggle" style="margin-right: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<img src="images/filter.png" />Filter
-										  </a><ul class="dropdown-menu">
-											<li><button class="dropdown-item sort" onclick="filterByActive()">Active</button></li>
-											<li><button class="dropdown-item sort" onclick="filterByInActive()">Inactive</button></li>
-											<li><button class="dropdown-item sort" onclick="removeFilter()">All</button></li>
-										  </ul>
-										</div>
-									</span>
+								
 							
 									<span id="input-text">
 										<div class="dropdown">
-										  <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										  <a class="btn dropdown-toggle" style="margin-right: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 											<img src="images/sort.png"/>Sort
 										  </a><ul class="dropdown-menu">
 											<li><button class="dropdown-item sort" data-sort="name">Customer Name</button></li>
@@ -220,13 +144,10 @@ var check = function() {
 								<div class="col-3">
 									<span class="ms-3 pb-2" id="inputhead">Customer Name</span>
 								</div>
-								<div class="col-2">
+								<div class="col-3">
 								<span class="ms-4 pb-2" id="inputhead">Company Name</span>
 								</div>
 								
-								<div class="col-3 ms-2">
-								<span class="ms-4 pb-2" id="inputhead">Status</span>
-								</div>
 							</div>
 							<hr>
 						
@@ -249,65 +170,61 @@ var check = function() {
 										<img id="profile-picture" src="images/profile_pic.png"/><span class="name ms-1 pb-2"></span>
 										</div>
 										<!--col 2-->
-										<div class="col-2">
+										<div class="ms-2 col-3">
 										<span class="company" id="companyhead"></span>
 										<span class="industry" id="categoryhead"></span>
 										</div>
-										<!--col 3-->
-										<div class="ms-1 col-2">
-										<span class="pb-2"><img class="status" /></span>
-										</div>
 										<!--col 4-->
-										<div class="col-2">
-										<button class="freezemodaltarget action-button" data-bs-toggle="modal">
-										<span class="freezetext" id="inputhead"></span>
+										<div class="ms-5 col-2">
+										<button class="approvemodaltarget action-button" data-bs-toggle="modal">
+										<span id="inputhead">Approve</span>
 										</button>
 										</div>
 										<!--col 5-->
-										<div class="col-1">
-										<button class="deletemodaltarget action-button" data-bs-toggle="modal">
-										<span id="inputhead" >Delete</span>
+										<div class="col-2">
+										<button class="rejectmodaltarget action-button" data-bs-toggle="modal">
+										<span id="inputhead">Reject</span>
 										</button>
 										</div>
 										<!--col 6-->
-										<div class="ms-5 col-1">
+										<div class="col-1">
 										<span class="ms-3 pb-2"><img class="action" src="images/ellipsis.png"/></span>
 										</div>
 									</div>
-										<div class="freezemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="approvemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog">
 											<div class="modal-content">
 											  <div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">Freeze/Unfreeze account</h1>
+												<h1 class="modal-title fs-5" id="exampleModalLabel">Approve account</h1>
 												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 											  </div>
 											  <div class="modal-body">
-												Freeze/Unfreeze this account?
+												Approve this account?
 											  </div>
 											  <div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-												<form action="/freezestoreowner" method="POST">
-												<button type="submit" class="freezebutton btn btn-primary" name="freeze" >Confirm action</button>
+												<form action="/approvestoreowner" method="POST">
+												<button type="submit" class="approvebutton btn btn-primary" name="approve" >Confirm action</button>
 												</form>
 											  </div>
 											</div>
 										  </div>
 										</div>
 									
-										<div class="deletemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="rejectmodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog">
 											<div class="modal-content">
 											  <div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">Delete account</h1>
+												<h1 class="modal-title fs-5" id="exampleModalLabel">Reject account</h1>
 												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 											  </div>
 											  <div class="modal-body">
-												Delete this account?
+												Reject this account?
 											  </div>
 											  <div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-												<form action="/deletestoreowner" method="POST">
-												<button type="submit" class="deletebutton btn btn-primary" name="delete" >Confirm deletion</button>
+												<form action="/rejectstoreowner" method="POST">
+												<button type="submit" class="rejectbutton btn btn-primary" name="reject" >Confirm deletion</button>
 												</form>
 											  </div>
 											</div>
@@ -323,39 +240,14 @@ var check = function() {
     </div>
 </body>
 <script>
-        
 		const data = {{all_owners | tojson}};
         const options = {
-            valueNames: ['name','industry', 'company',{ name: 'status', attr: 'src' },{ name: 'deletemodalbox', attr: 'id' },{ name: 'freezemodalbox', attr: 'id' },{ name: 'deletemodaltarget', attr: 'data-bs-target' },{ name: 'freezemodaltarget', attr: 'data-bs-target' },{ name: 'freezebutton', attr: 'value' },{ name:'deletebutton', attr: 'value' },'freezetext' ],
+            valueNames: ['name','industry', 'company',{ name: 'rejectmodalbox', attr: 'id' },{ name: 'approvemodalbox', attr: 'id' },{ name: 'rejectmodaltarget', attr: 'data-bs-target' },{ name: 'approvemodaltarget', attr: 'data-bs-target' },{ name: 'approvebutton', attr: 'value' },{ name:'rejectbutton', attr: 'value' }],
             item: 'myitem',
-            page: 5,
+            page: 10,
             pagination: true
         }
 		var l = new List('mylist', options, data);
 		
-		function filterByActive()
-		{			
-			l.filter(function(item) {
-			if (item.values().status == "images/active.png") {
-			   return true;
-			} else {
-			   return false;
-			}
-			}); // Only items with id > 1 are shown in list
-		}
-		function filterByInActive()
-		{			
-			l.filter(function(item) {
-			if (item.values().status == "images/inactive.png") {
-			   return true;
-			} else {
-			   return false;
-			}
-			}); // Only items with id > 1 are shown in list
-		}
-		function removeFilter()
-		{			
-			l.filter(); // Remove all filters
-		}
 </script>
 </html>

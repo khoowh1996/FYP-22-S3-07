@@ -81,17 +81,17 @@ var check = function() {
                             <img class="icon_sb" src="images/overview_sidebar.png" />
                             <span>Overview</span>
                         </a>
-                        <a class=" ps-4 p-3" id="link_sb" href="/managemoderators">
-                            <img class="icon_sb" src="images/profile_sidebar.png" />
+                        <a class="active ps-4 p-3 pt-4  border-start border-3" id="link_sb" href="/managemoderators">
+                            <img class="icon_sb" src="images/profile_sidebar_active.png" />
                             <span>Manage Moderators</span>
                         </a>
-                        <a class="active ps-4 p-3 pt-4  border-start border-3" id="link_sb" href="/userprofile">
-                            <img class="icon_sb" src="images/profile_sidebar_active.png" />
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/managestoreowners">
+                            <img class="icon_sb" src="images/profile_sidebar.png" />
                             <span>Manage Store Owners</span>
                         </a>
                         <a class="ps-4 p-3 pt-4" id="link_sb" href="/approverejectstoreowners">
                             <img class="icon_sb" src="images/profile_sidebar.png" />
-                            <span>Approve / Reject Store Owners</span>
+                            <span>Accept / Reject Store Owners</span>
                         </a>
                         <a class="ps-4 p-3 pt-4" id="link_sb" href="/logout">
                             <img class="icon_sb" src="images/logout_sidebar.png" />
@@ -105,7 +105,7 @@ var check = function() {
             <!-- overview header -->
             <div class="row">
                 <div class="col-8">
-                    <span id="mnheadline">Manage Store Owner</span>
+                    <span id="mnheadline">Manage Moderators</span>
                 </div>
                 <div class="col-2 text-end">
                     <img class="me-4" src="images/notif_header.png" />
@@ -118,11 +118,11 @@ var check = function() {
             </div>
 
             <div class="container pt-2">
-                <div class="row msobox">
-                    <form method="POST" action="/createstoreowner">
+                <div class="row msobox mmobox">
+                    <form method="POST" action="/createmoderator">
                         <!-- first row -->
                         <div class="row pb-4">
-                            <span class="ms-3" id="headline">Create Store Owner</span>
+                            <span class="ms-3" id="headline">Create Moderator</span>
                         </div>
                         <!-- second row -->
                         <div class="row">
@@ -140,29 +140,6 @@ var check = function() {
                                 <input class="ps-2 cpinput-s" type="text" placeholder="Last name" name="lname" required maxlength="32">
                             </div>
                         </div>
-						<!-- fourth row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >CONTACT NUMBER</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="tel" placeholder="Contact Number +(country code)(number)" name="contact" required maxlength="15" pattern="[+]{1}[0-9]{10,14}">
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">STORE URL ADDRESS</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Store URL" name="url" required maxlength="50">
-                            </div>
-                        </div>
-						<!-- fourth row -->
-                        <div class="row pt-3 pb-3">
-                            <div class="col">
-                                <span class="ms-3 pb-2" id="inputhead" >COMPANY</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Company name" name="cname" required maxlength="32">
-                            </div>
-                            <div class="col">
-                                <span class="pb-2" id="inputhead">COMPANY's INDUSTRY</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="Industry e.g Shoes, Watch, Clothes, etc." name="industry" required maxlength="32">
-                            </div>
-                        </div>
-						<!-- fifth row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >PASSWORD</span>
@@ -190,26 +167,13 @@ var check = function() {
 						
 						<div id="mylist">
 							<div class="row pb-4">
-								<span class="ms-3" id="headline">Existing Store Owners
+								<span class="ms-3" id="headline">Existing Moderators<span id="input-text">
 									<span id="input-text">
 										<div class="dropdown">
 										  <a class="btn dropdown-toggle" style="margin-right: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<img src="images/filter.png" />Filter
-										  </a><ul class="dropdown-menu">
-											<li><button class="dropdown-item sort" onclick="filterByActive()">Active</button></li>
-											<li><button class="dropdown-item sort" onclick="filterByInActive()">Inactive</button></li>
-											<li><button class="dropdown-item sort" onclick="removeFilter()">All</button></li>
-										  </ul>
-										</div>
-									</span>
-							
-									<span id="input-text">
-										<div class="dropdown">
-										  <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 											<img src="images/sort.png"/>Sort
 										  </a><ul class="dropdown-menu">
-											<li><button class="dropdown-item sort" data-sort="name">Customer Name</button></li>
-											<li><button class="dropdown-item sort" data-sort="company">Company Name</button></li>
+											<li><button class="dropdown-item sort" data-sort="name">Moderator Name</button></li>
 										  </ul>
 										</div>
 									</span>
@@ -218,14 +182,7 @@ var check = function() {
 							<!-- second row -->
 							<div class="row">
 								<div class="col-3">
-									<span class="ms-3 pb-2" id="inputhead">Customer Name</span>
-								</div>
-								<div class="col-2">
-								<span class="ms-4 pb-2" id="inputhead">Company Name</span>
-								</div>
-								
-								<div class="col-3 ms-2">
-								<span class="ms-4 pb-2" id="inputhead">Status</span>
+									<span class="ms-3 pb-2" id="inputhead">Moderator Name</span>
 								</div>
 							</div>
 							<hr>
@@ -238,63 +195,28 @@ var check = function() {
 							</div>
 						</div>
 						
-						
 						<div>
 							<!-- third row -->
 							<div style="display:none;">
 								<li id="myitem" class="list-group-item">
 									<div class="row pt-3 pb-3 esobox align-items-center">
 										<!--col 1-->
-										<div class="col-3">
+										<div class="col-9">
 										<img id="profile-picture" src="images/profile_pic.png"/><span class="name ms-1 pb-2"></span>
 										</div>
 										<!--col 2-->
-										<div class="col-2">
-										<span class="company" id="companyhead"></span>
-										<span class="industry" id="categoryhead"></span>
-										</div>
-										<!--col 3-->
-										<div class="ms-1 col-2">
-										<span class="pb-2"><img class="status" /></span>
-										</div>
-										<!--col 4-->
-										<div class="col-2">
-										<button class="freezemodaltarget action-button" data-bs-toggle="modal">
-										<span class="freezetext" id="inputhead"></span>
-										</button>
-										</div>
-										<!--col 5-->
 										<div class="col-1">
 										<button class="deletemodaltarget action-button" data-bs-toggle="modal">
 										<span id="inputhead" >Delete</span>
 										</button>
 										</div>
-										<!--col 6-->
+										<!--col 3-->
 										<div class="ms-5 col-1">
 										<span class="ms-3 pb-2"><img class="action" src="images/ellipsis.png"/></span>
 										</div>
 									</div>
-										<div class="freezemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-										  <div class="modal-dialog">
-											<div class="modal-content">
-											  <div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">Freeze/Unfreeze account</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											  </div>
-											  <div class="modal-body">
-												Freeze/Unfreeze this account?
-											  </div>
-											  <div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-												<form action="/freezestoreowner" method="POST">
-												<button type="submit" class="freezebutton btn btn-primary" name="freeze" >Confirm action</button>
-												</form>
-											  </div>
-											</div>
-										  </div>
-										</div>
 									
-										<div class="deletemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="deletemodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog">
 											<div class="modal-content">
 											  <div class="modal-header">
@@ -306,7 +228,7 @@ var check = function() {
 											  </div>
 											  <div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-												<form action="/deletestoreowner" method="POST">
+												<form action="/deletemoderator" method="POST">
 												<button type="submit" class="deletebutton btn btn-primary" name="delete" >Confirm deletion</button>
 												</form>
 											  </div>
@@ -315,7 +237,6 @@ var check = function() {
 										</div>
 								</li>
 							</div>
-
 						</div>
                 </div>
             </div>
@@ -323,39 +244,15 @@ var check = function() {
     </div>
 </body>
 <script>
-        
-		const data = {{all_owners | tojson}};
+		
+		const data = {{ all_moderators | tojson }}
         const options = {
-            valueNames: ['name','industry', 'company',{ name: 'status', attr: 'src' },{ name: 'deletemodalbox', attr: 'id' },{ name: 'freezemodalbox', attr: 'id' },{ name: 'deletemodaltarget', attr: 'data-bs-target' },{ name: 'freezemodaltarget', attr: 'data-bs-target' },{ name: 'freezebutton', attr: 'value' },{ name:'deletebutton', attr: 'value' },'freezetext' ],
+            valueNames: ['name',{ name:'deletebutton', attr: 'value' },{ name: 'deletemodalbox', attr: 'id' },{ name: 'deletemodaltarget', attr: 'data-bs-target' }],
             item: 'myitem',
             page: 5,
             pagination: true
         }
-		var l = new List('mylist', options, data);
-		
-		function filterByActive()
-		{			
-			l.filter(function(item) {
-			if (item.values().status == "images/active.png") {
-			   return true;
-			} else {
-			   return false;
-			}
-			}); // Only items with id > 1 are shown in list
-		}
-		function filterByInActive()
-		{			
-			l.filter(function(item) {
-			if (item.values().status == "images/inactive.png") {
-			   return true;
-			} else {
-			   return false;
-			}
-			}); // Only items with id > 1 are shown in list
-		}
-		function removeFilter()
-		{			
-			l.filter(); // Remove all filters
-		}
+
+        new List('mylist', options, data);
 </script>
 </html>

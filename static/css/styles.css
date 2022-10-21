@@ -1420,6 +1420,8 @@ select:invalid, select option[value=""]{
 }
 .msobox{
 	height: 620px;
+	min-height: 300px;
+    max-height: 635px;  
 	width: 1130px;
 	box-sizing: border-box;
 	background: #FFFFFF;
@@ -1427,6 +1429,16 @@ select:invalid, select option[value=""]{
 	border-radius: 8px;
 	padding-top: 1.5rem;
 	padding-bottom: 3rem;
+}
+.mmobox{
+	height: 415px;
+    width: 1130px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #DFE0EB;
+    border-radius: 8px;
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
 }
 .msobox .createbtn{
 	background: #3751FF;
@@ -1482,6 +1494,21 @@ select:invalid, select option[value=""]{
 }
 #profile-picture{
 	padding-right:15px;
+}
+.toggle-icon {
+  position: absolute;  
+  /* These are set relative to the height of the input box to bound the box neatly inside. This is aesthetic to me but you may change the dimensions of course. */
+  right: 4.3rem;
+  top: -2.0rem;
+  cursor: pointer;
+  /* content in the icon div is centered, without bootstrap or font-awesome you may wish to add your own text in the span */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+.toggle-icon:active{
+	cursor: default;
 }
 .esobox span{
 	font-family: 'Mulish';
@@ -1542,7 +1569,28 @@ select:invalid, select option[value=""]{
 	color: #9FA2B4;
 	display: block;
 }
-
+.msobox #companyhead {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: #252733;
+	display: block;
+}
+.msobox #categoryhead {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 10px;
+	line-height: 15px;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: #C5C7CD;
+	display: block;
+}
 #cpsubhead{
 	font-family: 'Mulish';
 	font-style: normal;
@@ -1550,5 +1598,75 @@ select:invalid, select option[value=""]{
 	font-size: 19px;
 	line-height: 24px;
 	letter-spacing: 0.4px;
+	color: #252733;
+}
+.mmbox-m{
+	height: 282px;
+	width: 500px;
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+.mmbox-m #content{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.mmbox-m #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #252733;
+}
+
+.mmbox-m #link {
+	text-decoration: none;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+	color: #3751FF;
+}
+
+.mmbox-m #link:hover {
+	text-decoration: underline;
+	text-decoration-color: #3751FF;
+}
+
+.mmbox-m #status{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.mmbox-m #subhead{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
 	color: #252733;
 }
