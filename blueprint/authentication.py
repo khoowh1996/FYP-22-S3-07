@@ -8,7 +8,7 @@ authentication = Blueprint('authentication', __name__, template_folder='template
 def login():
 	if request.method == "POST":
 		session.permanent = True
-		username = request.form["username"]
+		username = request.form["username"].lower()
 		password = request.form["password"]
 		#print(request.form)
 		session["user"] = username
@@ -70,7 +70,7 @@ def user():
 @authentication.route("/register", methods=["POST","GET"])
 def register():
 	if request.method == "POST":
-		username = request.form["username"]
+		username = request.form["username"].lower()
 		password = request.form["password"]
 		print(request.form)
 		try:

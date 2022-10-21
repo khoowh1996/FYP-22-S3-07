@@ -42,7 +42,7 @@ def approverejectstoreowners():
 @administrator.route("/createstoreowner", methods=["POST","GET"])
 def createstoreowner():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].lower()
         password = request.form["password"]
         print(request.form)
         try:
@@ -116,9 +116,8 @@ def rejectstoreowner():
 @administrator.route("/createmoderator", methods=["POST","GET"])
 def createmoderator():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].lower()
         password = request.form["password"]
-        print(request.form)
         try:
             user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"role":"moderator"}
             register_user(username,password)

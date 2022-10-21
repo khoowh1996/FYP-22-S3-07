@@ -1507,9 +1507,8 @@ select:invalid, select option[value=""]{
 	transition: all 0.5s ease;
 }
 .msobox{
-	height: 620px;
 	min-height: 300px;
-    max-height: 635px;  				
+    max-height: 850px;  				
 	width: 1130px;
 	box-sizing: border-box;
 	background: #FFFFFF;
@@ -1598,7 +1597,8 @@ select:invalid, select option[value=""]{
 }
 
 .msobox-m {
-	height: 851px;
+	max-height:300px;
+	min-height: 850px;
 	width: 1122px;
 	box-sizing: border-box;
 	background: #FFFFFF;
