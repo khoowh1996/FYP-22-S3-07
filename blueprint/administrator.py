@@ -17,6 +17,9 @@ def managestoreowners():
     if "user" in session and session["role"] == "administrator":
         all_owners = get_all_store_owner_information_for_manage_store_owner()
         return render_template("manage_store_owners_administrator.html",all_owners=all_owners,fullname=session["fullname"])
+    elif "user" in session and session["role"] == "moderator":
+        all_owners = get_all_store_owner_information_for_manage_store_owner()
+        return render_template("manage_store_owners_moderator.html",all_owners=all_owners,fullname=session["fullname"])
     return redirect("/pagenotfound")
 
 @administrator.route("/managemoderators")
@@ -31,6 +34,9 @@ def approverejectstoreowners():
     if "user" in session and session["role"] == "administrator":
         all_owners = get_all_store_owner_information_for_approve_reject()
         return render_template("approve_reject_store_owners_administrator.html",all_owners=all_owners,fullname=session["fullname"])
+    elif "user" in session and session["role"] == "moderator":
+        all_owners = get_all_store_owner_information_for_approve_reject()
+        return render_template("approve_reject_store_owners_moderator.html",all_owners=all_owners,fullname=session["fullname"])
     return redirect("/pagenotfound")
 
 @administrator.route("/createstoreowner", methods=["POST","GET"])
@@ -55,7 +61,7 @@ def createstoreowner():
                 print("You have attempted too many times...")
                 flash("You have attempted too many times...")
             return redirect("/managestoreowners")
-    if "user" in session and session["role"] == "administrator":
+    if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
     
@@ -67,7 +73,7 @@ def deletestoreowner():
         delete_store_owner(delete_user_email)			
         flash("Store Owner Account Deleted Successfully!")
         return redirect("/managestoreowners")
-    if "user" in session and session["role"] == "administrator":
+    if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
 
@@ -79,7 +85,7 @@ def freezestoreowner():
         freeze_unfreeze_store_owner(freeze_user_email)			
         flash("Store Owner Account has been status updated!")
         return redirect("/managestoreowners")
-    if "user" in session and session["role"] == "administrator":
+    if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
 
@@ -91,7 +97,7 @@ def approvestoreowner():
         approve_reject_user(approve_user_email,True)			
         flash("Store Owner Account has been approved!")
         return redirect("/managestoreowners")
-    if "user" in session and session["role"] == "administrator":
+    if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
     
@@ -103,7 +109,7 @@ def rejectstoreowner():
         approve_reject_user(reject_user_email,False)			
         flash("Store Owner Account has been rejected!")
         return redirect("/managestoreowners")
-    if "user" in session and session["role"] == "administrator":
+    if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
  
