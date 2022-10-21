@@ -1,3 +1,7 @@
+.account:hover{
+	background-color: rgba(55, 81, 255, 0.04);
+}
+
 .active-btn{
 	box-shadow:0px 4px 12px rgba(55.00000052154064, 81.00000277161598, 255, 0.23999999463558197);
 	background-color:rgba(55.00000052154064, 81.00000277161598, 255, 1);
@@ -764,6 +768,90 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.pagination li {
+	position: relative;
+	display: block;
+	color: #0d6efd;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #dee2e6
+}
+
+.pagination li:hover {
+	z-index: 2;
+	color: #024dbc;
+	background-color: #e9ecef;
+	border-color: #dee2e6
+}
+
+.pagination li:focus {
+	z-index: 3;
+	outline: 0;
+	box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .25)
+}
+
+.page-item:not(:first-child) .pagination li {
+	margin-left: -1px
+}
+
+.page-item.active .pagination li {
+	z-index: 3;
+	color: #fff;
+	background-color: #0d6efd;
+	border-color: #0d6efd
+}
+
+.page-item.disabled .pagination li {
+	color: #6c757d;
+	pointer-events: none;
+	background-color: #fff;
+	border-color: #dee2e6
+}
+
+.pagination li {
+	padding: .375rem .75rem
+}
+
+.page-item:first-child .pagination li {
+	border-top-left-radius: .25rem;
+	border-bottom-left-radius: .25rem
+}
+
+.page-item:last-child .pagination li {
+	border-top-right-radius: .25rem;
+	border-bottom-right-radius: .25rem
+}
+
+.pagination-lg .pagination li {
+	padding: .75rem 1.5rem;
+	font-size: 1.25rem
+}
+
+.pagination-lg .page-item:first-child .pagination li {
+	border-top-left-radius: .3rem;
+	border-bottom-left-radius: .3rem
+}
+
+.pagination-lg .page-item:last-child .pagination li {
+	border-top-right-radius: .3rem;
+	border-bottom-right-radius: .3rem
+}
+
+.pagination-sm .pagination li {
+	padding: .25rem .5rem;
+	font-size: .875rem
+}
+
+.pagination-sm .page-item:first-child .pagination li {
+	border-top-left-radius: .2rem;
+	border-bottom-left-radius: .2rem
+}
+
+.pagination-sm .page-item:last-child .pagination li {
+	border-top-right-radius: .2rem;
+	border-bottom-right-radius: .2rem
+}
+
 .pb-2{
 	padding-bottom: 0.5rem;
 }
@@ -1420,8 +1508,6 @@ select:invalid, select option[value=""]{
 }
 .msobox{
 	height: 620px;
-	min-height: 300px;
-    max-height: 635px;  
 	width: 1130px;
 	box-sizing: border-box;
 	background: #FFFFFF;
@@ -1429,16 +1515,6 @@ select:invalid, select option[value=""]{
 	border-radius: 8px;
 	padding-top: 1.5rem;
 	padding-bottom: 3rem;
-}
-.mmobox{
-	height: 415px;
-    width: 1130px;
-    box-sizing: border-box;
-    background: #FFFFFF;
-    border: 1px solid #DFE0EB;
-    border-radius: 8px;
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
 }
 .msobox .createbtn{
 	background: #3751FF;
@@ -1486,67 +1562,6 @@ select:invalid, select option[value=""]{
 	color:#DFE0EB;
 	border-bottom: 2px solid #4B506D;
 }
-#input-text img{
-	width:16px;
-	height:16px;
-	margin-left:5px;
-	margin-right:5px;
-}
-#profile-picture{
-	padding-right:15px;
-}
-.toggle-icon {
-  position: absolute;  
-  /* These are set relative to the height of the input box to bound the box neatly inside. This is aesthetic to me but you may change the dimensions of course. */
-  right: 4.3rem;
-  top: -2.0rem;
-  cursor: pointer;
-  /* content in the icon div is centered, without bootstrap or font-awesome you may wish to add your own text in the span */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-.toggle-icon:active{
-	cursor: default;
-}
-.esobox span{
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: bold;
-	font-size: 21px;
-	line-height: 20px;
-	letter-spacing: 0.2px;
-}
-.esobox {
-	width: 1130px;
-	
-}
-.eso-name{
-	font-size:16px;
-}
-.action-button{
-	box-shadow:0px 4px 12px #B5B9C8;
-	width:96px;
-	height:30px;
-	border-top-left-radius:24px;
-	border-top-right-radius:24px;
-	border-bottom-left-radius:24px;
-	border-bottom-right-radius:24px;
-	margin: 0 auto;
-	display: block;
-  	display: table-cell;
-  	text-align: center;
-	border: 0px;
-	color:#FFFFFF;
-	letter-spacing:0.20000000298023224;
-}
-.action-button:active {
-            transform: scale(0.98);
-            /* Scaling button to 0.98 to its original size */
-            box-shadow: 3px 2px 12px rgba(0, 0, 0, 0.24);
-            /* Lowering the shadow */
-        }
 .msobox #headline{
 	font-family: 'Mulish';
 	font-style: normal;
@@ -1569,40 +1584,10 @@ select:invalid, select option[value=""]{
 	color: #9FA2B4;
 	display: block;
 }
-.msobox #companyhead {
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 12px;
-	line-height: 15px;
-	letter-spacing: 0.3px;
-	text-transform: uppercase;
-	color: #252733;
-	display: block;
-}
-.msobox #categoryhead {
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 10px;
-	line-height: 15px;
-	letter-spacing: 0.3px;
-	text-transform: uppercase;
-	color: #C5C7CD;
-	display: block;
-}
-#cpsubhead{
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 19px;
-	line-height: 24px;
-	letter-spacing: 0.4px;
-	color: #252733;
-}
-.mmbox-m{
-	height: 282px;
-	width: 500px;
+
+.msobox-m {
+	height: 851px;
+	width: 1122px;
 	box-sizing: border-box;
 	background: #FFFFFF;
 	border: 1px solid #DFE0EB;
@@ -1611,62 +1596,147 @@ select:invalid, select option[value=""]{
 	padding-bottom: 3rem;
 }
 
-.mmbox-m #content{
-	display: inline-block;
+.msobox-m .createbtn {
+	background: #3751FF;
+	border: none;
+	box-shadow: 0px 4px 12px rgba(55, 81, 255, 0.24);
+	border-radius: 8px;
 	font-family: 'Mulish';
 	font-style: normal;
-	font-weight: 600;
+	font-weight: 100;
 	font-size: 14px;
+	height: 42px;
 	line-height: 20px;
+	text-align: center;
 	letter-spacing: 0.2px;
+	color: #FFFFFF;
+	width: 1052px;
+}
+
+.msobox-m .cpinput-l {
+	width: 1052px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+
+.msobox-m .cpinput-s {
+	width: 489px;
+	height: 42px;
+	box-sizing: border-box;
+	background: #FCFDFE;
+	border: 1px solid #F0F1F7;
+	border-radius: 8px;
+}
+
+.msobox-m #input-text {
+	font-size: 14px;
+	letter-spacing: 0.4px;
+	color: #4B506D;
+	float: right;
+}
+
+.msobox-m #header{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 18px;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.msobox-m hr {
+	margin: 0;
+	height: 1px;
+	color: #DFE0EB;
+	border-bottom: 2px solid #4B506D;
+}
+
+.msobox-m #headline {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	display: inline-block;
 	color: #252733;
 }
 
-.mmbox-m #headline{
+.msobox-m #inputhead {
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	color: #151515;
+}
+
+#input-text img{
+	width:16px;
+	height:16px;
+	margin-left:5px;
+	margin-right:5px;
+}
+#profile-picture{
+	padding-right:15px;
+}
+.esobox span{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 21px;
+	line-height: 20px;
+	letter-spacing: 0.2px;
+}
+.esobox {
+	width: 1130px;
+	
+}
+.eso-name{
+	font-size:16px;
+}
+.action-button {
+	background: linear-gradient(135.37deg, rgba(0, 0, 0, 0.35) 4.29%, rgba(255, 255, 255, 0.35) 95.6%), #EBECF0;
+	background-blend-mode: soft-light, normal;
+	box-shadow: -5px -5px 10px #FAFBFF, 5px 5px 10px #A6ABBD;
+	border: none;
+	border-radius: 20px;
+	height: 32px;
+	width: 107px;
+	
+	/* box-shadow: 0px 4px 12px #B5B9C8;
+	width: 96px;
+	height: 30px;
+	border-top-left-radius: 24px;
+	border-top-right-radius: 24px;
+	border-bottom-left-radius: 24px;
+	border-bottom-right-radius: 24px;
+	margin: 0 auto;
+	display: block;
+	display: table-cell;
+	text-align: center;
+	border: 0px;
+	color: #FFFFFF;
+	letter-spacing: 0.20000000298023224; */
+}
+.action-button:active {
+            transform: scale(0.98);
+            /* Scaling button to 0.98 to its original size */
+            box-shadow: 3px 2px 12px rgba(0, 0, 0, 0.24);
+            /* Lowering the shadow */
+        }
+
+#cpsubhead{
 	font-family: 'Mulish';
 	font-style: normal;
 	font-weight: 700;
 	font-size: 19px;
 	line-height: 24px;
 	letter-spacing: 0.4px;
-	color: #252733;
-}
-
-.mmbox-m #link {
-	text-decoration: none;
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: 0.2px;
-	color: #3751FF;
-}
-
-.mmbox-m #link:hover {
-	text-decoration: underline;
-	text-decoration-color: #3751FF;
-}
-
-.mmbox-m #status{
-	display: inline-block;
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 14px;
-	line-height: 20px;
-	text-align: right;
-	letter-spacing: 0.2px;
-	color: #9FA2B4;
-}
-
-.mmbox-m #subhead{
-	display: inline-block;
-	font-family: 'Mulish';
-	font-style: normal;
-	font-weight: 600;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: 0.2px;
 	color: #252733;
 }
