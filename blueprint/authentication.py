@@ -10,16 +10,16 @@ def login():
 		session.permanent = True
 		username = request.form["username"].lower()
 		password = request.form["password"]
-		#print(request.form)
 		session["user"] = username
 		session["password"] = password
 		try:
 			user,user_information = login_user(username,password)
 			print(user)
 			print(firebase_user_information(user))
-			session["role"] = user_information["role"] 
-			session["fullname"] = user_information["fullname"] 
-			flash("Login Successfully!")
+			if user_information != None:
+				session["role"] = user_information["role"] 
+				session["fullname"] = user_information["fullname"] 
+				flash("Login Successfully!")
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -40,9 +40,13 @@ def login():
 			curr_url = session["url"]
 			session.pop("url",None)
 			return redirect(curr_url)
-		return redirect("/projectoverview")
-		if "user" in session and session["role"] == "store_owner":
+		print(session["role"])
+		if session["role"] == "store_owner":
 			return redirect("/projectoverview")
+		elif session["role"] == "moderator":
+			return redirect("/moderatoroverview")
+		elif session["role"] == "administrator":
+			return redirect("/administratoroverview")
 		else:
 			return redirect("/")
 	if "user" in session:
@@ -54,6 +58,7 @@ def logout():
     session.pop("user",None)
     session.pop("password",None)
     session.pop("fullname",None)
+    session.pop("role",None)
     flash("You have logged out successfully.")
     return redirect("/")
     #return redirect(url_for("authentication.login"))
@@ -72,7 +77,6 @@ def register():
 	if request.method == "POST":
 		username = request.form["username"].lower()
 		password = request.form["password"]
-		print(request.form)
 		try:
 			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
 			register_user(username,password)

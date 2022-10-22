@@ -44,7 +44,6 @@ def createstoreowner():
     if request.method == "POST":
         username = request.form["username"].lower()
         password = request.form["password"]
-        print(request.form)
         try:
             user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"status":True,"emailverification":True,"role":"store_owner"}
             register_user(username,password)
@@ -69,7 +68,6 @@ def createstoreowner():
 def deletestoreowner():
     if request.method == "POST":
         delete_user_email = request.form["delete"]
-        print(request.form)
         delete_store_owner(delete_user_email)			
         flash("Store Owner Account Deleted Successfully!")
         return redirect("/managestoreowners")
@@ -81,7 +79,6 @@ def deletestoreowner():
 def freezestoreowner():
     if request.method == "POST":
         freeze_user_email = request.form["freeze"]
-        print("user = " + freeze_user_email)
         freeze_unfreeze_store_owner(freeze_user_email)			
         flash("Store Owner Account has been status updated!")
         return redirect("/managestoreowners")
@@ -93,7 +90,6 @@ def freezestoreowner():
 def approvestoreowner():
     if request.method == "POST":
         approve_user_email = request.form["approve"]
-        print("user = " + approve_user_email)
         approve_reject_user(approve_user_email,True)			
         flash("Store Owner Account has been approved!")
         return redirect("/managestoreowners")
@@ -105,7 +101,6 @@ def approvestoreowner():
 def rejectstoreowner():
     if request.method == "POST":
         reject_user_email = request.form["reject"]
-        print("user = " + reject_user_email)
         approve_reject_user(reject_user_email,False)			
         flash("Store Owner Account has been rejected!")
         return redirect("/managestoreowners")

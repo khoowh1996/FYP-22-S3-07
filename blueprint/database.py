@@ -118,6 +118,7 @@ def get_general_user_information(username): #have a function that returns name, 
         name = administrator.val()["firstname"]+" " + administrator.val()["lastname"]
         role = administrator.val()["role"]
         return {"fullname":name,"role":role}
+    return None
 
 
 def firebase_user_information(user):
