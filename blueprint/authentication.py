@@ -41,10 +41,10 @@ def login():
 			return redirect(curr_url)
 		print(session["role"])
 		if session["role"] == "store_owner":
-            if get_status(username):
+			if get_status(username):
 				flash("Login Successfully!")
 				return redirect("/projectoverview")
-            else:
+			else:
 				flash("Your account has been frozen, Please contact our Moderator at myrecommendservices@gmail.com.")
 				return redirect("/logout")
 		elif session["role"] == "moderator": 
