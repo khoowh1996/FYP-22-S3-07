@@ -120,6 +120,12 @@ def get_general_user_information(username): #have a function that returns name, 
         return {"fullname":name,"role":role}
     return None
 
+def get_status(username):
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    if user.val() != None:
+        return user.val()["status"]
+    else:
+        return None
 
 def firebase_user_information(user):
     return auth.get_account_info(user['idToken'])

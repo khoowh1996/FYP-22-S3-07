@@ -18,8 +18,7 @@ def login():
 			print(firebase_user_information(user))
 			if user_information != None:
 				session["role"] = user_information["role"] 
-				session["fullname"] = user_information["fullname"] 
-				flash("Login Successfully!")
+				session["fullname"] = user_information["fullname"]
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
@@ -42,10 +41,17 @@ def login():
 			return redirect(curr_url)
 		print(session["role"])
 		if session["role"] == "store_owner":
-			return redirect("/projectoverview")
-		elif session["role"] == "moderator":
+            if get_status(username):
+				flash("Login Successfully!")
+				return redirect("/projectoverview")
+            else:
+				flash("Your account has been frozen, Please contact our Moderator at myrecommendservices@gmail.com.")
+				return redirect("/logout")
+		elif session["role"] == "moderator": 
+			flash("Login Successfully!")
 			return redirect("/moderatoroverview")
 		elif session["role"] == "administrator":
+			flash("Login Successfully!")
 			return redirect("/administratoroverview")
 		else:
 			return redirect("/")
