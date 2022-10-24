@@ -45,7 +45,7 @@ def createstoreowner():
         username = request.form["username"].lower()
         password = request.form["password"]
         try:
-            user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"status":True,"emailverification":True,"role":"store_owner"}
+            user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"status":True,"emailverification":True,"role":"store_owner"}
             register_user(username,password)
             create_store_owner(username,user_information)			
             flash("Store Owner Account Created Successfully!")
@@ -114,7 +114,7 @@ def createmoderator():
         username = request.form["username"].lower()
         password = request.form["password"]
         try:
-            user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"role":"moderator"}
+            user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"role":"moderator"}
             register_user(username,password)
             create_moderator(username,user_information)			
             flash("Moderator Account Created Successfully!")

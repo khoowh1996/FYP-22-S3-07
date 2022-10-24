@@ -125,7 +125,7 @@ def createitem():
     
 @project.route("/projectfaqs")
 def projectfaq():
-    if "role" in session and session["role"] == "store_owner":
+    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
         faq_lists = get_faqs("store_owner")
         return render_template("store_owner_faqs.html",faq_lists=faq_lists,fullname=session["fullname"])
     else:

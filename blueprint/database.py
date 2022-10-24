@@ -6,7 +6,7 @@ from datetime import date,datetime
 from dateutil.relativedelta import relativedelta
 import random
 import string
-
+import cryptocode
 config = {
 	'apiKey': "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
 	'authDomain': "fyp-22-s3-07.firebaseapp.com",
@@ -38,6 +38,12 @@ def register_user(username,password):
     user = auth.create_user_with_email_and_password(username,password)
     #auth.send_email_verification(user['idToken'])
 
+def get_encrypted_id(message,password):
+    return cryptocode.encrypt(message,hashlib.sha256(password.encode()).hexdigest())
+
+def get_decrypted_id(message,password):
+    return cryptocode.decrypt(message,hashlib.sha256(password.encode()).hexdigest())
+
 def reset_password(username):
     auth.send_password_reset_email(username)
 
@@ -59,9 +65,19 @@ def freeze_unfreeze_store_owner(username):
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":True})
     
 def delete_store_owner(username):#does not delete from firebase authentication currently
+    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    delete_id = user.val()["deleteid"]
+    decrypted_key = get_decrypted_id(delete_id,username)
+    deleted_user = auth.sign_in_with_email_and_password(username,decrypted_key)
+    auth.delete_user_account(deleted_user["idToken"])
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
     
 def delete_moderator(username):#does not delete from firebase authentication currently
+    user = database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    delete_id = user.val()["deleteid"]
+    decrypted_key = get_decrypted_id(delete_id,username)
+    deleted_user = auth.sign_in_with_email_and_password(username,decrypted_key)
+    auth.delete_user_account(deleted_user["idToken"])
     database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).remove()
 
 def approve_reject_user(username,action):#maybe send email to user that it has been approved
@@ -76,7 +92,7 @@ def shift_approved_user(username): #maybe can do a automatic trigger?
     sign_up_users_plan = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
     if sign_up_users.val()["approval"] and sign_up_users.val()["status"] == "approved" and sign_up_users_plan.val() != None:
         plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
-        user_information= {"username":sign_up_users.val()["username"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
+        user_information= {"username":sign_up_users.val()["username"],"deleteid":sign_up_users.val()["deleteid"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").set(plan)              
         database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
@@ -91,6 +107,7 @@ def login_user(username,password):
 
 def get_general_user_information(username): #have a function that returns name, role dictionary object
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    demo_user = database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     signed_user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     moderator = database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).get()
     administrator = database.child("administrators").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -106,6 +123,10 @@ def get_general_user_information(username): #have a function that returns name, 
                 return {"fullname":name,"role":role}
         finally:
             return {"fullname":name,"role":role}#{"fullname":name,"role":"sign_up_user"}
+    elif demo_user.val() != None:
+        name = demo_user.val()["firstname"]+" " + signed_user.val()["lastname"]
+        role = demo_user.val()["role"]
+        return {"fullname":name,"role":role}
     elif signed_user.val() != None:
         name = signed_user.val()["firstname"]+" " + signed_user.val()["lastname"]
         role = signed_user.val()["role"]
@@ -309,11 +330,11 @@ def get_all_store_owner_information_for_admin_overview():
                     all_users_list["frozen"] +=1
     except TypeError as e:
         print(e)
-    
+
     try:
         for user in all_sign_users.each():
-            if user != None:                
-                if user.val()["approval"]:
+            if user != None:      
+                if user.val()["status"] == "approved":
                     all_users_list["inactive"] +=1
                 elif user.val()["status"] == "pending":
                     all_users_list["pending"] +=1
@@ -381,9 +402,9 @@ def renew_subscription(username):
         return True
     elif not user_plan.val()["renew"] and today_date > expiry_date:   
         user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-        user_information= {"username":user.val()["username"], "firstname":user.val()["firstname"],"lastname":user.val()["lastname"],"company":user.val()["company"],"industry":user.val()["industry"],"contact":user.val()["contact"],"url":user.val()["url"],"approval":True,"status":"approved","emailverification":user.val()["emailverification"],"role":"sign_up_user"}
+        user_information= {"username":user.val()["username"],"deleteid":user.val()["deleteid"], "firstname":user.val()["firstname"],"lastname":user.val()["lastname"],"company":user.val()["company"],"industry":user.val()["industry"],"contact":user.val()["contact"],"url":user.val()["url"],"approval":True,"status":"approved","emailverification":user.val()["emailverification"],"role":"sign_up_user"}
         database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)   
-        #database.child("users").remove(hashlib.sha256(username.encode()).hexdigest()) this will delete user from users
+        database.child("users").remove(hashlib.sha256(username.encode()).hexdigest())# this will delete user from users
         return False
     return None
         
@@ -401,7 +422,6 @@ def retrieve_project_id(username):
         all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         return all_project.val()["counter"]+1 #if got counter, return counter+1
     except TypeError as e:#if no counter, set counter as 1
-        #database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
         return 1 
         
 def retrieve_item_id(username,project_id):
@@ -432,8 +452,6 @@ def generate_image_for_item(query):
     # get your Search Engine ID on your CSE control panel
     SEARCH_ENGINE_ID = "92c7cbcd5818645e5"
 
-    # the search query you want
-    #query = "adidas shoes"
     startIndex = "1"
     print(f"query = {query}")
     searchUrl = "https://www.googleapis.com/customsearch/v1?q=" + \
@@ -456,7 +474,6 @@ def retrieve_all_project_items(username,project_id):
         for item in all_project_items.val():
             if item != None:
                 all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
-                #all_project_items_list.append({"id":item["id"],"name":item["name"],"brand":item["brand"],"price":item["price"],"gender":item["gender"],"age_group":item["age_group"],"imageurl":item["imageurl"]})
         return all_project_items_list
     except TypeError as e:
         return []     

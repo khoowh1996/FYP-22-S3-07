@@ -40,6 +40,9 @@ def login():
 			session.pop("url",None)
 			return redirect(curr_url)
 		print(session["role"])
+		if session["role"] == "demo_user":
+			flash("Login Successfully!")
+			return redirect("/projectoverview")
 		if session["role"] == "store_owner":
 			if get_status(username):
 				flash("Login Successfully!")
@@ -84,7 +87,7 @@ def register():
 		username = request.form["username"].lower()
 		password = request.form["password"]
 		try:
-			user_information= {"username":username, "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
+			user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
 			register_user(username,password)
 			set_sign_up_user_information(username,user_information)			
 			flash("Registration Success! Please login to your newly created account")

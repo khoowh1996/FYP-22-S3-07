@@ -14,7 +14,7 @@ def request_demo():
             return redirect("/demo")
         else:
             demo_username,demo_password = createDemoAccount()
-            user_information= {"email":username,"phonenumber":request.form["phone_number"], "firstname":request.form["fname"],"lastname":request.form["lname"],"country":request.form["country"],"url":request.form["url"],"comment":request.form["comment"],"requesteddate":date.today().strftime("%d/%m/%Y"),"demo_username":demo_username,"demo_password":demo_password}
+            user_information= {"role":"demo_user","email":username,"phonenumber":request.form["phone_number"], "firstname":request.form["fname"],"lastname":request.form["lname"],"country":request.form["country"],"url":request.form["url"],"comment":request.form["comment"],"requesteddate":date.today().strftime("%d/%m/%Y"),"demo_username":demo_username,"demo_password":demo_password, }
             set_demo_user(username,user_information)
             return redirect("/mail?user="+username)     
     return render_template("request_demo.html")
