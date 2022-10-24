@@ -141,7 +141,6 @@ def recommendation(target):
                 # sum of similarities
                 simSums.setdefault(i, 0)
                 simSums[i] += sim
-                # Create the normalized list
 
     rankings = [(total / simSums[i], i) for i, total in totals.items()]
     rankings.sort(reverse=True)

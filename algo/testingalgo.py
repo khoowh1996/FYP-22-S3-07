@@ -29,15 +29,15 @@ dataset = defaultdict(dict)
 
 # Put it in a dictionary
 for i in reader:
-    dataset[i['user name'].strip()][i['product_name'].strip()] = i['rating'].strip()
+    dataset[i['product_name'].strip()][i['user name'].strip()] = i['rating'].strip()
 
 # If you want to see it in clearer view
-dataFrame = pd.DataFrame(dataset)
-dataFrame.fillna('No Ratings', inplace = True)
-print(dataFrame)
+#dataFrame = pd.DataFrame(dataset)
+#dataFrame.fillna('No Ratings', inplace = True)
+#print(dataFrame)
 
 # To see the whole dictionary of the data from CSV
-#print(dataset)
+print(dataset)
 
 # Get unique set of items bought
 def uniqueItems():
@@ -59,5 +59,6 @@ for i in dataset.values():
         print (j)
 '''
 # To get all values of 1 person
-for i in dataset.values():
-    print (i)
+#for i in dataset.values():
+    #print (i)
+
