@@ -1135,6 +1135,86 @@ input:checked + .slider:before {
 	width: 255px;
 }
 
+.prbox-l{
+	box-sizing: border-box;
+	background: #FFFFFF;
+	border: 1px solid #DFE0EB;
+	border-radius: 8px;
+	height: 1073px;
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+	width: 1089px;
+}
+
+.prbox-l #headline{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 19px;
+	line-height: 24px;
+	letter-spacing: 0.4px;
+	color: #000000;
+}
+
+.prbox-l #inputhead{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 18px;
+	letter-spacing: 0.2px;
+	color: #252733;
+}
+
+.prbox-l #header{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 18px;
+	letter-spacing: 0.2px;
+	color: #9FA2B4;
+}
+
+.prbox-l #filter{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+	color: #9FA2B4;
+}
+
+.prbox-l #name{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 22px;
+	letter-spacing: 0.3px;
+	color: #252733;
+}
+
+.prbox-l hr {
+	margin: 0;
+	height: 1px;
+	color: #DFE0EB;
+	border-bottom: 2px solid #4B506D;
+}
+
+.prbox-l #date{
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 11px;
+	line-height: 14px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	color: #252733;
+}
+
 #privacy_notice{
 	width: 316px;
 	height: 75px;
@@ -1721,7 +1801,7 @@ select:invalid, select option[value=""]{
 	letter-spacing: 0.2px;
 }
 .esobox {
-	width: 1130px;
+/* 	width: 1130px; */
 	
 }
 .eso-name{
