@@ -53,6 +53,7 @@ def set_sign_up_user_information(username,user_information):
 def create_store_owner(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     set_subscription(username,599) #when create store owner, we will give it a basic 1 year plan with auto renew = true
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date(get_plan_pricing("Yearly"))})
 
 def create_moderator(username,user_information):
     database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
@@ -97,8 +98,11 @@ def shift_approved_user(username): #maybe can do a automatic trigger?
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").set(plan)              
         database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
         
-def update_user_information(username,user_information):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
+def update_user_information(username,user_information,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update(user_information)
 
 def login_user(username,password):
     user = auth.sign_in_with_email_and_password(username,password)
@@ -124,7 +128,7 @@ def get_general_user_information(username): #have a function that returns name, 
         finally:
             return {"fullname":name,"role":role}#{"fullname":name,"role":"sign_up_user"}
     elif demo_user.val() != None:
-        name = demo_user.val()["firstname"]+" " + signed_user.val()["lastname"]
+        name = demo_user.val()["firstname"]+" " + demo_user.val()["lastname"]
         role = demo_user.val()["role"]
         return {"fullname":name,"role":role}
     elif signed_user.val() != None:
@@ -164,7 +168,10 @@ def createDemoAccount():
     return demo_username,demo_password
     
 def set_demo_user(username,user_information):
-    user = database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"age_group":"20","brand":"Adidas","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes","price":89})
 
 def demo_user_exist(username):
     try:
@@ -254,9 +261,12 @@ def set_subscription(username,amount):#need to define for expiry, once approve t
     current_plan = get_plan_pricing(amount)
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
         
-def retrieve_all_project(username):
+def retrieve_all_project(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
+        all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
         all_project_list = []
         if len(all_project.val()) == 1:#if there is only 1 item in the list
             for proj in all_project.val():
@@ -269,19 +279,28 @@ def retrieve_all_project(username):
     except TypeError as e:
         return []
     
-def set_project(username, project_information):
+def set_project(username, project_information,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     if project_information["id"] == 1:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
     else:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
+    database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
     
-def delete_project_by_id(username, project_id):
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).remove()
+def delete_project_by_id(username, project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).remove()
 
-def get_project_by_id_exists(username,project_id):
+def get_project_by_id_exists(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+        all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         return all_project.val() != None
     except TypeError as e:
         return False
@@ -361,18 +380,31 @@ def get_all_moderator_information_for_manage_moderator():
     except TypeError as e:
         return []
 
-def get_store_owner_information(username):
-    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-    name = user.val()["firstname"]+" " + user.val()["lastname"]
-    fname = user.val()["firstname"]
-    lname = user.val()["lastname"]
-    cname = user.val()["company"]
-    url = user.val()["url"]
-    email = user.val()["username"]
-    contact = user.val()["contact"]
-    industry = user.val()["industry"]
-    
-    return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
+def get_store_owner_information(username,role):
+    if role == "store_owner":
+        user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        name = user.val()["firstname"]+" " + user.val()["lastname"]
+        fname = user.val()["firstname"]
+        lname = user.val()["lastname"]
+        cname = user.val()["company"]
+        url = user.val()["url"]
+        email = user.val()["username"]
+        contact = user.val()["contact"]
+        industry = user.val()["industry"]
+        
+        return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
+    else:
+        user = database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        name = user.val()["firstname"]+" " + user.val()["lastname"]
+        fname = user.val()["firstname"]
+        lname = user.val()["lastname"]
+        cname = ""
+        url = user.val()["url"]
+        email = user.val()["demo_username"]
+        contact = user.val()["contact"]
+        industry = ""
+        
+        return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
 
 def get_owner_subscription_information(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -408,43 +440,55 @@ def renew_subscription(username):
         return False
     return None
         
-def get_project_by_id(username,project_id):
+def get_project_by_id(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+        all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         if all_project.val() != None:
             return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"]}
         return None
     except TypeError as e:
         return None
         
-def retrieve_project_id(username):
+def retrieve_project_id(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_project = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
+        all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         return all_project.val()["counter"]+1 #if got counter, return counter+1
     except TypeError as e:#if no counter, set counter as 1
         return 1 
         
-def retrieve_item_id(username,project_id):
+def retrieve_item_id(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     project_id = str(project_id)
     try:
-        all_project_item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+        all_project_item = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         return all_project_item.val()["counter"]+1
     except KeyError as e:#if no counter, set counter as 1
         return 1 
     except TypeError as e:
         return 1 
         
-def set_project_item(username,project_id,item_id,item_information):
+def set_project_item(username,project_id,item_id,item_information,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     project_id = str(project_id)
     item_id = str(item_id)
-    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+    user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
     category = user.val()["category"]
     item_information["imageurl"] = generate_image_for_item(item_information["brand"] + category)
     if item_information["id"] == 1:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":1})
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":1})
     else:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":item_information["id"]})
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").child(item_id).update(item_information)
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":item_information["id"]})
+    database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").child(item_id).update(item_information)
 
 def generate_image_for_item(query):
     # get the API KEY here: https://developers.google.com/custom-search/v1/overview
@@ -463,9 +507,12 @@ def generate_image_for_item(query):
     random_number = random.randint(0, (len(result['items'])-1))
     return result['items'][random_number]['link']
 
-def retrieve_all_project_items(username,project_id):
+def retrieve_all_project_items(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_project_items = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").get()
+        all_project_items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").get()
         all_project_items_list = []
         if len(all_project_items.val()) == 1:#if there is only 1 item in the list
             for item in all_project_items.val():
@@ -479,6 +526,16 @@ def retrieve_all_project_items(username,project_id):
         return []     
 
 
+def retrieve_issue_id(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    try:
+        all_issues = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
+        return all_issues.val()["counter"]+1
+    except TypeError as e:
+        return 1 
+
 def retrieve_issue_id(username):
     try:
         all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").get()
@@ -486,9 +543,12 @@ def retrieve_issue_id(username):
     except TypeError as e:
         return 1 
 
-def retrieve_all_user_issues(username):
+def retrieve_all_user_issues(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
     try:
-        all_issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
+        all_issues = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
         all_issues_list = []
         if len(all_issues.val()) == 1:#if there is only 1 item in the list
             for proj in all_issues.val():
@@ -514,3 +574,54 @@ def upload_issue(username,uploaded_files,issue_information):
         uploaded_files_url.append(file_url)
     issue_information["images"] = uploaded_files_url
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).set(issue_information)
+    
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).update({"reportdate":datetime.now().strftime("%d/%m/%Y %H:%M")})
+
+def last_created_date(report_date):
+    expiry_date = datetime.strptime(report_date,"%d/%m/%Y %H:%M")
+    today_date = datetime.strptime(datetime.now().strftime("%d/%m/%Y %H:%M"),"%d/%m/%Y %H:%M")
+    remainder_day = today_date - expiry_date
+    if remainder_day.days == 0:
+        if (remainder_day.seconds / 60) < 60:
+            return (str(int(remainder_day.seconds /60)) + " minutes ago")
+        else:
+            return (str(int(remainder_day.seconds /3600)) + " hours ago")
+    elif (remainder_day.seconds / 86400) < 24:
+        return (str(remainder_day.seconds /3600) + " days ago")
+
+def retrieve_all_issues_for_problem_reported():
+    all_user = database.child("users").child().get()
+    issue_list = []
+    current_issues = {}
+    for user in all_user.each():
+        try:
+            #print(user.val()["issues"]["userissues"])
+            for issue in user.val()["issues"]["userissues"]:
+                if issue != None:
+                    #all_issues.update(user.val()["username"]:{all_issues})
+                    if issue["status"] == "Processing":
+                        status = "images/active.png"
+                    else:
+                        status = "images/closed.png"
+                    current_issues.update({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"],"images":issue["images"]})
+                    issue_list.append(current_issues)
+        except KeyError as e:
+            continue
+    return issue_list
+            
+def retrieve_all_issues_count():
+    all_user = database.child("users").child().get()
+    current_issues = {"active":0,"closed":0}
+    for user in all_user.each():
+        try:
+            #print(user.val()["issues"]["userissues"])
+            for issue in user.val()["issues"]["userissues"]:
+                if issue != None:
+                    #all_issues.update(user.val()["username"]:{all_issues})
+                    if issue["status"] == "Processing":
+                        current_issues["active"] += 1
+                    else:
+                        current_issues["closed"] += 1
+        except KeyError as e:
+            continue
+    return current_issues

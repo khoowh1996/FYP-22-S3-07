@@ -78,7 +78,7 @@
             <div class="row pt-4">
                 <span id="cpsubhead">Project Details</span>
             </div>
-
+			{% if role == "store_owner" %}
             <div class="container pt-2">
                 <div class="row cpbox">
                     <form method="POST" action="/createproject">
@@ -110,6 +110,39 @@
                     </form>
                 </div>
             </div>
+			{% else %}
+			<div class="container pt-2">
+                <div class="row cpbox">
+                    <form method="POST" action="/createproject">
+                        <!-- first row -->
+                        <div class="row pb-4">
+                            <span class="ms-3" id="headline">Enter Item Details</span>
+                        </div>
+                        <!-- second row -->
+                        <div class="row">
+                            <span class="ms-3 pb-2" id="inputhead">Project Name</span>
+                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="pname" required disabled value="preset">
+                        </div>
+                        <!-- third row -->
+                        <div class="row pt-3 pb-3">
+                            <div class="col">
+                                <span class="ms-3 pb-2" id="inputhead" >Category</span>
+                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Category" name="category" disabled required value="presetcategory">
+                            </div>
+                            <div class="col">
+                                <span class="pb-2" id="inputhead">Website URL</span>
+                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" required disabled value="www.preset.com">
+                            </div>
+                        </div>
+                        <!-- fourth row -->
+                        <div class="row pt-5">
+                            <button class="ms-4 createbtn" name="create" type="submit">Create</button>
+                        </div>
+                        <div class="row"></div>
+                    </form>
+                </div>
+            </div>
+			{% endif %}
         </div>
     </div>
 </body>

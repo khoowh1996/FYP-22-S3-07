@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="ms-sm-0 row">
-                        <a class=" ps-4 p-3" id="link_sb" href="#">
+                        <a class=" ps-4 p-3" id="link_sb" href="/moderatoroverview">
                             <img class="icon_sb" src="images/overview_sidebar.png" />
                             <span>Overview</span>
                         </a>
@@ -81,19 +81,15 @@
                             <img class="icon_sb" src="images/problem_reported_sidebar_active.png" />
                             <span>Problems Reported</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/managestoreowners">
                             <img class="icon_sb" src="images/profile_sidebar.png" />
                             <span>Manage Store Owners</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/approverejectstoreowners">
                             <img class="icon_sb" src="images/profile_sidebar.png" />
                             <span style="font-size: 15px">Accept/Reject Store Owners</span>
                         </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
-                            <img class="icon_sb" src="images/faq_sidebar.png" />
-                            <span>FAQ</span>
-                        </a>
-                        <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                        <a class="ps-4 p-3 pt-4" id="link_sb" href="/logout">
                             <img class="icon_sb" src="images/logout_sidebar.png" />
                             <span>Log out</span>
                         </a>
@@ -120,15 +116,36 @@
             <!--second row-->
             <div class="container pt-2">
                 <div class="row prbox-l">
+				
+                    <div id="mylist">
                     <!-- first row -->
                     <div class="row pb-5">
-                        <div class="col-9">
+                        <div class="col">
                             <span class="align-items-center ms-3" id="headline">Latest Problems Reported<span id="input-text"></span>
-                        </div>
-                        <div class="col-3">
-                            <span class="pb-2" id="filter">Filter</span>
-                            <input class="searchbox" type="text" placeholder="Enter to search...">
-                        </div>
+									<span id="input-text">
+										<div class="dropdown">
+										  <a class="btn dropdown-toggle" style="margin-right: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<img src="images/filter.png" />Filter
+										  </a><ul class="dropdown-menu">
+											<li><button class="dropdown-item sort" onclick="filterByActive()">Active</button></li>
+											<li><button class="dropdown-item sort" onclick="filterByInActive()">Closed</button></li>
+											<li><button class="dropdown-item sort" onclick="removeFilter()">All</button></li>
+										  </ul>
+										</div>
+									</span>
+							
+									<span id="input-text">
+										<div class="dropdown">
+										  <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<img src="images/sort.png"/>Sort
+										  </a><ul class="dropdown-menu">
+											<li><button class="dropdown-item sort" data-sort="fullname">Store Owners Name</button></li>
+											<li><button class="dropdown-item sort" data-sort="description">Report Title</button></li>
+											<li><button class="dropdown-item sort" data-sort="reporteddate">Report Date</button></li>
+										  </ul>
+										</div>
+									</span>
+						</div>
                     </div>
                     <!-- second row -->
                     <div class="row">
@@ -146,7 +163,6 @@
                         </div>
                     </div>
                     <hr>
-                    <div id="mylist">
                         <ul class="list list-group list-group-flush" style="border-bottom: 2px solid #DFE0EB;"></ul>
                         <div class="d-flex justify-content-center mt-2">
                             <ul class="pagination"></ul>
@@ -159,12 +175,12 @@
                                 <div class="row pt-3 pb-3 esobox align-items-center">
                                     <!--col 1-->
                                     <div class="col-4">                                        
-                                        <span class="reporttitle" id="inputhead"></span>
+                                        <span class="description" id="inputhead"></span>
                                     </div>
                                     <!--col 2-->
                                     <div class="col-3">
 										<img id="profile-picture" src="images/profile_pic.png" /><span
-                                            class="name ms-1 pb-2" id="name"></span>
+                                            class="fullname ms-1 pb-2" id="name"></span>
                                     </div>
                                     <!--col 4-->
                                     <div class="col-2">
@@ -188,7 +204,7 @@
     </div>
 </body>
 <script>
-    const data = [
+    /*const data = [
         {
 			reporttitle: "unable to click due to error",
             name: "Tom Cruise",
@@ -359,16 +375,42 @@
             priority: "High",
             deletebutton: "Delete"
         }
-    ]
+    ]*/
+	const data = {{ all_issues | tojson }}
 
     const options = {
-        valueNames: ['name', 'company','datereported','reporttitle','priority', { name: 'status', attr: 'src' }, 'freezebutton', 'deletebutton'],
+        valueNames: ['fullname',{name:"status","attr":"src"},'datereported','description'],
         item: 'myitem',
-        page: 12,
+        page: 10,
         pagination: true
     }
 
-    new List('mylist', options, data);
+		var l = new List('mylist', options, data);
+		
+		function filterByActive()
+		{			
+			l.filter(function(item) {
+			if (item.values().status == "images/active.png") {
+			   return true;
+			} else {
+			   return false;
+			}
+			}); // Only items with id > 1 are shown in list
+		}
+		function filterByInActive()
+		{			
+			l.filter(function(item) {
+			if (item.values().status == "images/closed.png") {
+			   return true;
+			} else {
+			   return false;
+			}
+			}); // Only items with id > 1 are shown in list
+		}
+		function removeFilter()
+		{			
+			l.filter(); // Remove all filters
+		}
 </script>
 
 </html>

@@ -17,6 +17,7 @@ def login():
 			print(user)
 			print(firebase_user_information(user))
 			if user_information != None:
+				print(user_information)
 				session["role"] = user_information["role"] 
 				session["fullname"] = user_information["fullname"]
 		except requests.HTTPError as e:

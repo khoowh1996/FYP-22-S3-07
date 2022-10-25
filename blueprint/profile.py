@@ -9,7 +9,7 @@ profile = Blueprint('profile', __name__, template_folder='templates')
 def userprofile(): #need get rating and performance score oso
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
-        store_owner_information = get_store_owner_information(username)
+        store_owner_information = get_store_owner_information(username,session["role"])
         return render_template("view_profile.html",store_owner_information=store_owner_information)
     elif "role" in session:
         return redirect("/")
@@ -22,7 +22,7 @@ def updateprofile():
     if request.method == "POST":
         username = session["user"]        
         user_information= {"firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"]}
-        update_user_information(username,user_information)
+        update_user_information(username,user_information,session["role"])
         flash("Profile Updated Successfully!")#need to add to view profile flash message
         return redirect("/userprofile")        
     elif "role" in session and session["role"] == "store_owner":
