@@ -1,5 +1,5 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-import WebScraperV2
+from algo import WebScrapperV2
 sched = BlockingScheduler()
 scrapper = WebScrapperV2.ScrapeLazada()
 @sched.scheduled_job('interval', minutes=3)
