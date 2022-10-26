@@ -26,7 +26,7 @@ class ScrapeLazada():
         #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
 
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 60).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         #time.sleep(2)
 
