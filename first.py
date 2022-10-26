@@ -1,7 +1,7 @@
 from flask import Flask,redirect, url_for,render_template,send_from_directory, request, session,flash
 from flask_mail import Mail, Message
 from blueprint.authentication import authentication
-from blueprint.upload import upload
+#from blueprint.upload import upload
 from blueprint.requestDemo import requestDemo
 from blueprint.subscriptionPlan import subscriptionPlan
 from blueprint.project import project
@@ -23,7 +23,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = None
 app.config["SESSION_COOKIE_SECURE"] = True
 app.permanent_session_lifetime = timedelta(hours=1)
 app.register_blueprint(authentication)
-app.register_blueprint(upload)
+#app.register_blueprint(upload)
 app.register_blueprint(requestDemo)
 app.register_blueprint(subscriptionPlan)
 app.register_blueprint(project)
