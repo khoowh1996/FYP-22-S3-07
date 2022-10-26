@@ -24,9 +24,9 @@ class ScrapeLazada():
         #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
 
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 20).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
-        time.sleep(2)
+        #time.sleep(2)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
