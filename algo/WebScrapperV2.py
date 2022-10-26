@@ -18,13 +18,15 @@ class ScrapeLazada():
         chrome_options.binary_location = GOOGLE_CHROME_PATH
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument('--window-size=1920x1480')
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?from=wangpu'
         #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
 
-        WebDriverWait(driver, 60).until(
+        WebDriverWait(driver, 20).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         #time.sleep(2)
 
