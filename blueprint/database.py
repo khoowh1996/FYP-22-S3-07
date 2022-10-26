@@ -587,7 +587,7 @@ def last_created_date(report_date):
         else:
             return (str(int(remainder_day.seconds /3600)) + " hours ago")
     elif (remainder_day.seconds / 86400) < 24:
-        return (str(remainder_day.seconds /3600) + " days ago")
+        return (str(int(remainder_day.seconds /3600)) + " days ago")
 
 def retrieve_all_issues_for_problem_reported():
     all_user = database.child("users").child().get()
@@ -625,3 +625,6 @@ def retrieve_all_issues_count():
         except KeyError as e:
             continue
     return current_issues
+    
+def upload(filename,file):
+    storage.child(filename).put(file)
