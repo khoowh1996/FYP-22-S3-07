@@ -8,17 +8,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 class ScrapeLazada():
 
     def scrape(self):
+        from selenium import webdriver
+import os
+
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.binary_location = GOOGLE_CHROME_PATH
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
-        chrome_options.binary_location = GOOGLE_CHROME_PATH
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?from=wangpu'
         #driver = webdriver.Chrome(ChromeDriverManager().install())
