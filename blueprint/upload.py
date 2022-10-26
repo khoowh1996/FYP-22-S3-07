@@ -3,8 +3,8 @@ import pyrebase
 import pandas as pd
 from math import sqrt
 import matplotlib.pyplot as plt
-from algo import algorithm
-
+#from algo import algorithm
+from algo import WebScrapperV2
 config = {
 "apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
 "authDomain": "fyp-22-s3-07.firebaseapp.com",
@@ -39,3 +39,9 @@ def display_chart():
     forward_message = algorithm.init(user_input)
     target = user_input
     return render_template('display_chart_form.html', forward_message=forward_message,target=target);
+    
+@upload.route("/scrapeWebsite")
+def scrape_mode():
+    scrapper = WebScrapperV2.ScrapeLazada()
+    scrapper.scrape()
+    return "<h1>Now Scraping...</h1>"
