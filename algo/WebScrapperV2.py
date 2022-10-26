@@ -14,9 +14,6 @@ CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 class ScrapeLazada():
 
     def scrape(self):
-        from selenium import webdriver
-import os
-
         chrome_options = webdriver.ChromeOptions()
         chrome_options.binary_location = GOOGLE_CHROME_PATH
         chrome_options.add_argument("--headless")
