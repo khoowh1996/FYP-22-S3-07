@@ -626,5 +626,5 @@ def retrieve_all_issues_count():
             continue
     return current_issues
     
-def upload(filename,file):
-    storage.child(filename).put(file)
+def upload(file):
+    storage.child("test/test.csv").put(file)
