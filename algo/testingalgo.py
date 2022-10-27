@@ -55,7 +55,7 @@ def uniqueItems():
     return uniqueItemList
 
 #print(dataset['Marina'][ownerinput2])
-def getAvgRating(dataset, input1, input2):
+def compareWithOne(dataset, input1, input2):
     listOfValues = []
     for i in dataset.values():
         # Find who has bought both items that is stated in the arguments
@@ -84,9 +84,9 @@ def compareWithAllItems():
             itemList.remove(i)
     # Now compare it to all other items
     for item in itemList:
-        getAvgRating(dataset, ownerinput1, item)
+        compareWithOne(dataset, ownerinput1, item)
 
 if ownerinput2 == "":
     compareWithAllItems()
 else:
-    getAvgRating(dataset, ownerinput1, ownerinput2)
+    compareWithOne(dataset, ownerinput1, ownerinput2)
