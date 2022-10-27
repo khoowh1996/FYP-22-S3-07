@@ -30,7 +30,7 @@ dataset = defaultdict(dict)
 
 # Put it in a dictionary
 for i in reader:
-    dataset[i['user name'].strip()][i['product_category'].strip()] = i['rating'].strip()
+    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
 ownerinput1 = 'highheels'
 ownerinput2 = 'sneakers'
@@ -53,33 +53,36 @@ def uniqueItems():
     uniqueItemList = list(s)
     return uniqueItemList
 
-# To see what items are bought
-#print(uniqueItems())
-
-# To get the ratings of each item
-#for i in dataset.values():
-#    for j in i.values():
-#        print (j)
-
-# To get every person in dictionary
-#for i in dataset:
-#    print (i)
-
-# To get all ratings of each person
-#for i in dataset.values():
-#    print (i)
-
-listOfValues = []
 #print(dataset['Marina'][ownerinput2])
-def getAvgRating(dataset):
+def getAvgRating(dataset, input1, input2):
+    listOfValues = []
     for i in dataset.values():
-        if ownerinput2 in i.keys():
-            if ownerinput1 in i.keys():
-                listOfValues.append(int(i[ownerinput1]))
-    if sum(listOfValues) == 0 or len(listOfValues) == 0:
-        print('No one has bought', ownerinput1,'among people who has bought',ownerinput2)
+        # Find who has bought both items that is stated in the arguments
+        if input2 in i.keys():
+            if input1 in i.keys():
+                # Get their values and put all into the list
+                listOfValues.append(float(i[input1]))
+    # To handle the exception of division by 0
+    if len(listOfValues) == 0:
+        print('No one has bought', input1,'among people who has bought',input2)
     else:
         avg = sum(listOfValues) / len(listOfValues)
-        print('The average rating of', ownerinput1,'among people who has bought', ownerinput2 , 'is', avg)
+        if avg <= 2.5:
+            print('This product,', input1, 'will not do well among people who has bought', input2, 'as the average rating is', avg)
+        elif avg < 4.0:
+            print('This product,', input1, 'will be average among people who has bought', input2, 'as the average rating is', avg)
+        elif 4.0 <= avg:
+            print('This product,', input1, 'will do very well among people who has bought', input2, 'as the average rating is', avg)
+    listOfValues.clear()
 
-getAvgRating(dataset)
+def compareWithAllItems():
+    itemList = uniqueItems()
+    # Remove the item that the owner wants rating of
+    for i in itemList:
+        if i == ownerinput1:
+            itemList.remove(i)
+    # Now compare it to all other items
+    for item in itemList:
+        getAvgRating(dataset, ownerinput1, item)
+
+#compareWithAllItems()
