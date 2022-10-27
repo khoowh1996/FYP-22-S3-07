@@ -32,7 +32,7 @@ dataset = defaultdict(dict)
 for i in reader:
     dataset[i['user name'].strip()][i['product_category'].strip()] = i['rating'].strip()
 
-ownerinput1 = 'boatshoes'
+ownerinput1 = 'highheels'
 ownerinput2 = 'sneakers'
 
 # If you want to see it in clearer view
