@@ -27,7 +27,7 @@ class ScrapeLazada():
 
         WebDriverWait(driver, 120).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
-        #time.sleep(2)
+        time.sleep(2)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
@@ -43,8 +43,8 @@ class ScrapeLazada():
             )
 
         df = pd.DataFrame(products, columns=['Product Name', 'Price', 'URL'])
+        df.to_csv('/tmp/test.csv', index=False)        
         print(df)
-        df.to_csv('/tmp/test.csv', index=False)
         database.upload('/tmp/test.csv')
         driver.close()
 
