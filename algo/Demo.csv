@@ -1,198 +1,116 @@
-user name,product_name,rating
- Amy,Arctic-C,5
- Lynn R.,Arctic-C,4
- Brenda,Arctic-C,5
- Abigail S.,Arctic-C,5
- Kathy R.,Arctic-C,5
- Marina,Arctic-C,5
- Amanda E.,Arctic-C,5
- April H.,Arctic-C,5
- Rylee M.,Arctic-C,4
- Patti,Arctic-C,5
- Taylor,Arctic-C,5
- Elaine W.,Arctic-C,5
- Suzanne M.,Arctic-C,5
- Kellye L.,Arctic-C,5
- Jessica M.,Arctic-C,5
- Jennifer P.,Arctic-C,5
- Kristen,Botanic-A,5
- Michele Schultz,Botanic-A,5
- Monica Bowman,Botanic-A,5
- Abigail S.,Botanic-A,5
- Loraine S.,Botanic-A,5
- Paula,Botanic-A,5
- Heather,Botanic-A,3
- Lydia R.,Botanic-A,5
- Amber S.,Botanic-A,5
- Patrick R.,Botanic-A,5
- Olivia,Botanic-A,5
- Hannah,Botanic-A,5
- thoggarth-2062,Botanic-A,5
- Ann Marie Riggs,Botanic-A,5
- Patricia V.,Botanic-A,5
- Michelle S.,Botanic-A,5
- Sheila,Botanic-A,5
- Summer,Botanic-A,3
- nil,Botanic-A, no rating
- Megs,Botanic-A,5
- ava,Botanic-A,5
- Jessica S.,Botanic-A,5
- Sue,Bright,5
- Rose M.,Bright,5
- Terry,Bright,5
- Shawna R.,Bright,5
- Romina,Bright,3
- Paola F.,Bright,5
- Marlene,Bright,5
- christine,Bright,5
- Bette,Bright,5
- Sam T.,Bright,5
- Brooke,Bright,5
- Chelsea,Bright,5
- Mai,Bright,5
- Kaitlyn,Bright,5
- Jennifer,Bright,5
- Nikki,Bright,5
- Monica Bowman,Bare,5
- lupe,Bare,5
- Emily H.,Bare,4
- hihi.ruby,Bare,5
- Astrid,Bare,5
- Lindsay R.,Bare,5
- m.canning1994,Bare,5
- Amanda,Bare,5
- Emily W.,Bare,5
- BeeGirl CA,Bare,5
- Amanda,Bare,5
- Carley,Bare,5
- Myra,Bare,5
- Andrea,Bare,5
- Francis,Bare,5
- Carol,Bare,5
- Sandra,Bare,5
- Renee,Youth,5
- Laura Mo,Youth,5
- Kellye,Youth,5
- Jocelyn,Youth,5
- Kellye,Youth,5
- Mariam,Youth,5
- Marsha,Youth,5
- Brooke,Youth,5
- Beth,Youth,5
- Eveline T.,Youth,5
- raissa williams,Youth,5
- Amanda,Youth,5
- Aimee F.,Youth,5
- Yasmine,Youth,5
- Ashlee,Youth,5
- Judy,Youth,5
- chana743,Youth,5
- Nancy,Youth,5
- Sylvia Hoke,Youth,5
- Tatiana,Youth,5
- Kris Ann,Youth,5
- Jessica,Youth,5
- Sarah,Youth,5
- Lauren,Youth,5
- Samantha R,Youth,5
- Patricia V.,Restore,5
- Brenda,Restore,5
- Dana,Restore,5
- Susan (Sue) Randall,Restore,5
- Astrid,Restore,5
- Joyce Richardson,Restore,5
- Young Again,Restore,5
- June Sobel,Restore,5
- Stephanie Tennant,Restore,5
- bostonnoodles,Restore,5
- Jennifer,Restore,5
- Sophia,Restore,5
- Betty,Restore,5
- Sharon,Restore,5
- Claire,Restore,5
- Alyssa B,Restore,5
- Emma R.,Polish,5
- Iana,Polish,5
- hollymariebeach,Polish,5
- Trevor Price,Polish,5
- Mackenzie,Polish,5
- Isabel,Polish,5
- Shelby,Polish,5
- Ehizele Ehikhamenor,Polish,5
- Taylor,Polish,5
- Karen B.,Polish,5
- Kaitlyn,Polish,5
- Yasmine,Polish,5
- Lesley,Polish,5
- Ashley R,Polish,5
- Sofia,Polish,5
- Mirra,Polish,5
- Jessica,Polish,5
- Lana M.,Detox,5
- Minami C.,Detox,5
- Sophia N.,Detox,5
- Melisa F.,Detox,5
- Spenser,Detox,5
- Michelle R,Detox,5
- Brooke,Detox,5
- Alexis,Detox,5
- Amanda,Detox,5
- Dawn D.,Detox,5
- Florecita,Detox,5
- Kat,Detox,5
- Minami C.,Reborn,5
- Brenda,Reborn,5
- Brian,Reborn,5
- Kiandra,Reborn,5
- Kathryn,Reborn,5
- Judy,Reborn,5
- Erin,Reborn,5
- Denise,Reborn,5
- Brenda,Tonic,5
- Astrid,Tonic,5
- Margaret Canning,Tonic,5
- Amanda,Tonic,5
- Aimee,Tonic,5
- Monica Bowman,Cleanse,5
- James,Cleanse,3
- Rachel R.,Cleanse,5
- Lyn,Cleanse,5
- Will D.,Cleanse,5
- Susan Randall,Cleanse,5
- Michelle Aubert,Cleanse,5
- Jessica,Cleanse,5
- Patricia,Cleanse,5
- Melissa de la Fuente,Cleanse,5
- Amanda,Cleanse,5
- Amanda,Cleanse,5
- Carley,Cleanse,5
- Gail,Cleanse,5
- Brooke,Cleanse,5
- Sophia,Cleanse,5
- Jenn,Cleanse,5
- Lauren,Cleanse,5
- Susan,Cleanse,5
- Renee,Cleanse,5
- Jessica,Cleanse,5
- Carolyn,Cleanse,5
- Alex P,The Discovery Kit,5
- Linda Monteleone,The Discovery Kit,5
- Charlotte,The Discovery Kit,5
- Mariah,The Discovery Kit,5
- Rebecca,The Discovery Kit,5
- Michaela,The Discovery Kit,5
- Ellen,The Discovery Kit,5
- Courtney,The Discovery Kit,5
- Kimberly,The Discovery Kit,5
- Becky,The Discovery Kit,5
- Eva,The Discovery Kit,5
- Jacob F.,The Routine Kit,5
- Stephanie,The Routine Kit,5
- Samantha,The Routine Kit,5
- Emma,The Routine Kit,5
- Robin,The Routine Kit,5
- Ann,The Routine Kit,5
- Brenda,Sample Kit,5
- JM,Sample Kit,5
- Thawes,Sample Kit,5
- Sharon,Gift Card (Digital),5
+user name,product_category,product_name,rating
+ Amy,sneakers,Arctic-C,5
+ Lynn R.,sneakers,Arctic-C,4
+ Brenda,sneakers,Arctic-C,5
+ Abigail S.,sneakers,Arctic-C,5
+ Kathy R.,sneakers,Arctic-C,5
+ Marina,sneakers,Arctic-C,5
+ Marina,highheels,Restore,1
+ Taylor,highheels,Restore,2
+ Amanda E.,highheels,Restore,2
+ Amanda E.,sneakers,Arctic-C,3
+ April H.,sneakers,Arctic-C,5
+ Rylee M.,sneakers,Arctic-C,4
+ Patti,sneakers,Arctic-C,5
+ Taylor,sneakers,Arctic-C,5
+ Elaine W.,sneakers,Arctic-C,5
+ Suzanne M.,sneakers,Arctic-C,5
+ Kellye L.,sneakers,Arctic-C,5
+ Jessica M.,sneakers,Arctic-C,5
+ Jennifer P.,sneakers,Arctic-C,5
+ Kristen,sandals,Botanic-A,5
+ Michele Schultz,sandals,Botanic-A,5
+ Monica Bowman,sandals,Botanic-A,5
+ Abigail S.,sandals,Botanic-A,4
+ Loraine S.,sandals,Botanic-A,5
+ Paula,sandals,Botanic-A,5
+ Heather,sandals,Botanic-A,3
+ Lydia R.,sandals,Botanic-A,5
+ Amber S.,sandals,Botanic-A,5
+ Patrick R.,sandals,Botanic-A,5
+ Olivia,sandals,Botanic-A,5
+ Hannah,sandals,Botanic-A,5
+ thoggarth-2062,sandals,Botanic-A,5
+ Ann Marie Riggs,sandals,Botanic-A,5
+ Patricia V.,sandals,Botanic-A,5
+ Michelle S.,sandals,Botanic-A,5
+ Sheila,sandals,Botanic-A,5
+ Summer,sandals,Botanic-A,3
+ nil,sandals,Botanic-A, no rating
+ Megs,sandals,Botanic-A,5
+ ava,sandals,Botanic-A,5
+ Jessica S.,sandals,Botanic-A,5
+ Sue,boots,Bright,5
+ Rose M.,boots,Bright,5
+ Terry,boots,Bright,5
+ Shawna R.,boots,Bright,5
+ Romina,boots,Bright,3
+ Paola F.,boots,Bright,5
+ Marlene,boots,Bright,5
+ christine,boots,Bright,5
+ Bette,boots,Bright,5
+ Sam T.,boots,Bright,5
+ Brooke,boots,Bright,5
+ Chelsea,boots,Bright,5
+ Mai,boots,Bright,5
+ Kaitlyn,boots,Bright,5
+ Jennifer,boots,Bright,5
+ Nikki,boots,Bright,5
+ Monica Bowman,slippers,Bare,5
+ lupe,slippers,Bare,5
+ Emily H.,slippers,Bare,4
+ hihi.ruby,slippers,Bare,5
+ Astrid,slippers,Bare,5
+ Lindsay R.,slippers,Bare,5
+ m.canning1994,slippers,Bare,5
+ Amanda,slippers,Bare,5
+ Emily W.,slippers,Bare,5
+ BeeGirl CA,slippers,Bare,5
+ Amanda,slippers,Bare,5
+ Carley,slippers,Bare,5
+ Myra,slippers,Bare,5
+ Andrea,slippers,Bare,5
+ Francis,slippers,Bare,5
+ Carol,slippers,Bare,5
+ Sandra,slippers,Bare,5
+ Renee,boatshoes,Youth,5
+ Laura Mo,boatshoes,Youth,5
+ Kellye,boatshoes,Youth,5
+ Jocelyn,boatshoes,Youth,5
+ Kellye,boatshoes,Youth,5
+ Mariam,boatshoes,Youth,5
+ Marsha,boatshoes,Youth,5
+ Brooke,boatshoes,Youth,5
+ Beth,boatshoes,Youth,5
+ Eveline T.,boatshoes,Youth,5
+ raissa williams,boatshoes,Youth,5
+ Amanda,boatshoes,Youth,5
+ Aimee F.,boatshoes,Youth,5
+ Yasmine,boatshoes,Youth,5
+ Ashlee,boatshoes,Youth,5
+ Judy,boatshoes,Youth,5
+ chana743,boatshoes,Youth,5
+ Nancy,boatshoes,Youth,5
+ Sylvia Hoke,boatshoes,Youth,5
+ Tatiana,boatshoes,Youth,5
+ Kris Ann,boatshoes,Youth,5
+ Jessica,boatshoes,Youth,5
+ Sarah,boatshoes,Youth,5
+ Lauren,boatshoes,Youth,5
+ Samantha R,boatshoes,Youth,5
+ Patricia V.,highheels,Restore,5
+ Brenda,highheels,Restore,3
+ Dana,highheels,Restore,5
+ Susan (Sue) Randall,highheels,Restore,5
+ Astrid,highheels,Restore,5
+ Joyce Richardson,highheels,Restore,5
+ Young Again,highheels,Restore,5
+ June Sobel,highheels,Restore,5
+ Stephanie Tennant,highheels,Restore,5
+ bostonnoodles,highheels,Restore,5
+ Jennifer,highheels,Restore,5
+ Sophia,highheels,Restore,5
+ Betty,highheels,Restore,5
+ Sharon,highheels,Restore,5
+ Claire,highheels,Restore,5
+ Alyssa B,highheels,Restore,5

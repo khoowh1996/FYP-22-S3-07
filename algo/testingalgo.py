@@ -1,3 +1,4 @@
+from operator import index, indexOf
 import pandas as pd
 from math import sqrt
 import csv
@@ -16,20 +17,23 @@ config = {
 "serviceAccount": "serviceAccountKey.json"
 }
 
-firebase_storage = pyrebase.initialize_app(config)
-storage = firebase_storage.storage()
+#firebase_storage = pyrebase.initialize_app(config)
+#storage = firebase_storage.storage()
 
-url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
-webpage = urllib.request.urlopen(url)
+#url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
+#webpage = urllib.request.urlopen(url)
 
 # Read the CSV file
-#reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
-reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
+reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+#reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
 dataset = defaultdict(dict)
 
 # Put it in a dictionary
 for i in reader:
-    dataset[i['product_name'].strip()][i['user name'].strip()] = i['rating'].strip()
+    dataset[i['user name'].strip()][i['product_category'].strip()] = i['rating'].strip()
+
+ownerinput1 = 'boatshoes'
+ownerinput2 = 'sneakers'
 
 # If you want to see it in clearer view
 #dataFrame = pd.DataFrame(dataset)
@@ -37,7 +41,7 @@ for i in reader:
 #print(dataFrame)
 
 # To see the whole dictionary of the data from CSV
-print(dataset)
+#print(dataset)
 
 # Get unique set of items bought
 def uniqueItems():
@@ -53,13 +57,29 @@ def uniqueItems():
 #print(uniqueItems())
 
 # To get the ratings of each item
-'''
-for i in dataset.values():
-    for j in i.values():
-        print (j)
-'''
-# To get all values of 1 person
 #for i in dataset.values():
-    #print (i)
+#    for j in i.values():
+#        print (j)
 
-    
+# To get every person in dictionary
+#for i in dataset:
+#    print (i)
+
+# To get all ratings of each person
+#for i in dataset.values():
+#    print (i)
+
+listOfValues = []
+#print(dataset['Marina'][ownerinput2])
+def getAvgRating(dataset):
+    for i in dataset.values():
+        if ownerinput2 in i.keys():
+            if ownerinput1 in i.keys():
+                listOfValues.append(int(i[ownerinput1]))
+    if sum(listOfValues) == 0 or len(listOfValues) == 0:
+        print('No one has bought', ownerinput1,'among people who has bought',ownerinput2)
+    else:
+        avg = sum(listOfValues) / len(listOfValues)
+        print('The average rating of', ownerinput1,'among people who has bought', ownerinput2 , 'is', avg)
+
+getAvgRating(dataset)

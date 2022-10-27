@@ -16,15 +16,15 @@ config = {
 "serviceAccount": "serviceAccountKey.json"
 }
 
-firebase_storage = pyrebase.initialize_app(config)
-storage = firebase_storage.storage()
+#firebase_storage = pyrebase.initialize_app(config)
+#storage = firebase_storage.storage()
 
-url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
-webpage = urllib.request.urlopen(url)
+#url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
+#webpage = urllib.request.urlopen(url)
 
 # Read the CSV file
-#reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
-reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
+reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+#reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
 dataset = defaultdict(dict)
 
 # Put it in a dictionary
