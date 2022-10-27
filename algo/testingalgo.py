@@ -1,4 +1,5 @@
 from operator import index, indexOf
+from queue import Empty
 import pandas as pd
 from math import sqrt
 import csv
@@ -32,8 +33,8 @@ dataset = defaultdict(dict)
 for i in reader:
     dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
-ownerinput1 = 'highheels'
-ownerinput2 = 'sneakers'
+ownerinput1 = 'boots'
+ownerinput2 = ''
 
 # If you want to see it in clearer view
 #dataFrame = pd.DataFrame(dataset)
@@ -85,4 +86,7 @@ def compareWithAllItems():
     for item in itemList:
         getAvgRating(dataset, ownerinput1, item)
 
-#compareWithAllItems()
+if ownerinput2 == "":
+    compareWithAllItems()
+else:
+    getAvgRating(dataset, ownerinput1, ownerinput2)
