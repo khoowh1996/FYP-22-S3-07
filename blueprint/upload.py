@@ -3,8 +3,7 @@ import pyrebase
 import pandas as pd
 from math import sqrt
 import matplotlib.pyplot as plt
-from algo import algorithm
-
+#from algo import algorithm
 config = {
 "apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
 "authDomain": "fyp-22-s3-07.firebaseapp.com",

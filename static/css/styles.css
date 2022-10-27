@@ -1074,7 +1074,9 @@ input:checked + .slider:before {
 	padding: 20px 0;
 	width: 1165px;
 }
-
+.prbox-l #input-text{
+	float:right;
+}
 .prbox #headline{
 	display: inline-block;
 	font-family: 'Mulish';
@@ -1140,7 +1142,8 @@ input:checked + .slider:before {
 	background: #FFFFFF;
 	border: 1px solid #DFE0EB;
 	border-radius: 8px;
-	height: 1073px;
+	min-height: 300px;
+	max-height:1073px;
 	padding-top: 1.5rem;
 	padding-bottom: 3rem;
 	width: 1089px;

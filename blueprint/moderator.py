@@ -9,14 +9,15 @@ moderator = Blueprint('moderator', __name__, template_folder='templates')
 def moderatoroverview():
     if "user" in session and session["role"] == "moderator":
         all_active_accounts = get_all_store_owner_information_for_admin_overview()
-        return render_template("landing_moderators.html",all_active_accounts=all_active_accounts,fullname=session["fullname"])
+        all_issues = retrieve_all_issues_count()
+        return render_template("landing_moderators.html",all_active_accounts=all_active_accounts,all_issues=all_issues,fullname=session["fullname"])
     return redirect("/pagenotfound")
 
-#@moderator.route("/problemsreported")
-#def moderatoroverview():
-#   if "user" in session and session["role"] == "moderator":
-#        all_active_accounts = get_all_store_owner_information_for_admin_overview()
-#        return render_template("landing_moderators.html",all_active_accounts=all_active_accounts,fullname=session["fullname"])
-#    return redirect("/pagenotfound")
+@moderator.route("/problemsreported")
+def problemsreported():
+    if "user" in session and session["role"] == "moderator":
+        all_issues = retrieve_all_issues_for_problem_reported()
+        return render_template("problem_reported.html",all_issues=all_issues,fullname=session["fullname"])
+    return redirect("/pagenotfound")
 
     
