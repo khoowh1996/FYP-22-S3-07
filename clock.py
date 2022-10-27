@@ -2,7 +2,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from algo import WebScrapperV2
 sched = BlockingScheduler()
 scrapper = WebScrapperV2.ScrapeLazada()
-@sched.scheduled_job('interval', minutes=5)
+@sched.scheduled_job('interval', minutes=3)
 def timed_job():
     print('This job is run every three minutes.')   
     scrapper.scrape()
