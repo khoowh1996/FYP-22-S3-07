@@ -75,8 +75,7 @@ def personCorelation(p1, p2):
 
     # Calculate the person score
     numeratorValue = sumOfBothUsers - (p1PrefSum * p2PrefSum / numOfRating)
-    denominatorValue = sqrt((p1PrefSquareSum - pow(p1PrefSum, 2) / numOfRating) * 
-    (p2PrefSquareSum - pow(p2PrefSum, 2) / numOfRating))
+    denominatorValue = sqrt((p1PrefSquareSum - pow(p1PrefSum, 2) / numOfRating) * (p2PrefSquareSum - pow(p2PrefSum, 2) / numOfRating))
 
     if denominatorValue == 0.0:
         return 0
@@ -96,7 +95,7 @@ def checkSimilarUsers(target, numOfUsers):
     return scores[0:numOfUsers]
 
 # Check similar users to target person
-print(checkSimilarUsers('Dana', 6))
+print(checkSimilarUsers('Ellen', 193))
 
 # To see which items users have rated and not rated individually
 def seeRatedOrNot(target):
@@ -149,7 +148,7 @@ def recommendation(target):
     rList = [(i, score) for score, i in rankings]
     return rList
 
-tp = input("Enter the target person : ")
+#tp = input("Enter the target person : ")
 def init(tp):
     data_dict = {}
     print(dataset.keys())
@@ -167,4 +166,4 @@ def init(tp):
         print("Person not found in the dataset..please try again")
         return None
 
-init(tp)
+#init(tp)
