@@ -43,6 +43,7 @@ class ScrapeLazada():
             )
 
         df = pd.DataFrame(products, columns=['Product Name', 'Price', 'URL'])
+        print(df)
         df.to_csv('/tmp/test.csv', index=False)
         database.upload('/tmp/test.csv')
         driver.close()
