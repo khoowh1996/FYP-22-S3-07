@@ -7,22 +7,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from blueprint import database
-GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
-CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 class ScrapeLazada():
 
     def scrape(self):
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.binary_location = GOOGLE_CHROME_PATH
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument('--window-size=1920x1480')
-        driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+        #chrome_options = webdriver.ChromeOptions()
+        #chrome_options.binary_location = GOOGLE_CHROME_PATH
+        #chrome_options.add_argument("--headless")
+        #chrome_options.add_argument("--disable-dev-shm-usage")
+        #chrome_options.add_argument('--no-sandbox')
+        #chrome_options.add_argument("--disable-gpu")
+        #chrome_options.add_argument('--window-size=1920x1480')
+        #driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?from=wangpu'
-        #driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
 
         WebDriverWait(driver, 20).until(
@@ -43,12 +41,12 @@ class ScrapeLazada():
             )
 
         df = pd.DataFrame(products, columns=['Product Name', 'Price', 'URL'])
-        df.to_csv('/tmp/test.csv', index=False)        
+        df.to_csv('test.csv', index=False)        
         print(df)
         #database.upload('/tmp/test.csv')
         driver.close()
 
 
 
-#sl = ScrapeLazada()
-#sl.scrape()
+sl = ScrapeLazada()
+sl.scrape()

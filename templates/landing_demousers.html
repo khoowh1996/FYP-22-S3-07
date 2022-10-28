@@ -41,7 +41,7 @@
                                 <img class="icon_sb" src="images/manage_projects_sidebar.png" />
                                 <span>Manage Projects</span>
                             </a>
-                            <a class="ps-4 p-3 pt-4" id="link_sb" href="#">
+                            <a class="ps-4 p-3 pt-4" id="link_sb" href="/userprofile">
                                 <img class="icon_sb" src="images/profile_sidebar.png" />
                                 <span>View Profile</span>
                             </a>
@@ -96,19 +96,19 @@
                         <!-- third row -->
                         <div class="row">
                             <div class="col-4 mb-3 border-bottom">
-                                <span class="ms-3" id="content">Name: </span>
+                                <span class="ms-3" id="content">Name: {{ store_owner_information["name"] }}</span>
                             </div>
                             <div class="col-8 mb-3 border-bottom">
-                                <span id="content">Name: </span>
+                                <span id="content">Name: {{ store_owner_information["company"] }}</span>
                             </div>
                         </div>
                         <!-- fourth row -->
                         <div class="row">
                             <div class="col-4 border-bottom">
-                                <span class="ms-3 mt-2" id="content">Email: </span>
+                                <span class="ms-3 mt-2" id="content">Email: {{ store_owner_information["email"] }}</span>
                             </div>
                             <div class="col-8 border-bottom">
-                                <span class="mt-2" id="content">Store URL: </span>
+                                <span class="mt-2" id="content">Store URL: {{ store_owner_information["url"] }}</span>
                             </div>
                         </div>
                     </div>
@@ -161,13 +161,17 @@
                                 </div>
                                 <!-- second row -->
                                 <div class="row">
-                                    <div class="col"></div>
+                                    <div class="col">
+									<span class="ms-3 pt-4" id="content">Problem </span>
+									</div>
                                     <div class="col" style="text-align: right;">
                                         <span class="pt-3" id="subhead">Status</span>
                                     </div>
-                                </div>								<div class="row">
+
+                                </div>								
+								<div class="row">
                                     <div class="col border-bottom">
-                                        <span class="ms-3 pt-4" id="content">Problem </span>
+                                        <span class="ms-3 pt-4" id="content"></span>
                                     </div>
                                     <div class="col border-bottom" style="text-align: right;">
                                         <span class="pt-4" id="status"></span>

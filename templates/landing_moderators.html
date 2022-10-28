@@ -18,6 +18,12 @@
 </head>
 
 <body style="background: #F7F8FC;">
+{% for message in get_flashed_messages() %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			{{ message }}
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
     <div class="row">
         <div class="col col-2">
             <div class="wrapper">

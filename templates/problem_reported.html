@@ -149,16 +149,16 @@
                     </div>
                     <!-- second row -->
                     <div class="row">
-                        <div class="col-4 pb-3">
+                        <div class="col-3 pb-3">
                             <span class="ms-3" id="header">Report Title</span>
                         </div>
                         <div class="col-3">
-                            <span class="ms-4" id="header">Store Owners Name</span>
+                            <span class="ms-3" id="header">Store Owners Name</span>
                         </div>
                         <div class="col-2">
-                            <span class="ms-2" id="header">Date Reported</span>
+                            <span class="" id="header">Date Reported</span>
                         </div>
-                        <div class="col-1 ms-3">
+                        <div class="col-1">
                             <span class="ms-4" id="header">Status</span>
                         </div>
                     </div>
@@ -174,27 +174,49 @@
                             <li id="myitem" class="list-group-item">
                                 <div class="row pt-3 pb-3 esobox align-items-center">
                                     <!--col 1-->
-                                    <div class="col-4">                                        
+                                    <div class="col-3">                                        
                                         <span class="description" id="inputhead"></span>
                                     </div>
                                     <!--col 2-->
                                     <div class="col-3">
 										<img id="profile-picture" src="images/profile_pic.png" /><span
-                                            class="fullname ms-1 pb-2" id="name"></span>
+                                            class="fullname pb-2" id="name"></span>
                                     </div>
                                     <!--col 4-->
                                     <div class="col-2">
-                                        <span class="datereported" id="date"></span>
+                                        <span class="datereported ms-2" id="date"></span>
                                     </div>
                                     <!--col 6-->
                                     <div class="col-1">
                                         <span class="pb-2"><img class="status" /></span>
                                     </div>
-                                    <div class="col-1"></div>
-                                    <div class="col-1">
-                                        <span class="ms-4 pb-2"><img class="action" src="images/ellipsis.png" /></span>
+                                    <div class="col-1 ms-3">
+										<button class="actionmodaltarget action-button ms-5" data-bs-toggle="modal">
+										<span class="actiontext" id="inputhead"></span>
+										</button>
+									</div>
+                                    <div class="col ms-5">
+                                        <span class="ms-5 pb-2"><img class="action" src="images/ellipsis.png" /></span>
                                     </div>
                                 </div>
+								<div class="actionmodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										  <div class="modal-dialog">
+											<div class="modal-content">
+											  <div class="modal-header">
+												<h1 class="modal-title actiontext2 fs-5" id="exampleModalLabel"></h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											  </div>
+											  <div class="modal-body actiontext3">
+											  </div>
+											  <div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+												<form action="/actionissue" method="POST">
+												<button type="submit" class="actionbutton btn btn-primary" name="action" >Confirm action</button>
+												</form>
+											  </div>
+											</div>
+										  </div>
+										</div>
                             </li>
                         </div>
                     </div>
@@ -204,182 +226,11 @@
     </div>
 </body>
 <script>
-    /*const data = [
-        {
-			reporttitle: "unable to click due to error",
-            name: "Tom Cruise",
-            company: "Curicó",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"High",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Theodore Duran",
-            company: "Dhanbad",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"Medium",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Kylie Bishop",
-            company: "Norman",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"Low",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Willow Gilliam",
-            company: "Amqui",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"Medium",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Megan Fox",
-            company: "Tumi",
-            status: "images/closed.png",
-			datereported:"1 hour ago",
-			priority:"High",
-            freezebutton: "Unfreeze",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"Low",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Robert de Niro",
-            company: "TWC",
-            status: "images/closed.png",
-			datereported:"1 hour ago",
-			priority:"High",
-            freezebutton: "Unfreeze",
-            deletebutton: "Delete"
-        },
-        {
-			reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-			datereported:"1 hour ago",
-            freezebutton: "Freeze",
-			priority:"High",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "Low",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Robert de Niro",
-            company: "TWC",
-            status: "images/closed.png",
-            datereported: "1 hour ago",
-            priority: "High",
-            freezebutton: "Unfreeze",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "High",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "Low",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Robert de Niro",
-            company: "TWC",
-            status: "images/closed.png",
-            datereported: "1 hour ago",
-            priority: "High",
-            freezebutton: "Unfreeze",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "High",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "Low",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Robert de Niro",
-            company: "TWC",
-            status: "images/closed.png",
-            datereported: "1 hour ago",
-            priority: "High",
-            freezebutton: "Unfreeze",
-            deletebutton: "Delete"
-        },
-        {
-            reporttitle: "unable to click due to error",
-            name: "Charlie Weber",
-            company: "Farfetch",
-            status: "images/opened.png",
-            datereported: "1 hour ago",
-            freezebutton: "Freeze",
-            priority: "High",
-            deletebutton: "Delete"
-        }
-    ]*/
+
 	const data = {{ all_issues | tojson }}
 
     const options = {
-        valueNames: ['fullname',{name:"status","attr":"src"},'datereported','description'],
+        valueNames: ['fullname',{name:"status","attr":"src"},'datereported','description',{ name: 'actionmodalbox', attr: 'id' },{ name: 'actionmodaltarget', attr: 'data-bs-target' },{ name: 'actionbutton', attr: 'value' },'actiontext','actiontext2','actiontext3'],
         item: 'myitem',
         page: 10,
         pagination: true

@@ -1,5 +1,6 @@
 import pyrebase
 import requests
+import urllib.request
 import hashlib
 import json
 from datetime import date,datetime
@@ -393,7 +394,7 @@ def get_store_owner_information(username,role):
         industry = user.val()["industry"]
         
         return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
-    else:
+    elif role == "demo_user":
         user = database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
         name = user.val()["firstname"]+" " + user.val()["lastname"]
         fname = user.val()["firstname"]
@@ -405,6 +406,19 @@ def get_store_owner_information(username,role):
         industry = ""
         
         return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
+    elif role == "sign_up_user":
+        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        name = user.val()["firstname"]+" " + user.val()["lastname"]
+        fname = user.val()["firstname"]
+        lname = user.val()["lastname"]
+        cname = user.val()["company"]
+        url = user.val()["url"]
+        email = user.val()["username"]
+        contact = user.val()["contact"]
+        industry = user.val()["industry"]
+        
+        return {"fname":fname,"lname":lname, "name":name,"email":email,"url": url,"company": cname,"industry":industry,"contact":contact}
+    
 
 def get_owner_subscription_information(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -560,7 +574,9 @@ def retrieve_all_user_issues(username,role):
         return all_issues_list
     except TypeError as e:
         return []        
-        
+
+
+       
 def upload_issue(username,uploaded_files,issue_information):
     if issue_information["id"] == 1:
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").set({"counter":1})
@@ -568,10 +584,17 @@ def upload_issue(username,uploaded_files,issue_information):
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").update({"counter":issue_information["id"]})
         
     uploaded_files_url = []
-    for file in uploaded_files:
-        storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
-        file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+    if uploaded_files.filename == "":
+        temp_file = storage.child("temp.png").get_url(None)
+        local_filename, headers = urllib.request.urlretrieve(temp_file)
+        storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").put(local_filename)
+        file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").get_url(None)
         uploaded_files_url.append(file_url)
+    else:    
+        for file in uploaded_files:
+            storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
+            file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+            uploaded_files_url.append(file_url)
     issue_information["images"] = uploaded_files_url
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).set(issue_information)
     
@@ -601,14 +624,17 @@ def retrieve_all_issues_for_problem_reported():
                     #all_issues.update(user.val()["username"]:{all_issues})
                     if issue["status"] == "Processing":
                         status = "images/active.png"
+                        actiontext = "Close"
                     else:
                         status = "images/closed.png"
-                    current_issues.update({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"],"images":issue["images"]})
+                        actiontext = "Delete"
+                        
+                    current_issues.update({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+user.val()["username"].split("@")[0],"actionmodalbox":"amodal"+user.val()["username"].split("@")[0],"actionbutton":user.key()+";"+issue["id"]})
                     issue_list.append(current_issues)
         except KeyError as e:
             continue
     return issue_list
-            
+ 
 def retrieve_all_issues_count():
     all_user = database.child("users").child().get()
     current_issues = {"active":0,"closed":0}
@@ -626,5 +652,18 @@ def retrieve_all_issues_count():
             continue
     return current_issues
     
-def upload(file):
-    storage.child("test/test.csv").put(file)
+
+def update_issue_status(action):
+    username = action.split(";")[0]
+    issue_id = action.split(";")[1]
+    user_issue = database.child("users").child(username).child("issues").child("userissues").child(issue_id).get()
+    if user.val()["status"] == "Processing":
+        database.child("users").child(username).child("issues").child("userissues").child(issue_id).update({"status":"Resolved"})
+        return "closed"
+    else:
+        database.child("users").child(username).child("issues").child("userissues").child(issue_id).remove()
+        #user = auth.sign_in_with_email_and_password("khoomod@gmail.com","qwertyuiop!2") #need to find a way to delete from storage as well
+        #storage.delete("issues/52a73627f00516c35c27def6ce8271e3412d29d8dc44747d994ae882836056d5/5/Ideas_Surprised_Pikachu_HD.png",user["idToken"])
+        return "deleted"
+                        
+            

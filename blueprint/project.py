@@ -35,6 +35,10 @@ def projectoverview(): #need get rating and performance score oso
         all_projects = retrieve_all_project(username,session["role"])
         all_issues = retrieve_all_user_issues(username,session["role"])
         return render_template("landing_storeowners.html",store_owner_information=store_owner_information,all_projects=all_projects,all_issues=all_issues)
+    elif "role" in session and session["role"] == "sign_up_user":
+        username = session["user"]
+        store_owner_information = get_store_owner_information(username,session["role"])
+        return render_template("landing_demousers.html",store_owner_information=store_owner_information,fullname=session["fullname"])
     elif "role" in session:
         return redirect("/")
     else:

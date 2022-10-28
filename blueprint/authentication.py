@@ -41,7 +41,7 @@ def login():
 			session.pop("url",None)
 			return redirect(curr_url)
 		print(session["role"])
-		if session["role"] == "demo_user":
+		if session["role"] == "demo_user" or session["role"] == "sign_up_user":
 			flash("Login Successfully!")
 			return redirect("/projectoverview")
 		if session["role"] == "store_owner":

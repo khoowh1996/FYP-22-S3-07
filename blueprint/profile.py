@@ -7,7 +7,7 @@ profile = Blueprint('profile', __name__, template_folder='templates')
 
 @profile.route("/userprofile")    
 def userprofile(): #need get rating and performance score oso
-    if "role" in session and session["role"] == "store_owner":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "sign_up_user"):
         username = session["user"]
         store_owner_information = get_store_owner_information(username,session["role"])
         return render_template("view_profile.html",store_owner_information=store_owner_information)
@@ -25,7 +25,7 @@ def updateprofile():
         update_user_information(username,user_information,session["role"])
         flash("Profile Updated Successfully!")#need to add to view profile flash message
         return redirect("/userprofile")        
-    elif "role" in session and session["role"] == "store_owner":
+    elif "role" in session and (session["role"] == "store_owner" or session["role"] == "sign_up_user"):
         return redirect("/userprofile")
     elif "role" in session:
         return redirect("/userprofile") #if default user redirect to login first
