@@ -584,17 +584,18 @@ def upload_issue(username,uploaded_files,issue_information):
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").update({"counter":issue_information["id"]})
         
     uploaded_files_url = []
-    if uploaded_files.filename == "":
-        temp_file = storage.child("temp.png").get_url(None)
-        local_filename, headers = urllib.request.urlretrieve(temp_file)
-        storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").put(local_filename)
-        file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").get_url(None)
-        uploaded_files_url.append(file_url)
-    else:    
-        for file in uploaded_files:
-            storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
-            file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+    for file in uploaded_files:
+        if file.filename == "":
+            temp_file = storage.child("temp.png").get_url(None)
+            local_filename, headers = urllib.request.urlretrieve(temp_file)
+            storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").put(local_filename)
+            file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").get_url(None)
             uploaded_files_url.append(file_url)
+        else:    
+            for file in uploaded_files:
+                storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
+                file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+                uploaded_files_url.append(file_url)
     issue_information["images"] = uploaded_files_url
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).set(issue_information)
     
@@ -629,8 +630,7 @@ def retrieve_all_issues_for_problem_reported():
                         status = "images/closed.png"
                         actiontext = "Delete"
                         
-                    current_issues.update({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+user.val()["username"].split("@")[0],"actionmodalbox":"amodal"+user.val()["username"].split("@")[0],"actionbutton":user.key()+";"+issue["id"]})
-                    issue_list.append(current_issues)
+                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+user.val()["username"].split("@")[0],"actionmodalbox":"amodal"+user.val()["username"].split("@")[0],"actionbutton":user.key()+";"+str(issue["id"])})
         except KeyError as e:
             continue
     return issue_list
@@ -657,13 +657,21 @@ def update_issue_status(action):
     username = action.split(";")[0]
     issue_id = action.split(";")[1]
     user_issue = database.child("users").child(username).child("issues").child("userissues").child(issue_id).get()
-    if user.val()["status"] == "Processing":
+    if user_issue.val()["status"] == "Processing":
         database.child("users").child(username).child("issues").child("userissues").child(issue_id).update({"status":"Resolved"})
         return "closed"
     else:
+        user = database.child("users").child(username).get()
+        delete_id = user.val()["deleteid"]
+        decrypted_key = get_decrypted_id(delete_id,user.val()["username"])
+        deleted_user = auth.sign_in_with_email_and_password(user.val()["username"],decrypted_key)     
+        issue = database.child("users").child(username).child("issues").child("userissues").child(issue_id).get()
+        for image in issue.val()["images"]:  
+            delete_file = image.replace("%2F","/")[71:]
+            delete_file = delete_file.split("?")[0]
+            storage.delete(delete_file,deleted_user["idToken"])        
         database.child("users").child(username).child("issues").child("userissues").child(issue_id).remove()
-        #user = auth.sign_in_with_email_and_password("khoomod@gmail.com","qwertyuiop!2") #need to find a way to delete from storage as well
-        #storage.delete("issues/52a73627f00516c35c27def6ce8271e3412d29d8dc44747d994ae882836056d5/5/Ideas_Surprised_Pikachu_HD.png",user["idToken"])
         return "deleted"
-                        
-            
+
+def upload(filename,file):
+    storage.child(filename).put(file)          

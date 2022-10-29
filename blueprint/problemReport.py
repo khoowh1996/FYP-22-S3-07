@@ -51,4 +51,4 @@ def actionissue():
         action = request.form["action"]
         update_status = update_issue_status(action)  
         flash("Issue has been "+update_status+"...")
-        return redirect("/problemreporting")
+        return redirect("/problemsreported")
