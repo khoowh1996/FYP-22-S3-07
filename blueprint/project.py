@@ -19,7 +19,7 @@ def createproject():
             #after setting project start to do crawl here
         except:
             print("failed to set project")
-    elif "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         return render_template("create_project.html",fullname=session["fullname"],role=session["role"] )
     elif "role" in session:
         return redirect("/")
@@ -29,7 +29,7 @@ def createproject():
 
 @project.route("/projectoverview")    
 def projectoverview(): #need get rating and performance score oso
-    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         username = session["user"]
         store_owner_information = get_store_owner_information(username,session["role"])
         all_projects = retrieve_all_project(username,session["role"])
@@ -47,7 +47,7 @@ def projectoverview(): #need get rating and performance score oso
 
 @project.route("/manageprojects")    
 def manageprojects(): #need get rating and performance score oso
-    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         username = session["user"]
         project_lists = retrieve_all_project(username,session["role"])
         return render_template("manage_project.html",project_lists=project_lists,fullname=session["fullname"])
@@ -70,7 +70,7 @@ def deleteproject():#need do a check if deleteprojectID does nto exist or projec
             else:
                 flash("Project does not exist...")
                 return redirect("/manageprojects")
-    elif "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         return redirect("/manageprojects")
     elif "role" in session:
         return redirect("/") #if default user redirect to login first
@@ -80,7 +80,7 @@ def deleteproject():#need do a check if deleteprojectID does nto exist or projec
     
 @project.route("/project/<project_id>") #input username hash and project id to get the exact project details
 def viewproject(project_id):
-    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         username = session["user"]
         if get_project_by_id_exists(username,project_id,session["role"]): #to be redefined again database.py line 166
             project_information = get_project_by_id(username,project_id,session["role"])
@@ -93,7 +93,7 @@ def viewproject(project_id):
     
 @project.route("/project/<project_id>/item/<item_id>") #input username hash and project id to get the exact project details
 def viewitem(project_id,item_id):
-    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         username = session["user"]
         if get_project_by_id_exists(username,project_id,session["role"]): #to be redefined again database.py line 166
             project_information = get_project_by_id(username,project_id,session["role"])
@@ -119,7 +119,7 @@ def createitem():
             return redirect("/project/"+project_id)
         except:
             print("failed to set item to project")
-    elif "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         return redirect("/manageprojects")
     elif "role" in session:
         return redirect("/")
@@ -129,7 +129,7 @@ def createitem():
     
 @project.route("/projectfaqs")
 def projectfaq():
-    if "role" in session and session["role"] == "store_owner" or session["role"] == "demo_user":
+    if "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         faq_lists = get_faqs("store_owner")
         return render_template("store_owner_faqs.html",faq_lists=faq_lists,fullname=session["fullname"])
     else:
