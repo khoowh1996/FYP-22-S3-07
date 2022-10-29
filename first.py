@@ -35,7 +35,11 @@ app.register_blueprint(moderator)
 def home():
     #return "<h1>Hello</h1>"
     #login_as_store_owner_now()
-    return render_template("index.html")
+    try:
+        role = session["role"] 
+    except:
+        role = ""
+    return render_template("index.html",role=role)
 
 def login_as_store_owner_now():
     session["user"] = "khoowh1996@gmail.com"
