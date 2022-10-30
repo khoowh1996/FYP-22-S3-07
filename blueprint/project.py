@@ -21,7 +21,7 @@ def createproject():
         except:
             print("failed to set project")
     elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
-        return render_template("create_project.html",fullname=session["fullname"],role=session["role"] )
+        return render_template("create_project.html",categories=get_category(),fullname=session["fullname"],role=session["role"] )
     elif "role" in session:
         return redirect("/")
     else:
