@@ -95,7 +95,13 @@
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >Category</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Category" name="category" required>
+								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" required>
+									 <option value="" disabled selected hidden>Category</option>
+									 {% for cat in categories  %}
+									  <option value="{{ cat }}">{{ cat }}</option>
+									 {% endfor %}
+									 <!--must connect to the database -->
+								</select>
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">Website URL</span>
@@ -104,13 +110,18 @@
                         </div>
                         <!-- fourth row -->
 			<div class="row">
-			     <span class="ms-3 pb-2" id="inputhead">Target User Groups</span>
-			     <select class="ms-3 cpinput-s rdbox" required>
-				     <option value="" disabled selected hidden>Target User Groups</option>
-				     <option value="All">All Category</option>
-				     <option value="shoes">Shoes</option>
-				     <!--must connect to the database -->
-			      </select>
+				 <span class="ms-3 pb-2" id="inputhead">Target User Group</span>
+					<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" required>
+						<option value="" disabled selected hidden>Select an Age Group</option>
+						<option value="10">below 20s</option>
+						<option value="20">20-29</option>
+						<option value="30">30-39</option>
+						<option value="40">40-49</option>
+						<option value="50">50-59</option>
+						<option value="60">60-69</option>
+						<option value="70">70-79</option>
+						<option value="80">above 80s</option>
+					</select>
 			</div>
 			<!--fifth row -->
                         <div class="row pt-5">
@@ -131,19 +142,42 @@
                         <!-- second row -->
                         <div class="row">
                             <span class="ms-3 pb-2" id="inputhead">Project Name</span>
-                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="pname" required disabled value="preset">
+                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="pname" required>
                         </div>
                         <!-- third row -->
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >Category</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" type="text" placeholder="Category" name="category" disabled required value="presetcategory">
+								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" disabled required>
+									 <option value="" disabled selected hidden>Category</option>
+									 {% for cat in categories  %}
+									 {% if cat == "All" %}
+									 <option value="{{ cat }}" selected>{{ cat }}</option>
+									 {% endif %}
+									 <option value="{{ cat }}" disabled>{{ cat }}</option>
+									 {% endfor %}
+								</select>
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">Website URL</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" required disabled value="www.preset.com">
+                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" required>
                             </div>
                         </div>
+                        <!-- fourth row -->
+					<div class="row">
+						 <span class="ms-3 pb-2" id="inputhead">Target User Group</span>
+							<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" disabled required>
+								<option value="" disabled hidden>Age Group</option>
+								<option value="10" disabled>below 20s</option>
+								<option value="20" selected>20-29</option>
+								<option value="30" disabled>30-39</option>
+								<option value="40" disabled>40-49</option>
+								<option value="50" disabled>50-59</option>
+								<option value="60" disabled>60-69</option>
+								<option value="70" disabled>70-79</option>
+								<option value="80" disabled>above 80s</option>
+							</select>
+					</div>
                         <!-- fourth row -->
                         <div class="row pt-5">
                             <button class="ms-4 createbtn" name="create" type="submit">Create</button>

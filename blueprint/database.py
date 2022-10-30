@@ -675,3 +675,7 @@ def update_issue_status(action):
 
 def upload(filename,file):
     storage.child(filename).put(file)          
+    
+def get_category():
+    categories = database.child("category").get()
+    return categories.val()

@@ -94,12 +94,13 @@
                             <span class="ms-3 pb-2" id="inputhead">Item Category</span>
 								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" required>
 									<option value="" disabled selected hidden>Category</option>
-									<option value="All">All Category</option>
-									<option value="Shoes">Shoes</option>
+									{% for cat in categories  %}
+									<option value="{{ cat }}">{{ cat }}</option>
+									{% endfor %}
 								</select>
                             </div>
                             <div class="col">
-                            <span class="ms-3 pb-2" id="inputhead">Target User Age Group</span>
+                            <span class="ms-3 pb-2" id="inputhead">Target User Group</span>
 								<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" required>
 									<option value="" disabled selected hidden>Select an Age Group</option>
 									<option value="10">below 20s</option>
@@ -136,14 +137,18 @@
                         <div class="row pt-3 pb-3">
 						<div class="col">
                             <span class="ms-3 pb-2" id="inputhead">Item Category</span>
-								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" required>
+								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" disabled required>
 									<option value="" disabled selected hidden>Category</option>
-									<option value="All" selected>All Category</option>
-									<option value="Shoes" disabled>Shoes</option>
+									{% for cat in categories  %}
+									{% if cat == "All" %}
+									<option value="{{ cat }}" selected>{{ cat }}</option>
+									{% endif %}
+									<option value="{{ cat }}" disabled>{{ cat }}</option>
+									{% endfor %}
 								</select>
                             </div>
                             <div class="col">
-                            <span class="pb-2" id="inputhead">Target User Age Group</span>
+                            <span class="pb-2" id="inputhead">Target User Group</span>
 								<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" disabled required>
 									<option value="" disabled hidden>Age Group</option>
 									<option value="10" disabled>below 20s</option>
