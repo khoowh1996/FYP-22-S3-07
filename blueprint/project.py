@@ -110,14 +110,15 @@ def createitem():
         age_group = request.form["agegroup"]
         project_id = request.form["project_id"]
         username = session["user"]
-        print("project_id = " + project_id )
+        print("project_id = " + project_id)
         item_id = retrieve_item_id(username,project_id,session["role"])
         item_information = {"id": item_id,"name":item_name,"category":category,"age_group":age_group}
         try:
             set_project_item(username,project_id,item_id,item_information,session["role"])
             return redirect("/project/"+project_id)
         except:
-            print("failed to set item to project")
+            print("failed to set item to project")            
+            return redirect("/project/"+project_id)
     elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
         return redirect("/manageprojects")
     elif "role" in session:

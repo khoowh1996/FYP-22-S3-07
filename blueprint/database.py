@@ -171,8 +171,8 @@ def createDemoAccount():
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"age_group":"20","brand":"Adidas","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes","price":89})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"age_group":"20","category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"age_group":"20","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
 def demo_user_exist(username):
     try:
@@ -497,7 +497,7 @@ def set_project_item(username,project_id,item_id,item_information,role):
     item_id = str(item_id)
     user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
     category = user.val()["category"]
-    item_information["imageurl"] = generate_image_for_item(item_information["brand"] + category)
+    item_information["imageurl"] = generate_image_for_item(category)
     if item_information["id"] == 1:
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).update({"counter":1})
     else:
@@ -528,13 +528,17 @@ def retrieve_all_project_items(username,project_id,role):
     try:
         all_project_items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").get()
         all_project_items_list = []
-        if len(all_project_items.val()) == 1:#if there is only 1 item in the list
-            for item in all_project_items.val():
-                all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+        if len(all_project_items.val()) == 1 or len(all_project_items.val()) == 2:#if there is only 1 item in the list
+            for item in all_project_items.val():            
+                #all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+                if item != None:
+                    all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"age_group":item["age_group"],"imageurl":item["imageurl"]})
+                    #print(all_project_items_list)
             return all_project_items_list
         for item in all_project_items.val():
             if item != None:
-                all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+                all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"age_group":item["age_group"],"imageurl":item["imageurl"]})#all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+                #print(all_project_items_list)
         return all_project_items_list
     except TypeError as e:
         return []     
