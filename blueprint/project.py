@@ -87,7 +87,7 @@ def viewproject(project_id):
             item_id = retrieve_item_id(username,project_id,session["role"])
             print(item_id)
             item_lists = retrieve_all_project_items(username,project_id,session["role"])
-            return render_template("view_project.html",project_information=project_information,item_id=item_id,item_lists=item_lists,fullname=session["fullname"])
+            return render_template("view_project.html",project_information=project_information,item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
         return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
     
@@ -97,7 +97,7 @@ def viewitem(project_id,item_id):
         username = session["user"]
         if get_project_by_id_exists(username,project_id,session["role"]): #to be redefined again database.py line 166
             project_information = get_project_by_id(username,project_id,session["role"])
-            return render_template("test_item_rating.html",project_information=project_information,fullname=session["fullname"])
+            return render_template("test_item_rating.html",project_information=project_information,role=session["role"],fullname=session["fullname"])
         return redirect("/project/"+project_id) #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
 
