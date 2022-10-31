@@ -33,7 +33,7 @@ dataset = defaultdict(dict)
 for i in reader:
     dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
-ownerinput1 = 'boots'
+ownerinput1 = 'highheels'
 ownerinput2 = ''
 
 # If you want to see it in clearer view
@@ -45,14 +45,14 @@ ownerinput2 = ''
 #print(dataset)
 
 # Get unique set of items bought
-def uniqueItems():
-    uniqueItemList = []
+def uniqueCategories():
+    uniqueCategoriesList = []
     for p in dataset.keys():
         for i in dataset[p]:
-            uniqueItemList.append(i)
-    s = set(uniqueItemList)
-    uniqueItemList = list(s)
-    return uniqueItemList
+            uniqueCategoriesList.append(i)
+    s = set(uniqueCategoriesList)
+    uniqueCategoriesList = list(s)
+    return uniqueCategoriesList
 
 #print(dataset['Marina'][ownerinput2])
 def compareWithOne(dataset, input1, input2):
@@ -69,15 +69,15 @@ def compareWithOne(dataset, input1, input2):
     else:
         avg = sum(listOfValues) / len(listOfValues)
         if avg <= 2.5:
-            print('This product,', input1, 'will not do well among people who has bought', input2, 'as the average rating is', avg)
+            print('This category of items,', input1, 'will not do well among people who has bought', input2, 'as the average rating is', avg)
         elif avg < 4.0:
-            print('This product,', input1, 'will be average among people who has bought', input2, 'as the average rating is', avg)
+            print('This category of items,', input1, 'will be average among people who has bought', input2, 'as the average rating is', avg)
         elif 4.0 <= avg:
-            print('This product,', input1, 'will do very well among people who has bought', input2, 'as the average rating is', avg)
+            print('This category of items,', input1, 'will do very well among people who has bought', input2, 'as the average rating is', avg)
     listOfValues.clear()
 
 def compareWithAllItems():
-    itemList = uniqueItems()
+    itemList = uniqueCategories()
     # Remove the item that the owner wants rating of
     for i in itemList:
         if i == ownerinput1:
