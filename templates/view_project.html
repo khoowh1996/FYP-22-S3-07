@@ -33,7 +33,7 @@
                             <img class="icon_sb" src="images/overview_sidebar.png" />
                             <span>Overview</span>
                         </a>
-                        <a class="active ps-4 p-3 border-start border-3" id="link_sb" href="#">
+                        <a class="active ps-4 p-3 border-start border-3" id="link_sb" href="/manageprojects">
                             <img class="icon_sb" src="images/manage_projects_sidebar_active.png" />
                             <span>Manage Projects</span>
                         </a>
@@ -108,7 +108,7 @@
                             <span class="ms-3" id="headline">Products</span>
                         </div>
                         <div class="col-3">
-                            <span id="headline">User Groups</span>
+                            <span id="headline">Target Category</span>
                         </div>
                         <div class="col-3">
                             <span id="headline">Conversion Rate</span>
@@ -119,7 +119,7 @@
                     </div>
                     <!-- fourth row -->
 					{%	for n in range(0,item_lists | length)	%}
-					{% if item_lists | length == 0%}
+					{% if item_lists | length == 0 %}
 					No Products currently...
 					{% endif %}
                     <div class="row pt-3">
@@ -128,7 +128,7 @@
                             <span class="ms-4" id="content">Shoe {{ item_lists[n]['id'] }}</span>
                         </div>
                         <div class="col-3 border-bottom">
-                            <span class="pt-4" id="content">Age groups {{ item_lists[n]['age_group'] }}s</span>
+                            <span class="pt-4" id="content">{{ item_lists[n]['category'] }}</span>
                         </div>
                         <div class="col-3 border-bottom">
                             <span class="pt-4" id="content">{{ item_lists[n]['rating'] }}</span>

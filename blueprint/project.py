@@ -2,6 +2,7 @@ from flask import Blueprint,redirect, url_for,render_template,send_from_director
 import json
 import requests
 from blueprint.database import *
+from algo.testingalgo import *
 
 project = Blueprint('project', __name__, template_folder='templates')
 
@@ -10,10 +11,9 @@ def createproject():
     if request.method == "POST":
         project_name = request.form["pname"]
         category = request.form["category"]
-        age_group = request.form["agegroup"]
         url = request.form["url"]
         username = session["user"]
-        project_information = {"id": retrieve_project_id(username,session["role"]),"pname":project_name,"category":category,"age_group":age_group,"url":url}
+        project_information = {"id": retrieve_project_id(username,session["role"]),"pname":project_name,"category":category,"url":url}
         try:
             set_project(username,project_information,session["role"])
             return redirect("/manageprojects")# might redirect to the created project or test item rating in future
@@ -21,7 +21,7 @@ def createproject():
         except:
             print("failed to set project")
     elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):
-        return render_template("create_project.html",categories=get_category(),fullname=session["fullname"],role=session["role"] )
+        return render_template("create_project.html",categories=get_category_for_dropdown(),fullname=session["fullname"],role=session["role"] )
     elif "role" in session:
         return redirect("/")
     else:
@@ -91,7 +91,7 @@ def viewproject(project_id):
             item_id = retrieve_item_id(username,project_id,session["role"])
             print(item_id)
             item_lists = retrieve_all_project_items(username,project_id,session["role"])
-            return render_template("view_project.html",project_information=project_information,categories=get_category(),item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
+            return render_template("view_project.html",project_information=project_information,categories=get_category_for_dropdown(),item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
         return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
     
@@ -101,7 +101,7 @@ def viewitem(project_id,item_id):
         username = session["user"]
         if get_project_by_id_exists(username,project_id,session["role"]): #to be redefined again database.py line 166
             project_information = get_project_by_id(username,project_id,session["role"])
-            return render_template("test_item_rating.html",project_information=project_information,categories=get_category(),role=session["role"],fullname=session["fullname"])
+            return render_template("test_item_rating.html",project_information=project_information,categories=get_category_for_dropdown(),role=session["role"],fullname=session["fullname"])
         return redirect("/project/"+project_id) #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
 
@@ -110,16 +110,19 @@ def createitem():
     if request.method == "POST":
         item_name = request.form["name"]
         category = request.form["category"]
-        age_group = request.form["agegroup"]
+        tcategory = request.form["tcategory"]
         project_id = request.form["project_id"]
         username = session["user"]
         print("project_id = " + project_id)
         item_id = retrieve_item_id(username,project_id,session["role"])
-        item_information = {"id": item_id,"name":item_name,"category":category,"age_group":age_group}
+        item_information = {"id": item_id,"name":item_name,"category":category,"tcategory":tcategory}
         try:
             set_project_item(username,project_id,item_id,item_information,session["role"])
+            input1,input2 = get_category_for_algorithm(username,project_id,item_id)
+            get_algorithm_output(get_dataset_from_storage(),input1.lower(),input2.lower())
             return redirect("/project/"+project_id)
-        except:
+        except Exception as e:
+            print(e)
             print("failed to set item to project")            
             return redirect("/project/"+project_id)
     elif "role" in session and (session["role"] == "store_owner" or session["role"] == "demo_user"):

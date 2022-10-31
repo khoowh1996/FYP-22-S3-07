@@ -33,7 +33,7 @@
                             <img class="icon_sb" src="{{ 	url_for('static', filename='images/overview_sidebar.png')	}}" />
                             <span>Overview</span>
                         </a>
-                        <a class="active ps-4 p-3 border-start border-3" id="link_sb" href="#">
+                        <a class="active ps-4 p-3 border-start border-3" id="link_sb" href="/manageprojects">
                             <img class="icon_sb" src="{{ 	url_for('static', filename='images/manage_projects_sidebar_active.png')	}}" />
                             <span>Manage Projects</span>
                         </a>
@@ -93,24 +93,26 @@
 						<div class="col">
                             <span class="ms-3 pb-2" id="inputhead">Item Category</span>
 								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" required>
-									<option value="" disabled selected hidden>Category</option>
+									<option value="" disabled selected hidden>Select a Category</option>
 									{% for cat in categories  %}
+									{% if cat == "All" %}
+									{% else %}
 									<option value="{{ cat }}">{{ cat }}</option>
+									{% endif %}
 									{% endfor %}
 								</select>
                             </div>
                             <div class="col">
-                            <span class="ms-3 pb-2" id="inputhead">Target User Group</span>
-								<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" required>
-									<option value="" disabled selected hidden>Select an Age Group</option>
-									<option value="10">below 20s</option>
-									<option value="20">20-29</option>
-									<option value="30">30-39</option>
-									<option value="40">40-49</option>
-									<option value="50">50-59</option>
-									<option value="60">60-69</option>
-									<option value="70">70-79</option>
-									<option value="80">above 80s</option>
+                            <span class="ms-3 pb-2" id="inputhead">Target Category</span>
+								<select class="ms-3 ps-2 cpinput-s" required id="tcategory" name="tcategory" class="rdbox" required>
+									<option value="" disabled selected hidden>Select a targetted Category</option>
+									{% for cat in categories  %}
+									{% if cat == "All" %}
+									<option value="">{{ cat }}</option>
+									{% else %}
+									<option value="{{ cat }}">{{ cat }}</option>
+									{% endif %}
+									{% endfor %}
 								</select>
                             </div>
                         </div>
@@ -131,35 +133,33 @@
                         <!-- second row -->
                         <div class="row">
                             <span class="ms-3 pb-2" id="inputhead">Item Name</span>
-                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="name" disabled required value="preset">
+                            <input class="ms-4 cpinput-l" type="text" placeholder="Name" name="name" required value="preset">
                         </div>
                         <!-- third row -->
                         <div class="row pt-3 pb-3">
 						<div class="col">
                             <span class="ms-3 pb-2" id="inputhead">Item Category</span>
-								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" disabled required>
-									<option value="" disabled selected hidden>Category</option>
+								<select class="ms-3 ps-2 cpinput-s" required id="category" name="category" class="rdbox" readonly required>
+									<option value="" disabled selected hidden>Select a Category</option>
 									{% for cat in categories  %}
 									{% if cat == "All" %}
-									<option value="{{ cat }}" selected>{{ cat }}</option>
+									{% else %}
+									<option value="{{ cat }}">{{ cat }}</option>
 									{% endif %}
-									<option value="{{ cat }}" disabled>{{ cat }}</option>
 									{% endfor %}
 								</select>
                             </div>
                             <div class="col">
                             <span class="pb-2" id="inputhead">Target User Group</span>
-								<select class="ms-3 ps-2 cpinput-s" required id="agegroup" name="agegroup" class="rdbox" disabled required>
-									<option value="" disabled hidden>Age Group</option>
-									<option value="10" disabled>below 20s</option>
-									<option value="20" selected>20-29</option>
-									<option value="30" disabled>30-39</option>
-									<option value="40" disabled>40-49</option>
-									<option value="50" disabled>50-59</option>
-									<option value="60" disabled>60-69</option>
-									<option value="70" disabled>70-79</option>
-									<option value="80" disabled>above 80s</option>
-								</select>
+								<select class="ms-3 ps-2 cpinput-s" required id="tcategory" name="tcategory" class="rdbox" readonly required>
+									<option value="" disabled selected hidden>Select a targetted Category</option>
+									{% for cat in categories  %}
+									{% if cat == "All" %}
+									<option value="">{{ cat }}</option>
+									{% else %}
+									<option value="{{ cat }}">{{ cat }}</option>
+									{% endif %}
+									{% endfor %}
                             </div>
                         </div>
                         <!-- fourth row -->

@@ -56,11 +56,23 @@
                 <a href="/about" class="header-link">About Us</a>
                 <a href="/contactus" class="header-link">Contact Us</a>
                 <a href="/subscription" class="header-link">Subscription Plan</a>
+				{% if role == "store_owner" or role == "demo_user" or role == "sign_up_user" %}				
+				<a href="/projectoverview" class="header-link">Project Overview</a>
+				{% elif role == "moderator" %}
+				<a href="/moderatoroverview" class="header-link">Moderator Overview</a>
+				{% elif role == "administrator" %}
+				<a href="/administratoroverview" class="header-link">Administrator Overview</a>
+				{% else %}				
                 <a href="/login" class="header-link">Login/Signup</a>
-                </div>
-                <div class="col-sm-2 align-self-center right-header-col">
-                  <div class="button">
-                    <span><a href="/demo" class="btnText">Request Demo</a></span>
+				{% endif %}
+              </div>
+              <div class="col-sm-2 align-self-center right-header-col">
+                <div class="button">
+				{% if role != "" %}				
+				<span><a href="/logout" class="btnText">Logout</a></span>
+				{% else %}				
+                <span><a href="/demo" class="btnText">Request Demo</a></span>
+				{% endif %}
                   </div>
                 </div>
               </div>

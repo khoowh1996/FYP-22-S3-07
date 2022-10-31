@@ -171,8 +171,8 @@ def createDemoAccount():
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"age_group":"20","category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"age_group":"20","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"tcategory":"highheels","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
 def demo_user_exist(username):
     try:
@@ -247,15 +247,30 @@ def get_start_date(expiry_date,plantype):
     else:
         start_date = datetime.strptime(expiry_date,"%d/%m/%Y") - relativedelta(months=+12)
         return start_date.strftime("%d/%m/%Y")
-                
+
 def check_user_subscription(username,amt,role):
     amount = int(amt)
-    if role == "store_owner":
-        user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
-        return amount == user.val()["cost"]
-    elif role == "sign_up_user":
-        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
-        return amount == user.val()["cost"]
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    try:
+            user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
+            return amount == user.val()["cost"]
+    except Exception as e:
+        print(e)
+        return False
+        
+#def check_user_subscription(username,amt,role):
+#    amount = int(amt)
+#    try:
+#        if role == "store_owner":
+#            user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
+#            return amount == user.val()["cost"]
+##        elif role == "sign_up_user":
+ #           user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
+#            return amount == user.val()["cost"]
+ #   except:
+#        return False
 
     
 def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
@@ -318,7 +333,8 @@ def get_all_store_owner_information_for_manage_store_owner():
             else:
                 image = "images/inactive.png"
                 freezetext = "Unfreeze"
-            all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+user.val()["username"].split("@")[0],"deletemodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"deletemodalbox":"dmodal"+user.val()["username"].split("@")[0],"freezemodalbox":"fmodal"+user.val()["username"].split("@")[0]})
+            userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+            all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
         return all_users_list
     except TypeError as e:
         return all_users_list
@@ -330,7 +346,8 @@ def get_all_store_owner_information_for_approve_reject():
         for user in all_users.each():
             if user.val()["status"] == "pending":
                 fullname = user.val()["firstname"] + " " + user.val()["lastname"]
-                all_users_list.append({"industry":user.val()["industry"],"approvebutton":user.val()["username"],"rejectbutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"approvemodaltarget":"#fmodal"+user.val()["username"].split("@")[0],"rejectmodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"rejectmodalbox":"dmodal"+user.val()["username"].split("@")[0],"approvemodalbox":"fmodal"+user.val()["username"].split("@")[0]})
+                userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+                all_users_list.append({"industry":user.val()["industry"],"approvebutton":user.val()["username"],"rejectbutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"approvemodaltarget":"#fmodal"+userhash,"rejectmodaltarget":"#dmodal"+userhash,"rejectmodalbox":"dmodal"+userhash,"approvemodalbox":"fmodal"+userhash})
         return all_users_list
     except TypeError as e:
         return []  
@@ -376,7 +393,8 @@ def get_all_moderator_information_for_manage_moderator():
     try:
         for user in all_moderators.each():
             fullname = user.val()["firstname"] + " " + user.val()["lastname"]
-            all_moderators_list.append({"deletebutton":user.val()["username"],"name":fullname,"deletemodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"deletemodalbox":"dmodal"+user.val()["username"].split("@")[0]})
+            userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+            all_moderators_list.append({"deletebutton":user.val()["username"],"name":fullname,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash})
         return all_moderators_list
     except TypeError as e:
         return []
@@ -532,12 +550,12 @@ def retrieve_all_project_items(username,project_id,role):
             for item in all_project_items.val():            
                 #all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
                 if item != None:
-                    all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"age_group":item["age_group"],"imageurl":item["imageurl"]})
+                    all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})
                     #print(all_project_items_list)
             return all_project_items_list
         for item in all_project_items.val():
             if item != None:
-                all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"age_group":item["age_group"],"imageurl":item["imageurl"]})#all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
+                all_project_items_list.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})#all_project_items_list.append({"id":all_project_items.val()[item]["id"],"name":all_project_items.val()[item]["name"],"brand":all_project_items.val()[item]["brand"],"price":all_project_items.val()[item]["price"],"gender":all_project_items.val()[item]["gender"],"age_group":all_project_items.val()[item]["age_group"],"imageurl":all_project_items.val()[item]["imageurl"]})
                 #print(all_project_items_list)
         return all_project_items_list
     except TypeError as e:
@@ -637,8 +655,8 @@ def retrieve_all_issues_for_problem_reported():
                     else:
                         status = "images/closed.png"
                         actiontext = "Delete"
-                        
-                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+user.val()["username"].split("@")[0],"actionmodalbox":"amodal"+user.val()["username"].split("@")[0],"actionbutton":user.key()+";"+str(issue["id"])})
+                    userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+userhash,"actionmodalbox":"amodal"+userhash,"actionbutton":user.key()+";"+str(issue["id"])})
         except KeyError as e:
             continue
     return issue_list
@@ -684,6 +702,18 @@ def update_issue_status(action):
 def upload(filename,file):
     storage.child(filename).put(file)          
     
-def get_category():
+def get_category_for_dropdown():
     categories = database.child("category").get()
     return categories.val()
+    
+def get_category_for_algorithm(username,project_id,item_id):
+    project_id = str(project_id)
+    item_id = str(item_id)
+    item = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").child(item_id).get()
+    category1 = item.val()["category"]
+    category2 = item.val()["tcategory"]
+    return category1,category2    
+    
+def get_dataset_from_storage():
+    url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
+    return url

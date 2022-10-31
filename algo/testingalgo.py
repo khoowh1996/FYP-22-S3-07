@@ -8,33 +8,19 @@ import pyrebase
 import urllib
 import io
 
-# Config to read file from firebase storage
-config = {
-"apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
-"authDomain": "fyp-22-s3-07.firebaseapp.com",
-"databaseURL": "https://fyp-22-s3-07-default-rtdb.asia-southeast1.firebasedatabase.app",
-"projectId": "fyp-22-s3-07",
-"storageBucket": "fyp-22-s3-07.appspot.com",
-"serviceAccount": "serviceAccountKey.json"
-}
-
-#firebase_storage = pyrebase.initialize_app(config)
-#storage = firebase_storage.storage()
-
-#url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
+#url = get_database_from_storage()
 #webpage = urllib.request.urlopen(url)
-
 # Read the CSV file
-reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
 #reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
-dataset = defaultdict(dict)
+#reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+#dataset = defaultdict(dict)
 
 # Put it in a dictionary
-for i in reader:
-    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+#for i in reader:
+#    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
-ownerinput1 = 'highheels'
-ownerinput2 = ''
+#ownerinput1 = 'highheels'
+#ownerinput2 = ''
 
 # If you want to see it in clearer view
 #dataFrame = pd.DataFrame(dataset)
@@ -45,7 +31,7 @@ ownerinput2 = ''
 #print(dataset)
 
 # Get unique set of items bought
-def uniqueCategories():
+def uniqueCategories(dataset):
     uniqueCategoriesList = []
     for p in dataset.keys():
         for i in dataset[p]:
@@ -76,8 +62,8 @@ def compareWithOne(dataset, input1, input2):
             print('This category of items,', input1, 'will do very well among people who has bought', input2, 'as the average rating is', avg)
     listOfValues.clear()
 
-def compareWithAllItems():
-    itemList = uniqueCategories()
+def compareWithAllItems(dataset,ownerinput1):
+    itemList = uniqueCategories(dataset)
     # Remove the item that the owner wants rating of
     for i in itemList:
         if i == ownerinput1:
@@ -86,7 +72,18 @@ def compareWithAllItems():
     for item in itemList:
         compareWithOne(dataset, ownerinput1, item)
 
-if ownerinput2 == "":
-    compareWithAllItems()
-else:
-    compareWithOne(dataset, ownerinput1, ownerinput2)
+
+def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
+    webpage = urllib.request.urlopen(url)
+    # Read the CSV file
+    reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
+    #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+    dataset = defaultdict(dict)
+
+    # Put it in a dictionary
+    for i in reader:
+        dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+    if ownerinput2 == "":
+        compareWithAllItems(dataset,ownerinput1)
+    else:
+        compareWithOne(dataset, ownerinput1, ownerinput2)
