@@ -8,7 +8,7 @@ subscriptionPlan = Blueprint('subscriptionPlan', __name__, template_folder='temp
 def subscription(): 
     monthly_pricing = get_pricing("monthly")
     yearly_pricing = get_pricing("yearly")
-    return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,yearly_pricing=yearly_pricing)
+    return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,role=session["role"],yearly_pricing=yearly_pricing)
 
 @subscriptionPlan.route("/payment")
 def payment():
@@ -21,8 +21,8 @@ def payment():
         session["subscription_type"] = subscription_type
     
     if "user" in session and session["role"] == "store_owner" and "subscription_type" in session:
-        if check_user_subscription(session["user"],session["subscription_type"],session["role"]):        
-            return render_template("payment.html",subscription_type=session["subscription_type"])
+        if check_user_subscription(session["user"],session["subscription_type"],session["role"]): #if False it means different plan
+            return render_template("payment.html",role=session["role"],subscription_type=session["subscription_type"])
         else:
             flash("You are currently subscribed to the same plan as you had chosen.")
             session.pop("subscription_type",None)
@@ -32,8 +32,8 @@ def payment():
         return redirect(url_for("subscriptionPlan.subscription"))
         
     if "user" in session and session["role"] == "sign_up_user" and "subscription_type" in session:
-        if check_user_subscription(session["user"],session["subscription_type"],session["role"]):        
-            return render_template("payment.html",subscription_type=session["subscription_type"])
+        if check_user_subscription(session["user"],session["subscription_type"],session["role"]): #if False it means different plan
+            return render_template("payment.html",role=session["role"],subscription_type=session["subscription_type"])
         else:
             flash("You are currently subscribed to the same plan as you had chosen.")
             session.pop("subscription_type",None)
@@ -49,11 +49,11 @@ def payment():
     
 @subscriptionPlan.route("/paymentFinalized",methods=["POST","GET"])
 def payment_finalized():
-    if "user" in session and "subscription_type" in session:
+    if "user" in session and "subscription_type" in session and "role" in session:
         session.pop("subscription_type",None)
         username = session["user"]
         print(request.form["pay"])
-        set_subscription(username,request.form["pay"])
+        set_subscription(username,request.form["pay"],session["role"])
         flash("Payment success, Subscription has started. Email will be send to you for notification")    
         return redirect("/")
     elif "user" in session and "subscription_type" not in session:

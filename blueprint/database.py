@@ -255,27 +255,22 @@ def check_user_subscription(username,amt,role):
         user_role = "demo_users"
     try:
             user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
-            return amount == user.val()["cost"]
+            return amount != user.val()["cost"]
     except Exception as e:
         print(e)
-        return False
-        
-#def check_user_subscription(username,amt,role):
-#    amount = int(amt)
-#    try:
-#        if role == "store_owner":
-#            user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
-#            return amount == user.val()["cost"]
-##        elif role == "sign_up_user":
- #           user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()           
-#            return amount == user.val()["cost"]
- #   except:
-#        return False
-
+        return True
     
-def set_subscription(username,amount):#need to define for expiry, once approve the expiry will start?
+def set_subscription(username,amount,role):#need to define for expiry, once approve the expiry will start?
     current_plan = get_plan_pricing(amount)
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
+    
+    if user_role == "users":
+        user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
+        if user.val()["status"] == True:
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date(user.val()["plan"]["type"])})
         
 def retrieve_all_project(username,role):
     user_role = "users"

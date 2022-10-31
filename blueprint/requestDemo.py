@@ -17,7 +17,7 @@ def request_demo():
             user_information= {"role":"demo_user","email":username,"contact":request.form["phone_number"], "firstname":request.form["fname"],"lastname":request.form["lname"],"country":request.form["country"],"url":request.form["url"],"comment":request.form["comment"],"requesteddate":date.today().strftime("%d/%m/%Y"),"demo_username":demo_username,"demo_password":demo_password}
             set_demo_user(demo_username,user_information)
             return redirect("/mail?user="+username+"&demo_user="+demo_username)     
-    return render_template("request_demo.html")
+    return render_template("request_demo.html",role=session["role"])
 
 @requestDemo.route("/faq")
 def faq():

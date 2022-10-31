@@ -54,7 +54,7 @@ def manageprojects(): #need get rating and performance score oso
         return render_template("manage_project.html",project_lists=project_lists,fullname=session["fullname"])    
     elif "role" in session and session["role"] == "sign_up_user":
         flash("Please subscribe before accessing this feature")
-        return redirect("/subscriptionPlan")
+        return redirect("/subscription")
     elif "role" in session:
         return redirect("/") #if logged in non store owner user redirect to main page
     else:

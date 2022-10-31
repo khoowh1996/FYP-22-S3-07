@@ -38,6 +38,8 @@ def managesubscription(): #need get rating and performance score oso
     if "role" in session and session["role"] == "store_owner":
         username = session["user"]
         return render_template("manage_subscription.html",subscription_information=get_owner_subscription_information(username),fullname=session["fullname"])
+    elif "role" in session and session["role"] == "sign_up_user":
+        return redirect("/subscription")
     elif "role" in session:
         return redirect("/") #if logged in non store owner user redirect to main page
     else:
