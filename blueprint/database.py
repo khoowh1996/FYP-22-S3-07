@@ -321,7 +321,7 @@ def get_all_store_owner_information_for_manage_store_owner():
             all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+user.val()["username"].split("@")[0],"deletemodaltarget":"#dmodal"+user.val()["username"].split("@")[0],"deletemodalbox":"dmodal"+user.val()["username"].split("@")[0],"freezemodalbox":"fmodal"+user.val()["username"].split("@")[0]})
         return all_users_list
     except TypeError as e:
-        return []
+        return all_users_list
 
 def get_all_store_owner_information_for_approve_reject():
     all_users = database.child("sign_up_users").get()
@@ -614,8 +614,12 @@ def last_created_date(report_date):
             return (str(int(remainder_day.seconds /60)) + " minutes ago")
         else:
             return (str(int(remainder_day.seconds /3600)) + " hours ago")
-    elif (remainder_day.seconds / 86400) < 24:
-        return (str(int(remainder_day.seconds /3600)) + " days ago")
+    elif remainder_day.days > 30 and remainder_day.days < 365:
+        return (str(int(remainder_day.days /30)) + " months ago")
+    elif remainder_day.days > 365:
+        return (str(int(remainder_day.days /365)) + "." + str(int(remainder_day.days % 365)) + " years ago")
+    elif (remainder_day.days) < 30:
+        return (str(remainder_day.days) + " days ago")
 
 def retrieve_all_issues_for_problem_reported():
     all_user = database.child("users").child().get()
