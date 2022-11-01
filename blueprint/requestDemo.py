@@ -16,10 +16,18 @@ def request_demo():
             demo_username,demo_password = createDemoAccount()
             user_information= {"role":"demo_user","email":username,"contact":request.form["phone_number"], "firstname":request.form["fname"],"lastname":request.form["lname"],"country":request.form["country"],"url":request.form["url"],"comment":request.form["comment"],"requesteddate":date.today().strftime("%d/%m/%Y"),"demo_username":demo_username,"demo_password":demo_password}
             set_demo_user(demo_username,user_information)
-            return redirect("/mail?user="+username+"&demo_user="+demo_username)     
-    return render_template("request_demo.html",role=session["role"])
+            return redirect("/mail?user="+username+"&demo_user="+demo_username)   
+    try:
+        role = session["role"]
+    except:
+        role = ""
+    return render_template("request_demo.html",role=role)
 
 @requestDemo.route("/faq")
 def faq():
     faq_lists = get_faqs("default_user")
-    return render_template("faq.html",faq_lists=faq_lists)
+    try:
+        role = session["role"]
+    except:
+        role = ""
+    return render_template("faq.html",faq_lists=faq_lists,role=role)

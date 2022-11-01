@@ -45,11 +45,16 @@ def createstoreowner():
         username = request.form["username"].lower()
         password = request.form["password"]
         try:
-            user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"status":True,"emailverification":True,"role":"store_owner"}
-            register_user(username,password)
-            create_store_owner(username,user_information)			
-            flash("Store Owner Account Created Successfully!")
-            return redirect("/managestoreowners")
+            company = request.form["cname"]
+            if check_if_company_name_unique(company):
+                user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":company,"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"status":True,"emailverification":True,"role":"store_owner"}
+                register_user(username,password)
+                create_store_owner(username,user_information)			
+                flash("Store Owner Account Created Successfully!")
+                return redirect("/managestoreowners")
+            else:
+                flash("Company Name already exists")
+                return redirect("/managestoreowners")
         except requests.HTTPError as e:
             error_json = e.args[1]
             error = json.loads(error_json)['error']['message']

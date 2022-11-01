@@ -76,9 +76,27 @@
                 </div>
             </div>
             <div class="row pt-5">
-			<form action="/createproject">
-                <button class="ms-3" id="mpbtn-create">Create New Project</button>
-				
+			{% if project_limit_bool == True %}
+				{% if project_lists is defined and project_lists[0] is defined %}
+					<form action="/createproject">
+					<button class="ms-3" id="mpbtn-create" style="background:darkgrey;" disabled>Create New Project</button>
+					<span id="subtitle">Project limit {{ project_lists | length }} / {{ project_limit }}</span>
+				{% else %}
+					<form action="/createproject">
+					<button class="ms-3" id="mpbtn-create" style="background:darkgrey;" disabled>Create New Project</button>
+					<span id="subtitle">Project limit 0 / {{ project_limit }}</span>
+				{% endif %}
+			{% else %}
+				{% if project_lists is defined and project_lists[0] is defined %}
+					<form action="/createproject">
+					<button class="ms-3" id="mpbtn-create">Create New Project</button>
+					<span id="subtitle">Project limit {{ project_lists | length }} / {{ project_limit }}</span>
+				{% else %}
+					<form action="/createproject">
+					<button class="ms-3" id="mpbtn-create">Create New Project</button>
+					<span id="subtitle">Project limit 0 / {{ project_limit }}</span>
+				{% endif %}
+			{% endif %}
 			</form>
             </div>
                 <!-- second box -->

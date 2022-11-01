@@ -8,7 +8,11 @@ subscriptionPlan = Blueprint('subscriptionPlan', __name__, template_folder='temp
 def subscription(): 
     monthly_pricing = get_pricing("monthly")
     yearly_pricing = get_pricing("yearly")
-    return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,role=session["role"],yearly_pricing=yearly_pricing)
+    try:
+        role = session["role"]
+    except:
+        role = ""
+    return render_template("subscription_plan.html",monthly_pricing=monthly_pricing,role=role,yearly_pricing=yearly_pricing)
 
 @subscriptionPlan.route("/payment")
 def payment():

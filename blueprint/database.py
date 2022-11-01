@@ -53,8 +53,9 @@ def set_sign_up_user_information(username,user_information):
 
 def create_store_owner(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-    set_subscription(username,599) #when create store owner, we will give it a basic 1 year plan with auto renew = true
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date(get_plan_pricing("Yearly"))})
+    set_subscription(username,599,"store_owner") #when create store owner, we will give it a basic 1 year plan with auto renew = true
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":2})
+    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date("Yearly")})
 
 def create_moderator(username,user_information):
     database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
@@ -88,6 +89,7 @@ def approve_reject_user(username,action):#maybe send email to user that it has b
         database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"approved"})
     else:
         database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"rejected"})
+    shift_approved_user(username)
 
 def shift_approved_user(username): #maybe can do a automatic trigger?
     sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -96,8 +98,9 @@ def shift_approved_user(username): #maybe can do a automatic trigger?
         plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
         user_information= {"username":sign_up_users.val()["username"],"deleteid":sign_up_users.val()["deleteid"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").set(plan)              
-        database.child("sign_up_users").remove(hashlib.sha256(username.encode()).hexdigest())
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update(plan) 
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(plan["desc"])}) 
+        database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
         
 def update_user_information(username,user_information,role):
     user_role = "users"
@@ -170,7 +173,7 @@ def createDemoAccount():
     
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1,"limit":1})
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"tcategory":"highheels","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
@@ -232,6 +235,34 @@ def get_plan_pricing(amt):
             if plan.val() == amount:
                 return {"plan": {"type" : "Yearly", "desc":plan.key(),"cost":amount,"expiry":"","renew":True}}
 
+def get_limit_by_plan(desc):
+    if desc == "Basic":
+        return 2
+    elif desc == "Pro":
+        return 5
+    else:
+        return 9999
+
+def check_if_project_limit(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
+    all_projects = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
+    try:
+        if all_projects.val()[0] != None:
+            return len(all_projects.val()) == user.val()["projects"]["limit"]
+        else:
+            return (len(all_projects.val()) -1) == user.val()["projects"]["limit"]
+    except TypeError as e:
+        print(e)
+        return False
+    except KeyError as e:
+        print(e)
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(user.val()["plan"]["desc"])})
+        return len(all_projects.val()) == user.val()["projects"]["limit"]
+    
+
 def set_expiry_date(plantype):
     if plantype == "Monthly":
         expiry = date.today() + relativedelta(months=+1)
@@ -265,18 +296,22 @@ def set_subscription(username,amount,role):#need to define for expiry, once appr
     user_role = "users"
     if role == "demo_user":
         user_role = "demo_users"
+    elif role == "sign_up_user":
+        user_role = "sign_up_users"
     database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update(current_plan)
     
     if user_role == "users":
         user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
         if user.val()["status"] == True:
             database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update({"expiry":set_expiry_date(user.val()["plan"]["type"])})
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":current_plan["plan"]["desc"]})
         
 def retrieve_all_project(username,role):
     user_role = "users"
     if role == "demo_user":
         user_role = "demo_users"
     try:
+        project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
         all_project_list = []
         if len(all_project.val()) == 1:#if there is only 1 item in the list
@@ -289,13 +324,23 @@ def retrieve_all_project(username,role):
         return all_project_list
     except TypeError as e:
         return []
-    
+
+def get_userproject_limit(username,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    try:
+        return database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get().val()["limit"]
+    except Exception as e:
+        print(e)
+        return 0
+
 def set_project(username, project_information,role):
     user_role = "users"
     if role == "demo_user":
         user_role = "demo_users"
     if project_information["id"] == 1:
-        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").set({"counter":1})
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
     else:
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
     database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
@@ -487,7 +532,9 @@ def retrieve_project_id(username,role):
         all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").get()
         return all_project.val()["counter"]+1 #if got counter, return counter+1
     except TypeError as e:#if no counter, set counter as 1
-        return 1 
+        return 1
+    except KeyError as e:
+        return 1
         
 def retrieve_item_id(username,project_id,role):
     user_role = "users"
@@ -712,3 +759,21 @@ def get_category_for_algorithm(username,project_id,item_id):
 def get_dataset_from_storage():
     url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
     return url
+    
+def check_if_company_name_unique(company):
+    all_users = database.child("users").get()
+    all_sign_users = database.child("sign_up_users").get()
+    lists_of_all_company_used = []
+    try:
+        for user in all_users.each():
+            lists_of_all_company_used.append(user.val()["company"].lower())
+    except Exception as e:
+        print(e)
+        
+    try:
+        for user in all_sign_users.each():
+            lists_of_all_company_used.append(user.val()["company"].lower())
+    except Exception as e:
+        print(e)
+    print(lists_of_all_company_used)
+    return company.lower() not in lists_of_all_company_used

@@ -88,11 +88,16 @@ def register():
 		username = request.form["username"].lower()
 		password = request.form["password"]
 		try:
-			user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":request.form["cname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
-			register_user(username,password)
-			set_sign_up_user_information(username,user_information)			
-			flash("Registration Success! Please login to your newly created account")
-			return redirect(url_for("authentication.login"))
+			company = request.form["cname"]
+			if check_if_company_name_unique(request.form["cname"]): #if true, company is unique
+				user_information= {"username":username,"deleteid":get_encrypted_id(password,username), "firstname":request.form["fname"],"lastname":request.form["lname"],"company":company,"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"],"emailverification":False,"role":"sign_up_user","status":"pending"} #role = sign_up_user
+				register_user(username,password)
+				set_sign_up_user_information(username,user_information)			
+				flash("Registration Success! Please login to your newly created account")
+				return redirect(url_for("authentication.login"))
+			else:                
+				flash("Company Name already exists")
+				return redirect(url_for("authentication.register"))	
 		except requests.HTTPError as e:
 			error_json = e.args[1]
 			error = json.loads(error_json)['error']['message']
