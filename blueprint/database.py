@@ -8,26 +8,39 @@ from dateutil.relativedelta import relativedelta
 import random
 import string
 import cryptocode
+import os
+
 config = {
-	'apiKey': "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
-	'authDomain': "fyp-22-s3-07.firebaseapp.com",
-	'projectId': "fyp-22-s3-07",
-	'storageBucket': "fyp-22-s3-07.appspot.com",
-	'messagingSenderId': "787854218747",
-	'appId': "1:787854218747:web:85731507643d24aa3e275e",
-	'measurementId': "G-R5DHSG3RTK",
-	'databaseURL':''
+	'apiKey': "",
+	'authDomain': "",
+	'projectId': "",
+	'storageBucket': "",
+	'messagingSenderId': "",
+	'appId': "",
+	'measurementId': "",
+	'databaseURL':""
 
 }
 
 databaseconfig = {
-"apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
-"authDomain": "fyp-22-s3-07.firebaseapp.com",
-"databaseURL": "https://fyp-22-s3-07-default-rtdb.asia-southeast1.firebasedatabase.app",
-"projectId": "fyp-22-s3-07",
-"storageBucket": "fyp-22-s3-07.appspot.com",
-"serviceAccount": "serviceAccountKey.json"
+"apiKey": "",
+"authDomain": "",
+"databaseURL": "",
+"projectId": "",
+"storageBucket": "",
+"serviceAccount": ""
 }
+
+for key in config.keys():
+    if key == "databaseURL":
+        continue
+    val = os.environ.get(key)
+    config[key] = val
+
+for key in databaseconfig.keys():
+    val = os.environ.get(key)
+    databaseconfig[key] = val
+
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
