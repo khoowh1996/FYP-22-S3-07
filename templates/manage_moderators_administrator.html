@@ -143,11 +143,11 @@ var check = function() {
                         <div class="row pt-3 pb-3">
                             <div class="col">
                                 <span class="ms-3 pb-2" id="inputhead" >PASSWORD</span>
-                                <input class="ms-sm-3 ps-2 cpinput-s" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><div style="position: relative;"><img class="toggle-icon" style="right:3.3rem;" id="showPasswordBtn" src="images/passwordtoggle.png" onmousedown="showPassword()" onmouseup="showPassword()"></img></div></input>
+                                <input class="ms-sm-3 ps-2 cpinput-s" id="passwordInput" type="password" name="password" placeholder="Password" required maxlength="32" required pattern="(?=.*\d)(?=.*[\W_])(?=.*[A-Z])(?=.*[a-z]).{12,}" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><div style="position: relative;"><img class="toggle-icon" style="right:3.3rem;" id="showPasswordBtn" src="images/passwordtoggle.png" onmousedown="showPassword()" onmouseup="showPassword()"></img></div></input>
                             </div>
                             <div class="col">
                                 <span class="pb-2" id="inputhead">CONFIRM PASSWORD</span>
-                                <input class="ps-2 cpinput-s" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required pattern="(?=.*\d)(?=.*[\W_]).{12,}" maxlength="32" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><span id='message'></span>
+                                <input class="ps-2 cpinput-s" id="passwordCfmInput" type="password" name="cfmPassword" placeholder="Password" required pattern="(?=.*\d)(?=.*[\W_])(?=.*[A-Z])(?=.*[a-z]).{12,}" maxlength="32" title="Minimum of 12 characters. Should have at least one special character and one number and one UpperCase Letter." onkeyup="check();"><span id='message'></span>
                         <div style="position: relative;"><img class="toggle-icon" id="showCfmPasswordBtn" src="images/passwordtoggle.png" onmousedown="showCfmPassword()" onmouseup="showCfmPassword()"></img></div></input>
                             </div>
                         </div>
