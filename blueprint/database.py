@@ -41,6 +41,9 @@ for key in databaseconfig.keys():
     val = os.environ.get(key)
     databaseconfig[key] = val
 
+print(f'this is config \n{config} ')
+print(f'this is databaseconfig \n{databaseconfig} ')
+
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
