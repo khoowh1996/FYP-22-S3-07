@@ -7,6 +7,8 @@ from collections import defaultdict
 import pyrebase
 import urllib
 import io
+import matplotlib.pyplot as plt
+import numpy as np
 
 #url = get_database_from_storage()
 #webpage = urllib.request.urlopen(url)
