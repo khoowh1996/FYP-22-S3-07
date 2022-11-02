@@ -14,15 +14,15 @@ import numpy as np
 #webpage = urllib.request.urlopen(url)
 # Read the CSV file
 #reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
-#reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
-#dataset = defaultdict(dict)
+reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+dataset = defaultdict(dict)
 
 # Put it in a dictionary
-#for i in reader:
-#    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+for i in reader:
+    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
-#ownerinput1 = 'highheels'
-#ownerinput2 = ''
+ownerinput1 = 'highheels'
+ownerinput2 = ''
 
 # If you want to see it in clearer view
 #dataFrame = pd.DataFrame(dataset)
@@ -32,6 +32,8 @@ import numpy as np
 # To see the whole dictionary of the data from CSV
 #print(dataset)
 
+catList = []
+ratingList = []
 # Get unique set of items bought
 def uniqueCategories(dataset):
     uniqueCategoriesList = []
@@ -51,6 +53,8 @@ def compareWithOne(dataset, input1, input2):
             if input1 in i.keys():
                 # Get their values and put all into the list
                 listOfValues.append(float(i[input1]))
+                catList.append(i.keys())
+                ratingList.append(i[input1])
     # To handle the exception of division by 0
     if len(listOfValues) == 0:
         print('No one has bought', input1,'among people who has bought',input2)
@@ -89,3 +93,12 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
         compareWithAllItems(dataset,ownerinput1)
     else:
         compareWithOne(dataset, ownerinput1, ownerinput2)
+
+if ownerinput2 == "":
+    compareWithAllItems(dataset,ownerinput1)
+else:
+    compareWithOne(dataset, ownerinput1, ownerinput2)
+ypos = np.arange(len(catList))
+
+plt.bar(ypos, ratingList)
+plt.show()
