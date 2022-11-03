@@ -41,6 +41,7 @@ for key in databaseconfig.keys():
     val = os.environ.get(key)
     databaseconfig[key] = val
 
+
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
@@ -187,7 +188,7 @@ def createDemoAccount():
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1,"limit":1})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1}})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1,"crawler":"single_page"}})
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"tcategory":"highheels","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
 def demo_user_exist(username):

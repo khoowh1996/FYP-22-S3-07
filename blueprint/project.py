@@ -13,7 +13,8 @@ def createproject():
         category = request.form["category"]
         url = request.form["url"]
         username = session["user"]
-        project_information = {"id": retrieve_project_id(username,session["role"]),"pname":project_name,"category":category,"url":url}
+        crawler = session["crawler"]
+        project_information = {"id": retrieve_project_id(username,session["role"]),"pname":project_name,"category":category,"url":url,"crawler":crawler}
         try:
             set_project(username,project_information,session["role"])
             return redirect("/manageprojects")# might redirect to the created project or test item rating in future

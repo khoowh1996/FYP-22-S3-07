@@ -104,9 +104,18 @@
 								</select>
                             </div>
                             <div class="col">
-                                <span class="pb-2" id="inputhead">Website URL</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" required>
+                                <span class="pb-2" id="inputhead">E COMMERCE SHOP MAIN URL</span>
+                                <input class="ms-3 ps-2 cpinput-s" type="text" placeholder="Example : https://www.lazada.sg/men-sports-clothing-t-shirts" name="url" required>
                             </div>
+                        </div>
+						<div class="row">
+                            <span class="ms-3 pb-2" id="inputhead">Crawler Type</span>
+                            <select class="ms-4 ps-2 cpinput-s" required id="crawler" name="crawler" class="rdbox" readonly required>
+								 <option value="" disabled selected hidden>Select a Crawler Type</option>
+								 <option value="whole_page" >Whole Page</option>
+								 <option value="single_page" >Single Page</option>
+								 <option value="single_item" >Single Item</option>
+							</select>
                         </div>
                         <!-- fourth row -->
                         <div class="row pt-5">
@@ -144,9 +153,18 @@
 								</select>
                             </div>
                             <div class="col">
-                                <span class="pb-2" id="inputhead">Website URL</span>
-                                <input class="ps-2 cpinput-s" type="text" placeholder="URL" name="url" value="www.adidas.com" readonly required>
+                                <span class="pb-2" id="inputhead">E COMMERCE SHOP MAIN URL</span>
+                                <input class="ps-2 cpinput-s" type="text" name="url" value="https://www.lazada.sg/men-sports-clothing-t-shirts" readonly required>
                             </div>
+                        </div>
+						<div class="row">
+                            <span class="ms-3 pb-2" id="inputhead">Crawler Type</span>
+                            <select class="ms-3 ps-2 cpinput-s" required id="crawler" name="crawler" class="rdbox" readonly required>
+								 <option value="" disabled selected hidden>Crawler Type</option>
+								 <option value="whole_page" disabled>Whole Page</option>
+								 <option value="single_page" selected>Single Page</option>
+								 <option value="single_item" disabled>Single Item</option>
+							</select>
                         </div>
                         <!-- fourth row -->
                         <div class="row pt-5">
