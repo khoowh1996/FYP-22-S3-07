@@ -141,7 +141,7 @@
 										  </a><ul class="dropdown-menu">
 											<li><button class="dropdown-item sort" data-sort="fullname">Store Owners Name</button></li>
 											<li><button class="dropdown-item sort" data-sort="description">Report Title</button></li>
-											<li><button class="dropdown-item sort" data-sort="reporteddate">Report Date</button></li>
+											<li><button class="dropdown-item sort" data-sort="timestamp">Report Date</button></li>
 										  </ul>
 										</div>
 									</span>
@@ -184,7 +184,7 @@
                                     </div>
                                     <!--col 4-->
                                     <div class="col-2">
-                                        <span class="datereported ms-2" id="date"></span>
+                                        <span class="datereported timestamp ms-2" id="date"></span>
                                     </div>
                                     <!--col 6-->
                                     <div class="col-1">
@@ -230,14 +230,14 @@
 	const data = {{ all_issues | tojson }}
 
     const options = {
-        valueNames: ['fullname',{name:"status","attr":"src"},'datereported','description',{ name: 'actionmodalbox', attr: 'id' },{ name: 'actionmodaltarget', attr: 'data-bs-target' },{ name: 'actionbutton', attr: 'value' },'actiontext','actiontext2','actiontext3'],
+        valueNames: ['fullname',{name:"status","attr":"src"},'datereported',{name:'timestamp',attr:'data-timestamp'},'description',{ name: 'actionmodalbox', attr: 'id' },{ name: 'actionmodaltarget', attr: 'data-bs-target' },{ name: 'actionbutton', attr: 'value' },'actiontext','actiontext2','actiontext3'],
         item: 'myitem',
         page: 10,
         pagination: true
     }
 
 		var l = new List('mylist', options, data);
-		
+		l.sort('timestamp', { order: "desc" });
 		function filterByActive()
 		{			
 			l.filter(function(item) {

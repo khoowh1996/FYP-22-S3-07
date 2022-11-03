@@ -97,7 +97,8 @@ def approvestoreowner():
         approve_user_email = request.form["approve"]
         approve_reject_user(approve_user_email,True)			
         flash("Store Owner Account has been approved!")
-        return redirect("/managestoreowners")
+        #return redirect("/managestoreowners")
+        return redirect("/mail?user="+approve_user_email+"&name="+session["fullname"]+"&EmailTemplate=approved")   
     if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
@@ -108,7 +109,8 @@ def rejectstoreowner():
         reject_user_email = request.form["reject"]
         approve_reject_user(reject_user_email,False)			
         flash("Store Owner Account has been rejected!")
-        return redirect("/managestoreowners")
+        #return redirect("/managestoreowners")
+        return redirect("/mail?user="+approve_user_email+"&name="+session["fullname"]+"&EmailTemplate=rejected") 
     if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")

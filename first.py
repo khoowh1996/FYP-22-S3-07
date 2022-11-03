@@ -58,14 +58,14 @@ def static_file(path):
 def static_file_for_project(path):
     return send_from_directory(app.static_folder, path) 
 
-@app.route("/<name>")
-def browse(name):
-    list_of_files = os.listdir('./templates/')
-    list_of_html_files = []
-    for files in list_of_files:
-        if files.endswith('.html') and (name+".html" == files or name == files):
-            return render_template(files)
-    return redirect(url_for("pagenotfound"))
+#@app.route("/<name>")
+#def browse(name):
+#    list_of_files = os.listdir('./templates/')
+#    list_of_html_files = []
+#    for files in list_of_files:
+#        if files.endswith('.html') and (name+".html" == files or name == files):
+#            return render_template(files)
+#   return redirect(url_for("pagenotfound"))
 
 @app.route("/pagenotfound")
 def pagenotfound():
@@ -92,19 +92,84 @@ mail = Mail(app)
 
 @app.route("/mail")
 def sendmail():
-    username = request.args.get("user")
-    demo_user = request.args.get("demo_user")
-    name,demo_username,demo_password = get_demo_information(demo_user)
-    with mail.connect() as conn:
-        msg = Message(
-                        'Hello This is MyRecommend Notification for Demo',
-                        sender ='myrecommendservices@gmail.com',
-                        recipients = ['khoowh1996@gmail.com']
-                    )
-        msg.body = 'Hello {},\n\nThe following is the demo account information to login to our Demo Dashboard.\nDemo Username : {} \nDemo Password : {} \n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name,demo_username,demo_password)
-        conn.send(msg)
-    flash("Request Demo Email Sent... Please login with your demo account")
-    return redirect(url_for("authentication.login"))
+    email_template = request.args.get("EmailTemplate")
+    if email_template == "demo":
+        username = request.args.get("user")
+        demo_user = request.args.get("demo_user")
+        
+        name,demo_username,demo_password = get_demo_information(demo_user)
+        with mail.connect() as conn:
+            msg = Message(
+                            'Hello This is MyRecommend Notification for Demo',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username]
+                        )
+            msg.body = 'Hello {},\n\nThe following is the demo account information to login to our Demo Dashboard.\nDemo Username : {} \nDemo Password : {} \n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name,demo_username,demo_password)
+            conn.send(msg)
+        flash("Request Demo Email Sent... Please login with your demo account")
+        return redirect(url_for("authentication.login"))
+    elif email_template == "approved":        
+        username = request.args.get("user")
+        name = request.args.get("name")
+        with mail.connect() as conn:
+            msg = Message(
+                            'MyRecommend Notification on Account status',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username]
+                        )
+            msg.body = 'Hello {},\n\nYour account has been approved by our moderators.\nPlease kindly login to our system to start using our features.\nIf you have not subscribed, do kindly navigate to https://www.myrecommend.herokuapp.com/subscriptionPlan to select plan.\n\nFor any more information, do contact our customer services at myrecommendservices@gmail.com'.format(name)
+            conn.send(msg)
+        flash("Notification Email has been Sent to store owner...")
+        return redirect("/managestoreowners")
+    elif email_template == "rejected":    
+        username = request.args.get("user")
+        name = request.args.get("name")        
+        with mail.connect() as conn:
+            msg = Message(
+                            'MyRecommend Notification on Account status',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username]
+                        )
+            msg.body = 'Hello {},\n\nYour account has been rejected by our moderators.\nFor any more details information, do contact our customer services at myrecommendservices@gmail.com'.format(name)
+            conn.send(msg)
+        flash("Notification Email has been Sent to store owner...")
+        return redirect("/managestoreowners")
+    elif email_template == "payment_success":
+        username = request.args.get("user")
+        name = request.args.get("name")
+        with mail.connect() as conn:
+            msg = Message(
+                            'MyRecommend Notification on Account status',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username,'myrecommendservices@gmail.com']
+                        )
+            msg.body = 'Hello {},\n\nYou have started your subscription!\nPlease login to our website at https://myrecommend.herokuapp.com/login.\nIf your account has not been approved, Please allow up to 3 business days for your account to be approved. The account expiry will start after account has been approved.\n\nDo contact our customer services at myrecommendservices@gmail.com, for any issues encountered or information.\n'.format(name)
+            conn.send(msg)
+        flash("Subscription Email has been Sent...")
+        return redirect("/login")
+        
+@app.route("/contactus",methods=["POST","GET"])
+def contactus():
+    if request.method == "POST":
+        fullname = request.form["fname"] + " " + request.form["lname"]
+        email = request.form["email"]
+        email_subject = request.form["subject"]
+        email_body = request.form["body"]
+        with mail.connect() as conn:
+            msg = Message(
+                            email_subject + " to " + email,
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = ['myrecommendservices@gmail.com','khoowh1996@gmail.com']
+                        )
+            msg.body = 'Hello {},\n\nWe have recieve the email for the following\n{}\n\ndo contact our customer services at myrecommendservices@gmail.com'.format(fullname,email_body)
+            conn.send(msg)
+        flash("Email has been sent to our representative.")
+        return redirect("/")
+    try:
+        role = session["role"]
+    except:
+        role = ""
+    return render_template("contactus.html",role=role)
 
 if __name__ == "__main__":
     app.run()

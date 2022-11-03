@@ -41,9 +41,6 @@ for key in databaseconfig.keys():
     val = os.environ.get(key)
     databaseconfig[key] = val
 
-print(f'this is config \n{config} ')
-print(f'this is databaseconfig \n{databaseconfig} ')
-
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
@@ -275,8 +272,12 @@ def check_if_project_limit(username,role):
         return False
     except KeyError as e:
         print(e)
-        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(user.val()["plan"]["desc"])})
-        return len(all_projects.val()) == user.val()["projects"]["limit"]
+        if role == "demo_user":
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":1})
+            return len(all_projects.val()) == user.val()["projects"]["limit"]
+        else:
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(user.val()["plan"]["desc"])})
+            return len(all_projects.val()) == user.val()["projects"]["limit"]
     
 
 def set_expiry_date(plantype):
@@ -697,6 +698,10 @@ def last_created_date(report_date):
     elif (remainder_day.days) < 30:
         return (str(remainder_day.days) + " days ago")
 
+def report_date_in_timestamp(report_date):
+    dt_obj = datetime.strptime(report_date,'%d/%m/%Y %H:%M')
+    return dt_obj.timestamp()
+
 def retrieve_all_issues_for_problem_reported():
     all_user = database.child("users").child().get()
     issue_list = []
@@ -714,7 +719,9 @@ def retrieve_all_issues_for_problem_reported():
                         status = "images/closed.png"
                         actiontext = "Delete"
                     userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
-                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+userhash,"actionmodalbox":"amodal"+userhash,"actionbutton":user.key()+";"+str(issue["id"])})
+                    print(issue["reportdate"])
+                    print(report_date_in_timestamp(issue["reportdate"]))
+                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"timestamp":report_date_in_timestamp(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+userhash,"actionmodalbox":"amodal"+userhash,"actionbutton":user.key()+";"+str(issue["id"])})
         except KeyError as e:
             continue
     return issue_list

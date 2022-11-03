@@ -59,7 +59,8 @@ def payment_finalized():
         print(request.form["pay"])
         set_subscription(username,request.form["pay"],session["role"])
         flash("Payment success, Subscription has started. Email will be send to you for notification")    
-        return redirect("/")
+        #return redirect("/")
+        return redirect("/mail?user="+username+"&name="+session["fullname"]+"&EmailTemplate=payment_success") 
     elif "user" in session and "subscription_type" not in session:
         flash("Please choose a subscription plan first")
         return redirect(url_for("subscriptionPlan.subscription"))
