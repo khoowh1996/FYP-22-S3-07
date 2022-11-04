@@ -34,6 +34,82 @@
 	color: #FFFFFF;
 }
 
+#au_header{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 75px;
+	line-height: 100px;
+	letter-spacing: 1px;
+	color: #000000;
+}
+
+#au_profile_name{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 32px;
+	line-height: 40px;
+	text-align: center;
+	letter-spacing: 0.3px;
+	color: #252733;
+}
+
+#au_profile_content_header{
+	display: inline-block;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 24px;
+	color: #000000;
+}
+
+#au_profile_content_content{
+	display: inline-block;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 24px;
+	color: #000000;
+}
+
+#au_purpose_header{
+	display: block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 40px;
+	line-height: 50px;
+	letter-spacing: 0.3px;
+	color: #252733;
+}
+
+#au_purpose_content{
+	display: inline-block;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 50px;
+	color: #000000;
+}
+
+#au_team{
+	display: inline-block;
+	font-family: 'Mulish';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 40px;
+	line-height: 50px;
+	text-align: center;
+	letter-spacing: 0.3px;
+	color: #252733;
+}
+
 body {
 	background: #E5E5E5;
 	margin: auto; 
