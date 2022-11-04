@@ -67,12 +67,22 @@
 	color: #000000;
 }
 
-#au_profile_content_content{
+#au_profile_content_position{
 	display: inline-block;
 	font-family: 'Inter';
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
+	line-height: 24px;
+	color: #000000;
+}
+
+#au_profile_content_contact{
+	display: inline-block;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
 	line-height: 24px;
 	color: #000000;
 }
