@@ -146,7 +146,12 @@ try:
                 elif mode == "single_item":               
                     download_csv()   
                     print("single mode")
-                    sl.call(url)
+                    df = pd.DataFrame()
+                    df = sl.call(df,url)
+                    df.to_csv("testscrapeSingleItem.csv", index=False)        
+                    with open('main_dataset.csv','a') as f:
+                        df.to_csv(f, index=False)
+                    upload('main_dataset.csv','main_dataset.csv')
 except FileNotFoundError as e:
     print(e)
     print("crawl stop")
