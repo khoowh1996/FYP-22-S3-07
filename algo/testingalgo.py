@@ -112,7 +112,7 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
 
 def get_graph():
     ypos = np.arange(len(catList))
-    plt.bar(catList, ratingList)
+    plt.bar(ypos, ratingList)
     img = io.BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)
