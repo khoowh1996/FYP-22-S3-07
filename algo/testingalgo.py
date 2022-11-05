@@ -19,6 +19,7 @@ import numpy as np
 reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
 #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
 dataset = defaultdict(dict)
+testDataset = []
 
 # Put it in a dictionary
 for i in reader:
@@ -134,4 +135,3 @@ plt.show()
 #print(get_algorithm_output(""))
 #get_graph()
 '''
-
