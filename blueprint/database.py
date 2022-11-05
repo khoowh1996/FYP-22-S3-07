@@ -31,16 +31,36 @@ databaseconfig = {
 "serviceAccount": ""
 }
 
-for key in config.keys():
-    if key == "databaseURL":
-        continue
-    val = os.environ.get(key)
-    config[key] = val
+#for key in config.keys():
+    #if key == "databaseURL":
+    #    continue
+    #val = os.environ.get(key)
+    #config[key] = val
 
-for key in databaseconfig.keys():
-    val = os.environ.get(key)
-    databaseconfig[key] = val
+#for key in databaseconfig.keys():
+    #val = os.environ.get(key)
+    #databaseconfig[key] = val
 
+config = {
+	'apiKey': "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
+	'authDomain': "fyp-22-s3-07.firebaseapp.com",
+	'projectId': "fyp-22-s3-07",
+	'storageBucket': "fyp-22-s3-07.appspot.com",
+	'messagingSenderId': "787854218747",
+	'appId': "1:787854218747:web:85731507643d24aa3e275e",
+	'measurementId': "G-R5DHSG3RTK",
+	'databaseURL':''
+
+}
+
+databaseconfig = {
+"apiKey": "AIzaSyB3EuVdoM4dHQCUwEYScbvbnxiXGXObdnc",
+"authDomain": "fyp-22-s3-07.firebaseapp.com",
+"databaseURL": "https://fyp-22-s3-07-default-rtdb.asia-southeast1.firebasedatabase.app",
+"projectId": "fyp-22-s3-07",
+"storageBucket": "fyp-22-s3-07.appspot.com",
+"serviceAccount": "serviceAccountKey.json"
+}
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
@@ -359,9 +379,17 @@ def set_project(username, project_information,role):
         user_role = "demo_users"
     if project_information["id"] == 1:
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
+        crawl_information = {(hashlib.sha256(username.encode()).hexdigest()+";"+str(1)):{"url":project_information["url"],"crawler":project_information["crawler"]}}
+        set_url_to_crawl_list(crawl_information)
     else:
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
+        crawl_information = {(hashlib.sha256(username.encode()).hexdigest()+";"+str(project_information["id"])):{"url":project_information["url"],"crawler":project_information["crawler"]}}
+        set_url_to_crawl_list(crawl_information)
     database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
+        
+
+def set_url_to_crawl_list(crawl_information):
+    database.child("crawl_lists").update(crawl_information)
     
 def delete_project_by_id(username, project_id,role):
     user_role = "users"
@@ -538,6 +566,18 @@ def get_project_by_id(username,project_id,role):
         all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         if all_project.val() != None:
             return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"]}
+        return None
+    except TypeError as e:
+        return None
+
+def get_project_item_by_id(username,project_id,item_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    try:
+        all_project_item = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").child(item_id).get()
+        if all_project_item.val() != None:
+            return {"id":all_project_item.val()["id"],"category":all_project_item.val()["category"],"tcategory":all_project_item.val()["tcategory"],"imageurl":all_project_item.val()["imageurl"],"name":all_project_item.val()["name"],"recommendations":all_project_item.val()["recommendations"],"statistics":all_project_item.val()["statistics"]}
         return None
     except TypeError as e:
         return None

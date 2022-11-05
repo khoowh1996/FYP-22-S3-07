@@ -13,10 +13,10 @@ class ScrapeLazada():
     def scrape(self):
         chrome_options = webdriver.ChromeOptions()
         #chrome_options.binary_location = GOOGLE_CHROME_PATH
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument('--window-size=1920x1480')
+        #chrome_options.add_argument("--headless")
+        #chrome_options.add_argument('--no-sandbox')
+        #chrome_options.add_argument("--disable-gpu")
+        #chrome_options.add_argument('--window-size=1920x1480')
         #driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?from=wangpu'
         driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
@@ -41,8 +41,10 @@ class ScrapeLazada():
 
         df = pd.DataFrame(products, columns=['Product Name', 'Price', 'URL'])
         df.to_csv('test.csv', index=False)        
-        print(df)
-        upload('main_dataset.csv','test.csv')
+        #print(df)
+        for line in df.row():
+            print(line)
+        #upload('main_dataset.csv','test.csv')
         driver.close()
 
 

@@ -89,7 +89,6 @@
                         <span class="pt-2" id="attributecontent">$43</span>
                     </div>
                 </div>
-                <div class="col"></div>
             </div>
             <!-- first box -->
             <div class="container pt-4">
@@ -122,6 +121,7 @@
 					{% if item_lists | length == 0 %}
 					No Products currently...
 					{% endif %}
+					<a href="{{ project_information['id'] }}/item/{{ item_lists[n]['id'] }}" class="items">
                     <div class="row pt-3">
                         <div class="col-4 pb-3 border-bottom">
                             <img class="ms-3" style="width: 72;height: 64;"src="{{ item_lists[n]['imageurl'] }}">
@@ -137,6 +137,7 @@
                             <span class="pt-4" id="recommendation">Age groups in 20s</span>
                         </div>
                     </div>
+					</a>
 					{%	endfor	%}
                     <!-- fifth row 
                     <div class="row pt-4 pb-5">

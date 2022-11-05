@@ -172,10 +172,10 @@
 			{% endif %}
 			
 		</form>
-			
+			{% if item_information != None %}
             <!-- second box -->
             <div class="container pt-4">
-                <div class="row pbox-m">
+                <div class="row pbox-m" style="width:1130px!important;height: 950px;">
                     <!-- first row -->
                     <div class="row pt-4 pb-2">
                         <span class="ms-3" id="headline">Predicted Rating</span>
@@ -187,40 +187,60 @@
                     <!-- third row -->
                     <div class="row pt-3 pb-3">
                         <div class="col-4">
-                            <span class="ms-3" id="headline">Products</span>
+                            <span class="ms-3" id="headline">Item Name</span>
                         </div>
-                        <div class="col-3">
-                            <span id="headline">User Groups</span>
+                        <div class="col-4">
+                            <span id="headline">Inputted Category</span>
                         </div>
-                        <div class="col-3">
-                            <span id="headline">Conversion Rate</span>
-                        </div>
-                        <div class="col-2">
-                            <span id="headline">Recommended User Group</span>
+						<div class="col-4">
+                            <span id="headline">Targetted Category</span>
                         </div>
                     </div>
                     <!-- fourth row -->
                     <div class="row pt-3">
-                        <div class="col-4 pb-3 border-bottom">
-                            <img class="ms-3" src="{{ 	url_for('static', filename='images/shoe3.png')	}}">
-                            <span class="ms-4" id="content">Shoe 4</span>
+                        <div class="col-4 d-flex align-items-center pb-3 border-bottom">
+                            <img class="ms-3" style="width: 72;height: 64;" src="{{ item_information['imageurl'] }}">
+                            <span class="ms-4" id="content">{{ item_information['name'] }}</span>
                         </div>
-                        <div class="col-3 border-bottom">
-                            <span id="content">Age groups in 40s</span><br />
-                            <span id="content">Age groups in 30s</span><br />
-                            <span id="content">Age groups in 20s</span>
+                        <div class="col-4 d-flex align-items-center pb-3 border-bottom">
+							<span class="ms-4" id="content">{{ item_information['category'] }}</span>
                         </div>
-                        <div class="col-3 border-bottom">
-                            <span id="content">5%</span><br />
-                            <span id="content">3%</span><br />
-                            <span id="content">50%</span>
+						<div class="col-4 d-flex align-items-center pb-3 border-bottom">
+						{% if item_information['tcategory'] == "" %}
+							<span class="ms-4" id="content">All</span>
+						{% else %}
+							<span class="ms-4" id="content">{{ item_information['tcategory'] }}</span>
+						{% endif %}
                         </div>
-                        <div class="col-2 border-bottom">
-                            <span class="pt-4" id="recommendation">Age groups in 20s</span>
+                    </div>
+					<div class="row pt-3">
+
+                        <div class="col-6">
+                            <span id="headline">Recommendation</span>
+                        </div>					
+                        <div class="col-3">
+                            <span id="headline">Statistics</span>
+                        </div>
+                    </div>
+					<div class="row">
+                        <span class="ms-3" id="subhead">*Very Well Rating is a score of 4.0 and above</span>
+						<span class="ms-3" id="subhead">*Average Rating is a score of 3.0 and above</span>
+						<span class="ms-3" id="subhead">*Poor Rating is a score of 2.5 and below</span>
+                    </div>
+					<div class="row pt-3">
+						<div class="col-5 pt-5 pb-3 border-bottom">     
+						{%	for n in range(0,item_information["recommendations"] | length)	%}	
+							<span id="content">{{ item_information["recommendations"][n] }}</span><br />
+						{% endfor %}
+						</div>
+                        <div class="col-7 border-bottom">
+						<img src="data:image/png;base64,{{ item_information['statistics'] }}">
+						
                         </div>
                     </div>
                 </div>
             </div>
+			{% endif %}
             <!-- third row -->
             <div class="row pt-4 pb-5">
                 <button class="ms-2" id="pbutton">View All</button>

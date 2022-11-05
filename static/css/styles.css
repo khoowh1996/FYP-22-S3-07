@@ -1963,3 +1963,6 @@ select:invalid, select option[value=""]{
 	letter-spacing: 0.2px;
 	color: #252733;
 }
+.items:hover {
+	background-color: rgba(55, 81, 255, 0.04);
+}
