@@ -170,6 +170,14 @@ def contactus():
     except:
         role = ""
     return render_template("contactus.html",role=role)
+    
+@app.route("/about")
+def about():
+    try:
+        role = session["role"]
+    except:
+        role = ""
+    return render_template("about.html",role=role)
 
 if __name__ == "__main__":
     app.run()
