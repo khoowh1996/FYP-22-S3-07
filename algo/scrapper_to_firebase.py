@@ -42,7 +42,7 @@ def stream_handler(message):
     #for item,val in message["data"].items():
     #    print(val["url"]+","+val["crawler"])
     try:
-        with open('crawl_lists.txt','w') as f:
+        with open('crawl_lists.txt','a') as f:
             for item,val in message["data"].items():
                 f.write(val["url"]+","+val["crawler"]+"\n")
                 database.child("crawl_lists").child(item).remove()

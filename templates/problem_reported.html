@@ -170,35 +170,49 @@
                     </div>
                     <div>
                         <!-- third row -->
-                        <div style="display:none;">
+                        <div class="accordion" id="accordionExample" style="display:none;">
                             <li id="myitem" class="list-group-item">
-                                <div class="row pt-3 pb-3 esobox align-items-center">
-                                    <!--col 1-->
-                                    <div class="col-3">                                        
-                                        <span class="description" id="inputhead"></span>
-                                    </div>
-                                    <!--col 2-->
-                                    <div class="col-3">
-										<img id="profile-picture" src="images/profile_pic.png" /><span
-                                            class="fullname pb-2" id="name"></span>
-                                    </div>
-                                    <!--col 4-->
-                                    <div class="col-2">
-                                        <span class="datereported timestamp ms-2" id="date"></span>
-                                    </div>
-                                    <!--col 6-->
-                                    <div class="col-1">
-                                        <span class="pb-2"><img class="status" /></span>
-                                    </div>
-                                    <div class="col-1 ms-3">
-										<button class="actionmodaltarget action-button ms-5" data-bs-toggle="modal">
-										<span class="actiontext" id="inputhead"></span>
-										</button>
+                                <div class="row pt-3 pb-3 esobox align-items-center accordion-item">
+											<!--col 1-->
+											<div class="col-3">                                        
+												<span class="description" id="inputhead"></span>
+											</div>
+											<!--col 2-->
+											<div class="col-3">
+												<img id="profile-picture" src="images/profile_pic.png" /><span
+													class="fullname pb-2" id="name"></span>
+											</div>
+											<!--col 4-->
+											<div class="col-2">
+												<span class="datereported timestamp ms-2" id="date"></span>
+											</div>
+											<!--col 6-->
+											<div class="col-1">
+												<span class="pb-2"><img class="status" /></span>
+											</div>
+											<div class="col-1 ms-3">
+												<button class="actionmodaltarget action-button ms-5" data-bs-toggle="modal">
+												<span class="actiontext" id="inputhead"></span>
+												</button>
+											</div>
+											
+									
+											<div class="col ms-5">				
+											<button class="accordion-button bs_target aria_controls" onclick="change_display(this)" type="button" data-bs-toggle="collapse" aria-expanded="true" >
+												<span class="ms-5 pb-2">+</span>		
+											</button>
+											</div>	
+									<div class="border-top mt-3 accordion-collapse collapse bs_id" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									  <div class="accordion-body">
+									  <div class="row">
+										<div class="col-2 pt-2 pb-2" style="font-family: 'Mulish';font-style: normal;font-weight: 600;font-size: 12px;line-height: 18px;letter-spacing: 0.2px;color: #252733;">issue Description : </div>
+										<div class="col-10 description2 pt-2 pb-2" style="font-family: 'Mulish';font-style: normal;font-weight: 600;font-size: 12px;line-height: 18px;letter-spacing: 0.2px;color: #252733;"><strong></strong></div>
+									  </div>
+									  <div class="row">
+										<img class="images" style="height:128px;width:128px;padding:0 0 0 10px;"></img>
+									  </div>
 									</div>
-                                    <div class="col ms-5">
-                                        <span class="ms-5 pb-2"><img class="action" src="images/ellipsis.png" /></span>
-                                    </div>
-                                </div>
+                                </div>		
 								<div class="actionmodalbox modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										  <div class="modal-dialog">
 											<div class="modal-content">
@@ -230,7 +244,7 @@
 	const data = {{ all_issues | tojson }}
 
     const options = {
-        valueNames: ['fullname',{name:"status","attr":"src"},'datereported',{name:'timestamp',attr:'data-timestamp'},'description',{ name: 'actionmodalbox', attr: 'id' },{ name: 'actionmodaltarget', attr: 'data-bs-target' },{ name: 'actionbutton', attr: 'value' },'actiontext','actiontext2','actiontext3'],
+        valueNames: ['fullname',{name:"status","attr":"src"},'datereported',{name:'timestamp',attr:'data-timestamp'},'description','description2',{ name: 'actionmodalbox', attr: 'id' },{ name: 'actionmodaltarget', attr: 'data-bs-target' },{ name: 'actionbutton', attr: 'value' },'actiontext','actiontext2','actiontext3',{ name: 'bs_target', attr: 'data-bs-target' },{ name: 'aria_control', attr: 'aria-controls' },{ name: 'bs_id', attr: 'id' },{name: 'images',attr:'src'}],
         item: 'myitem',
         page: 10,
         pagination: true
@@ -262,6 +276,18 @@
 		{			
 			l.filter(); // Remove all filters
 		}
+	function change_display(el){
+		child = el.firstElementChild;
+		console.log(child);
+		if (child.textContent == "+")
+		{
+			child.textContent = "-";
+		}
+		else
+		{
+			child.textContent = "+";
+		}
+	}
 </script>
 
 </html>

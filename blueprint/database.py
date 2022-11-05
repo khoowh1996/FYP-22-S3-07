@@ -704,7 +704,6 @@ def upload_issue(username,uploaded_files,issue_information):
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").set({"counter":1})
     else:
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").update({"counter":issue_information["id"]})
-        
     uploaded_files_url = []
     for file in uploaded_files:
         if file.filename == "":
@@ -714,10 +713,10 @@ def upload_issue(username,uploaded_files,issue_information):
             file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child("temp.png").get_url(None)
             uploaded_files_url.append(file_url)
         else:    
-            for file in uploaded_files:
-                storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
-                file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
-                uploaded_files_url.append(file_url)
+            #for file in uploaded_files:
+            storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).put(file)
+            file_url = storage.child("issues").child(hashlib.sha256(username.encode()).hexdigest()).child(str(retrieve_issue_id(username))).child(file.filename).get_url(None)
+            uploaded_files_url.append(file_url)
     issue_information["images"] = uploaded_files_url
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").child(issue_information["id"]).set(issue_information)
     
@@ -762,7 +761,7 @@ def retrieve_all_issues_for_problem_reported():
                     userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
                     print(issue["reportdate"])
                     print(report_date_in_timestamp(issue["reportdate"]))
-                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"timestamp":report_date_in_timestamp(issue["reportdate"]),"description":issue["description"][:28],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+userhash,"actionmodalbox":"amodal"+userhash,"actionbutton":user.key()+";"+str(issue["id"])})
+                    issue_list.append({"fullname":user.val()["firstname"]+" "+user.val()["lastname"],"status":status,"id":issue["id"],"datereported":last_created_date(issue["reportdate"]),"timestamp":report_date_in_timestamp(issue["reportdate"]),"description":issue["description"][:28],"description2":issue["description"],"images":issue["images"],"actiontext":actiontext,"actiontext2":actiontext + " Issue","actiontext3":actiontext + " this issue?","actionmodaltarget":"#amodal"+userhash,"actionmodalbox":"amodal"+userhash,"actionbutton":user.key()+";"+str(issue["id"]),"bs_id":"accord"+userhash + str(issue["id"]),"bs_target":"#accord"+userhash + str(issue["id"]),"aria_control":"accord"+userhash + str(issue["id"]) })
         except KeyError as e:
             continue
     return issue_list

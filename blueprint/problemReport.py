@@ -22,9 +22,10 @@ def uploadissues():
         check_file = True
         username = session["user"]
         for file in uploaded_files:
+            print("here" + file.filename)
             if file.filename == "":
                 continue
-            if file.filename.split(".")[1] not in ["jpg","png","gif","jpeg"]:
+            if file.filename.split(".")[1].lower() not in ["jpg","png","gif","jpeg"]:
                 check_file = False    
         
         issue_information = {"id":retrieve_issue_id(username),"status":"Processing","description":description,"images":""}

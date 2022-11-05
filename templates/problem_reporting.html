@@ -90,11 +90,11 @@
 						<div class="image-preview"></div>
                     </div>				
                     <div class="row">	
-						<input type="file" id="files" name="file" multiple style="display:none" accept="image/gif, image/jpeg, image/jpg, image/png"/>
+						<input type="file" id="files" name="file" multiple style="display:none"/>
                         <button type="button" id="upload" onclick="document.getElementById('files').click()">Upload</button>
                     </div>
                     <div class="row">
-                        <button id="submit">Submit</button>
+                        <button id="submit" onclick="set_files()">Submit</button>
                     </div>
                     <div class="row"></div>
                 </div>
@@ -107,6 +107,7 @@
 <script>
 let file_input = document.querySelector('#files');
 let image_preview = document.querySelector('.image-preview');
+const file_arr = []; 
 
 const handle_file_preview = (e) => {
   let files = e.target.files;
@@ -119,11 +120,15 @@ const handle_file_preview = (e) => {
 	  image.style.padding = "0 0 0 50px"
       image.src = window.URL.createObjectURL(files[i]);
       image_preview.appendChild(image);
+	  file_arr.push(files[i])
   }
 }
 
 file_input.addEventListener('change', handle_file_preview);
-
+function set_files(){
+	let file_input = document.querySelector('#files');
+	file_input.target.files = file_arr;
+}
 </script>
 
 </html>
