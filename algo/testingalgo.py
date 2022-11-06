@@ -16,13 +16,13 @@ import numpy as np
 #webpage = urllib.request.urlopen(url)
 # Read the CSV file
 #reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
-reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+#reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
 #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
-dataset = defaultdict(dict)
+#dataset = defaultdict(dict)
 
 # Put it in a dictionary
-for i in reader:
-    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+#for i in reader:
+#    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
 
 # To see the whole dictionary of the data from CSV
 #print(dataset)
@@ -98,9 +98,9 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
         webpage = urllib.request.urlopen(url)
         reader = csv.DictReader(io.TextIOWrapper(webpage))
     except:
-        #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
+        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
         # Read the CSV file #read from the url
-        reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+        #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
     dataset = defaultdict(dict)
     listOfRecommendation = []
     # Put it in a dictionary
@@ -126,18 +126,17 @@ def get_graph():
     plt.savefig(img, format='png')
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode()
-    #plt.show()
+    plt.show()
     plt.close()
     return plot_url
-    #plt.show()
 
-ownerinput1 = 'highheels'
-ownerinput2 = ''
+#ownerinput1 = 'highheels'
+#ownerinput2 = ''
 
-if ownerinput2 == "":
-    compareWithAllItems(dataset,ownerinput1)
-else:
-    compareWithOne(dataset, ownerinput1, ownerinput2)
+#if ownerinput2 == "":
+    #compareWithAllItems(dataset,ownerinput1)
+#else:
+    #compareWithOne(dataset, ownerinput1, ownerinput2)
 
 # If you want to see it in clearer view
 #dd = pd.read_csv(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv')
@@ -152,9 +151,9 @@ else:
 #print(get_algorithm_output(""))
 #get_graph()
 
-plt.bar(catList, ratingList)
-plt.title('Predicted ratings from other categories')
-plt.xlabel('Other categories')
-plt.ylabel('Average rating')
-addLabels(catList, ratingList)
-plt.show()
+#plt.bar(catList, ratingList)
+#plt.title('Predicted ratings from other categories')
+##plt.xlabel('Other categories')
+#plt.ylabel('Average rating')
+#addLabels(catList, ratingList)
+#plt.show()

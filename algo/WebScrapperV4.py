@@ -15,9 +15,12 @@ class ScrapeLazada():
     def scrape(self,url):
 
         #url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?under-armour&from=wangpu'
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions() 
+        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
-
+        driver.execute_script("window.scrollTo(0,1080)")
         WebDriverWait(driver, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         time.sleep(2)
@@ -32,18 +35,20 @@ class ScrapeLazada():
             url = "https:" + urlRaw["href"]
             df = self.call(url, df)
 
-        #df.to_csv("Shirts.csv", index=False)
-        df.to_csv("testscrape.csv", index=False)        
-        with open('main_dataset.csv','a') as f:
-            df.to_csv(f, index=False)
+        #df.to_csv("v1.csv", index=False)
+        df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
         upload('main_dataset.csv','main_dataset.csv')
         driver.close()
 
     def call(self, url, df):
         urlNew = url
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        #driver = webdriver.Chrome(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions() 
+        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        driver = webdriver.Chrome(options=options)
         driver.get(urlNew)
-
+        driver.execute_script("window.scrollTo(0,1080)")
+        
         WebDriverWait(driver, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         time.sleep(2)
@@ -53,7 +58,6 @@ class ScrapeLazada():
 
         results = list(map(int, filter(None, [i.text for i in soup.find_all(
             'button', {'class': 'next-pagination-item'})])))
-
         if results:
 
             for i in range(max(results)+1):
@@ -80,8 +84,12 @@ class ScrapeLazada():
 
     def singlePage(self, url):
         urlNew = url
-        driver = webdriver.Chrome(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions() 
+        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(urlNew)
+        driver.execute_script("window.scrollTo(0,1080)")
 
         WebDriverWait(driver, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
@@ -89,7 +97,6 @@ class ScrapeLazada():
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
         products = []
-
         results = list(map(int, filter(None, [i.text for i in soup.find_all(
             'button', {'class': 'next-pagination-item'})])))
         df = pd.DataFrame()
@@ -115,10 +122,7 @@ class ScrapeLazada():
                 time.sleep(3)
 
         df = df.append(products)
-        df.to_csv("ShirtsSingle2.csv", index=False)
-        df.to_csv("testscrapeSingle.csv", index=False)        
-        with open('main_dataset.csv','a') as f:
-            df.to_csv(f, index=False)
+        df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
         upload('main_dataset.csv','main_dataset.csv')
         driver.close()
 
@@ -141,16 +145,14 @@ try:
                     sl.scrape(url)       
                 if mode == "single_page":
                     print("single page mode")                
-                    download_csv()                           
+                    #download_csv()                           
                     sl.singlePage(url)
                 elif mode == "single_item":               
                     download_csv()   
                     print("single mode")
                     df = pd.DataFrame()
                     df = sl.call(df,url)
-                    df.to_csv("testscrapeSingleItem.csv", index=False)        
-                    with open('main_dataset.csv','a') as f:
-                        df.to_csv(f, index=False)
+                    df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
                     upload('main_dataset.csv','main_dataset.csv')
 except FileNotFoundError as e:
     print(e)
