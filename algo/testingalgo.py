@@ -11,7 +11,7 @@ import base64
 import matplotlib.pyplot as plt
 import numpy as np
 
-
+'''
 #url = get_database_from_storage()
 #webpage = urllib.request.urlopen(url)
 # Read the CSV file
@@ -26,7 +26,7 @@ for i in reader:
 
 # To see the whole dictionary of the data from CSV
 #print(dataset)
-
+'''
 catList = []
 ratingList = []
 # Get unique set of items bought
@@ -131,6 +131,7 @@ def get_graph():
     return plot_url
     #plt.show()
 
+'''
 ownerinput1 = 'highheels'
 ownerinput2 = ''
 
@@ -158,3 +159,4 @@ plt.xlabel('Other categories')
 plt.ylabel('Average rating')
 addLabels(catList, ratingList)
 plt.show()
+'''
