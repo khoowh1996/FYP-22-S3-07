@@ -87,6 +87,7 @@
                     </div>
                     <div class="row pt-3 pb-4">
                         <span id="headline">Screenshots</span>
+						<span class="ms-3" id="subhead">*Select multiple images at once to upload.</span>
 						<div class="image-preview"></div>
                     </div>				
                     <div class="row">	
@@ -94,7 +95,7 @@
                         <button type="button" id="upload" onclick="document.getElementById('files').click()">Upload</button>
                     </div>
                     <div class="row">
-                        <button id="submit" onclick="set_files()">Submit</button>
+                        <button id="submit">Submit</button>
                     </div>
                     <div class="row"></div>
                 </div>
@@ -107,28 +108,25 @@
 <script>
 let file_input = document.querySelector('#files');
 let image_preview = document.querySelector('.image-preview');
-const file_arr = []; 
 
 const handle_file_preview = (e) => {
   let files = e.target.files;
   let length = files.length;
 
+  while (image_preview.firstChild) {
+    image_preview.removeChild(image_preview.lastChild);
+  }
   for(let i = 0; i < length; i++) {
       let image = document.createElement('img');
 	  image.width='250';
 	  image.height='200';
-	  image.style.padding = "0 0 0 50px"
+	  image.style.padding = "0 0 0 50px";
       image.src = window.URL.createObjectURL(files[i]);
       image_preview.appendChild(image);
-	  file_arr.push(files[i])
   }
 }
 
 file_input.addEventListener('change', handle_file_preview);
-function set_files(){
-	let file_input = document.querySelector('#files');
-	file_input.target.files = file_arr;
-}
 </script>
 
 </html>
