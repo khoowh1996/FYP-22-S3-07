@@ -16,16 +16,19 @@ import numpy as np
 #webpage = urllib.request.urlopen(url)
 # Read the CSV file
 #reader = csv.DictReader(io.TextIOWrapper(webpage)) #read from the url
-#reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+#reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Shirts.csv'))
 #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
-#dataset = defaultdict(dict)
+dataset = defaultdict(dict)
 
 # Put it in a dictionary
-#for i in reader:
-#    dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+for i in reader:
+    newI = i['1']
+    newnewI = str(newI).replace(newI[0:3], '')
+    dataset[newnewI.strip()][i['4'].replace(' ','')] = i['0'].replace(' ','')
 
 # To see the whole dictionary of the data from CSV
-#print(dataset)
+print(dataset)
 
 
 catList = []
@@ -40,7 +43,6 @@ def uniqueCategories(dataset):
     uniqueCategoriesList = list(s)
     return uniqueCategoriesList
 
-#print(dataset['Marina'][ownerinput2])
 def compareWithOne(dataset, input1, input2):
     listOfValues = []
     listOfRecommendation = []
@@ -106,7 +108,9 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
     listOfRecommendation = []
     # Put it in a dictionary
     for i in reader:
-        dataset[i['user name'].strip()][i['product_category'].replace(' ','')] = i['rating'].replace(' ','')
+        n = i['1']
+        newI = str(n).replace(n[0:3], '')
+        dataset[newI.strip()][i['4'].replace(' ','')] = i['0'].replace(' ','')
     if ownerinput2 == "":
         listOfRecommendation = compareWithAllItems(dataset,ownerinput1)
     else:
@@ -132,13 +136,13 @@ def get_graph():
     return plot_url
 
 
-#ownerinput1 = 'highheels'
-#ownerinput2 = ''
+ownerinput1 = 'highheels'
+ownerinput2 = ''
 
-#if ownerinput2 == "":
-#    compareWithAllItems(dataset,ownerinput1)
-#else:
-#    compareWithOne(dataset, ownerinput1, ownerinput2)
+if ownerinput2 == "":
+    compareWithAllItems(dataset,ownerinput1)
+else:
+    compareWithOne(dataset, ownerinput1, ownerinput2)
 
 # If you want to see it in clearer view
 #dd = pd.read_csv(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv')
@@ -153,9 +157,12 @@ def get_graph():
 #print(get_algorithm_output(""))
 #get_graph()
 
-#plt.bar(catList, ratingList)
-#plt.title('Predicted ratings from other categories')
-#plt.xlabel('Other categories')
-#plt.ylabel('Average rating')
-#addLabels(catList, ratingList)
-#plt.show()
+plt.bar(catList, ratingList)
+plt.title('Predicted ratings from other categories')
+plt.xlabel('Other categories')
+plt.ylabel('Average rating')
+addLabels(catList, ratingList)
+plt.show()
+
+print(catList)
+print(ratingList)
