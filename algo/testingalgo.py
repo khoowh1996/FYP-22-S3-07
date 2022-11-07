@@ -61,7 +61,7 @@ def compareWithOne(dataset, input1, input2):
                 pass
             else:
                 catList.append(input2)
-                
+
     # To handle the exception of division by 0
     if len(listOfValues) == 0:
         listOfRecommendation.append(f'No one has bought, {input1} among people who has bought {input2}')
@@ -120,11 +120,11 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
 def addLabels(x,y):
     for i in range(len(x)):
         plt.text(i, y[i], y[i], ha = 'center')
-        
+
 def get_graph():
     plt.bar(catList, ratingList)
     plt.title('Predicted ratings from other categories')
-    plt.xlabel('Other categories')
+    plt.xlabel('Other categories') 
     plt.ylabel('Average rating')
     addLabels(catList, ratingList)
     img = io.BytesIO()
