@@ -1,4 +1,4 @@
-import requests
+
 import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -12,15 +12,66 @@ from scrapper_to_firebase import upload,download_csv,start_stream
 
 class ScrapeLazada():
 
-    def scrape(self,url,projectid):
+    # For Url to crawl every Item page on their store
+    def crawlWholeStore(self, url,projectid):
 
-        #url = 'https://www.lazada.sg/men-sports-clothing-t-shirts/?under-armour&from=wangpu'
-        options = webdriver.ChromeOptions() 
-        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(options=options)
-        #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
-        driver.execute_script("window.scrollTo(0,1080)")
+        driver.execute_script("window.scrollTo(0, 1080)")
+
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
+        time.sleep(2)
+
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+
+        results = list(map(int, filter(None, [i.text for i in soup.find_all(
+            'li', {'class': 'ant-pagination-item'})])))
+        df = pd.DataFrame()
+        products = []
+        if results:
+            counter = 1
+            for i in range(max(results)+1):
+                options = webdriver.ChromeOptions()
+                options.add_experimental_option(
+                    'excludeSwitches', ['enable-logging'])
+                driver = webdriver.Chrome(options=options)
+                newUrl = url + "&Page=" + str(counter)
+                driver.get(newUrl)
+                driver.execute_script("window.scrollTo(0, 1080)")
+
+                WebDriverWait(driver, 5).until(
+                    EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
+                time.sleep(2)
+
+                soup = BeautifulSoup(driver.page_source, "html.parser")
+
+                df = pd.DataFrame()
+                for item in soup.findAll('div', class_='Bm3ON'):
+                    urlRaw = item.find("div", {"class": "_95X4G"}
+                                       ).find("a", recursive=False)
+                    url = "https:" + urlRaw["href"]
+                    df = self.intoPageToGetReview(url, df)
+
+        project_name = projectid+".csv"
+        df.to_csv(project_name, index=False)
+        df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
+        upload('main_dataset.csv','main_dataset.csv')
+        upload(project_name,project_name)
+        driver.close()
+
+    # For Url that will only scrape the first page it sees
+
+    def scrapeOnePage(self, url,projectid):
+
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        driver = webdriver.Chrome(options=options)
+        driver.get(url)
+        driver.execute_script("window.scrollTo(0, 1080)")
+
         WebDriverWait(driver, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         time.sleep(2)
@@ -33,8 +84,8 @@ class ScrapeLazada():
             urlRaw = item.find("div", {"class": "_95X4G"}
                                ).find("a", recursive=False)
             url = "https:" + urlRaw["href"]
-            df = self.call(url, df)
-    
+            df = self.intoPageToGetReview(url, df)
+
         project_name = projectid+".csv"
         df.to_csv(project_name, index=False)
         df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
@@ -42,15 +93,14 @@ class ScrapeLazada():
         upload(project_name,project_name)
         driver.close()
 
-    def call(self, url, df):
+    def intoPageToGetReview(self, url, df):
         urlNew = url
-        #driver = webdriver.Chrome(ChromeDriverManager().install())
-        options = webdriver.ChromeOptions() 
-        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(options=options)
         driver.get(urlNew)
-        driver.execute_script("window.scrollTo(0,1080)")
-        
+        driver.execute_script("window.scrollTo(0, 1080)")
+
         WebDriverWait(driver, 5).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
         time.sleep(2)
@@ -60,6 +110,7 @@ class ScrapeLazada():
 
         results = list(map(int, filter(None, [i.text for i in soup.find_all(
             'button', {'class': 'next-pagination-item'})])))
+
         if results:
 
             for i in range(max(results)+1):
@@ -84,21 +135,23 @@ class ScrapeLazada():
         newdf = df.append(products)
         return newdf
 
-    def singlePage(self, url,projectid):
+    # when URL is only for 1 product
+    def singleProductPage(self, url,projectid):
         urlNew = url
-        options = webdriver.ChromeOptions() 
-        options.add_experimental_option('excludeSwitches', ['enable-logging']) 
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(options=options)
-        #driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(urlNew)
-        driver.execute_script("window.scrollTo(0,1080)")
+        driver.execute_script("window.scrollTo(0, 1080)")
 
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#root")))
+
         time.sleep(2)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
         products = []
+
         results = list(map(int, filter(None, [i.text for i in soup.find_all(
             'button', {'class': 'next-pagination-item'})])))
         df = pd.DataFrame()
@@ -156,12 +209,10 @@ try:
                 elif mode == "single_item":               
                     download_csv()   
                     print("single mode")
-                    df = pd.DataFrame()
-                    df = sl.call(df,url)
-                    df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
-                    upload('main_dataset.csv','main_dataset.csv')
+                    sl.singleProductPage(df,url,projectid)
 except FileNotFoundError as e:
     print(e)
     print("crawl stop")
 # sl.scrape()
-#sl.singlePage("https://www.lazada.sg/products/under-armour-ua-mens-performance-apparel-short-sleeve-i2012723227-s10952881051.html?clickTrackInfo=query%253A%253Bnid%253A2012723227%253Bsrc%253AlazadaInShopSrp%253Brn%253A7ea1e9db1436f1bd52388f7e99dfe0b4%253Bregion%253Asg%253Bsku%253A2012723227_SGAMZ%253Bprice%253A23.40%253Bclient%253Adesktop%253Bsupplier_id%253A1000259426%253Basc_category_id%253A4861%253Bitem_id%253A2012723227%253Bsku_id%253A10952881051%253Bshop_id%253A349621&freeshipping=1&fs_ab=1&fuse_fs=1&mp=1&spm=a2o42.seller.list.i40.6a6d2d4dq39QTv")
+#sl.crawlWholeStore(
+    "https://www.lazada.sg/men-sports-clothing-t-shirts/?under-armour&from=wangpu")

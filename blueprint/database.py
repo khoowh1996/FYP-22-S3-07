@@ -10,6 +10,7 @@ import string
 import cryptocode
 import os
 
+from algo.testingalgo import *
 config = {
 	'apiKey': "",
 	'authDomain': "",
@@ -208,7 +209,7 @@ def createDemoAccount():
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1,"limit":1})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"www.adidas.com","counter":1,"crawler":"single_page"}})
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"https://www.lazada.sg/men-sports-clothing-t-shirts","counter":1,"crawler":"single_page","projectcsv":""}}) # set the projectcsv to be from the same for all demo
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"tcategory":"highheels","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
 def demo_user_exist(username):
@@ -378,15 +379,37 @@ def set_project(username, project_information,role):
     if role == "demo_user":
         user_role = "demo_users"
     if project_information["id"] == 1:
+        crawl_id = (hashlib.sha256(username.encode()).hexdigest()+";"+str(1))
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1})
-        crawl_information = {(hashlib.sha256(username.encode()).hexdigest()+";"+str(1)):{"url":project_information["url"],"crawler":project_information["crawler"]}}
+        crawl_information = {crawl_id:{"url":project_information["url"],"crawler":project_information["crawler"],"projectcsv":crawl_id}}
         set_url_to_crawl_list(crawl_information)
+        project_information["projectcsv"] = crawl_id
     else:
+        crawl_id = (hashlib.sha256(username.encode()).hexdigest()+";"+str(project_information["id"]))
         database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":project_information["id"]})
-        crawl_information = {(hashlib.sha256(username.encode()).hexdigest()+";"+str(project_information["id"])):{"url":project_information["url"],"crawler":project_information["crawler"]}}
+        crawl_information = {crawl_id:{"url":project_information["url"],"crawler":project_information["crawler"],"projectcsv":crawl_id}}
         set_url_to_crawl_list(crawl_information)
+        project_information["projectcsv"] = crawl_id
     database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_information["id"]).update(project_information)
-        
+
+def retrieve_all_project_recommendations(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    try:
+        all_project_items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
+        all_project_items_list_of_recommendations = []
+        if len(all_project_items.val()) == 1 or len(all_project_items.val()) == 2:#if there is only 1 item in the list
+            for item in all_project_items.val():            
+                if item != None:
+                    all_project_items_list_of_recommendations.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})
+            return all_project_items_list_of_recommendations
+        for item in all_project_items.val():
+            if item != None:
+                all_project_items_list_of_recommendations.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})
+        return all_project_items_list_of_recommendations
+    except TypeError as e:
+        return [] 
 
 def set_url_to_crawl_list(crawl_information):
     database.child("crawl_lists").update(crawl_information)
@@ -819,8 +842,15 @@ def get_category_for_algorithm(username,project_id,item_id):
     category2 = item.val()["tcategory"]
     return category1,category2    
     
-def get_dataset_from_storage():
-    url = storage.child("Demo.csv").get_url(None)  # getting the url from storage
+def get_dataset_from_storage(project_name=""):
+    if project_name != "":
+        try:
+            url = storage.child(project_name).get_url(None)
+            return url
+        except Exception as e:
+            print(e)
+            return None
+    url = storage.child("main_dataset.csv").get_url(None)  # getting the url from storage
     return url
     
 def check_if_company_name_unique(company):

@@ -101,9 +101,11 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
         webpage = urllib.request.urlopen(url)
         reader = csv.DictReader(io.TextIOWrapper(webpage))
     except:
-        #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\Demo.csv'))
+        #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
+        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main.csv'))
         # Read the CSV file #read from the url
-        reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+        #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+        
     dataset = defaultdict(dict)
     listOfRecommendation = []
     # Put it in a dictionary
@@ -117,6 +119,40 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
         listOfRecommendation = compareWithOne(dataset, ownerinput1, ownerinput2)
     return listOfRecommendation,get_graph()
 
+
+def get_algorithm_output(main_url,project_url):
+    try:
+        webpage = urllib.request.urlopen(main_url)
+        reader = csv.DictReader(io.TextIOWrapper(webpage))
+        webpage2 = urllib.request.urlopen(project_url)
+        reader2 = csv.DictReader(io.TextIOWrapper(webpage2))
+    except:
+        #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
+        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main.csv'))
+        reader2 = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\ProjectID.csv'))
+        # Read the CSV file #read from the url
+        #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
+        
+    dataset = defaultdict(dict)
+    listOfRecommendation = {}
+    # Put it in a dictionary
+    for i in reader:
+        n = i['1']
+        newI = str(n).replace(n[0:3], '')
+        dataset[newI.strip()][i['4'].replace(' ','')] = i['0'].replace(' ','')
+        
+    list_of_categories = {}
+    for i in reader2:
+        list_of_categories[i['0']] = (i['3'].replace(' ',''))
+    
+    for key,cat in list_of_categories.items():
+        listOfRecommendation[key] = compareWithAllItems(dataset,cat)
+    return listOfRecommendation
+    
+#for key,val in get_algorithm_output("","").items():
+#    print(key,val)
+    
+    
 def addLabels(x,y):
     for i in range(len(x)):
         plt.text(i, y[i], y[i], ha = 'center')
@@ -134,7 +170,6 @@ def get_graph():
     #plt.show()
     plt.close()
     return plot_url
-
 
 #ownerinput1 = 'highheels'
 #ownerinput2 = ''
