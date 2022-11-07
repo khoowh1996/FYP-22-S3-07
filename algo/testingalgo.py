@@ -156,9 +156,6 @@ def get_algorithm_output(main_url,project_url):
     #print(f'this is listOfRecommendation {listOfRecommendation}')
     return listOfRecommendation
     
-#for key,val in get_algorithm_output("","").items():
-#    print(key,val)
-    
     
 def addLabels(x,y):
     for i in range(len(x)):
