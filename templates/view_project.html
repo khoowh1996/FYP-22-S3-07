@@ -107,37 +107,42 @@
                             <span class="ms-3" id="headline">Products</span>
                         </div>
                         <div class="col-3">
-                            <span id="headline">Target Category</span>
+                            <span id="headline">Item Category</span>
                         </div>
                         <div class="col-3">
-                            <span id="headline">Conversion Rate</span>
+                            <span id="headline">Compared to Other Category</span>
                         </div>
                         <div class="col-2">
-                            <span id="headline">Most Popular User Group</span>
+                            <span id="headline">Rating</span>
                         </div>
                     </div>
-                    <!-- fourth row -->
-					{%	for n in range(0,item_lists | length)	%}
+					
 					{% if item_lists | length == 0 %}
-					No Products currently...
+					<div class="row pt-3">
+					<span class="ms-4" id="content">Product stats is currently empty...</span>
+					<span class="ms-4" id="content">Crawling is still in progress...</span>
+					</div>
 					{% endif %}
-					<a href="{{ project_information['id'] }}/item/{{ item_lists[n]['id'] }}" class="items">
+                    <!-- fourth row -->
+					{%	for key, value in item_lists.items()	%}
+					<!--<a href="" class="items">-->
                     <div class="row pt-3">
                         <div class="col-4 pb-3 border-bottom">
-                            <img class="ms-3" style="width: 72;height: 64;"src="{{ item_lists[n]['imageurl'] }}">
-                            <span class="ms-4" id="content">Shoe {{ item_lists[n]['id'] }}</span>
+                            <span class="ms-4" id="content">{{ key }}</span>
                         </div>
                         <div class="col-3 border-bottom">
-                            <span class="pt-4" id="content">{{ item_lists[n]['category'] }}</span>
+                            <span class="pt-4" id="content">{{ value["category"] }}</span>
                         </div>
                         <div class="col-3 border-bottom">
-                            <span class="pt-4" id="content">{{ item_lists[n]['rating'] }}</span>
+						{% for item in value["list"] %}
+                            <span class="pt-4" id="content">{{ item }}</span>
+						{% endfor %}
                         </div>
                         <div class="col-2 border-bottom">
-                            <span class="pt-4" id="recommendation">Age groups in 20s</span>
+                            <span class="pt-4" id="recommendation">Show the Stats</span>
                         </div>
                     </div>
-					</a>
+					<!--</a>-->
 					{%	endfor	%}
                     <!-- fifth row 
                     <div class="row pt-4 pb-5">

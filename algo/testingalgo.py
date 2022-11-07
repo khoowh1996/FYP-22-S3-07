@@ -128,7 +128,7 @@ def get_algorithm_output(main_url,project_url):
         reader2 = csv.DictReader(io.TextIOWrapper(webpage2))
     except:
         #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
-        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main.csv'))
+        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
         reader2 = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\ProjectID.csv'))
         # Read the CSV file #read from the url
         #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
@@ -137,20 +137,27 @@ def get_algorithm_output(main_url,project_url):
     listOfRecommendation = {}
     # Put it in a dictionary
     for i in reader:
+        #print(f'reader {i}')
         n = i['1']
         newI = str(n).replace(n[0:3], '')
         dataset[newI.strip()][i['4'].replace(' ','')] = i['0'].replace(' ','')
         
     list_of_categories = {}
     for i in reader2:
-        list_of_categories[i['0']] = (i['3'].replace(' ',''))
+        #print(f'reader2 {i}')
+        if i['5'] == '':
+            item_category = i['4']
+        else:
+            item_category = i['4'] + ", " + i['5']
+        list_of_categories[i['0']] = {"input_category":(i['3'].replace(' ','')),"item_category":item_category}
     
     for key,cat in list_of_categories.items():
-        listOfRecommendation[key] = compareWithAllItems(dataset,cat)
+        listOfRecommendation[key] = {"list":compareWithAllItems(dataset,cat["input_category"]),"category":cat["item_category"]}
+    #print(f'this is listOfRecommendation {listOfRecommendation}')
     return listOfRecommendation
     
-#for key,val in get_algorithm_output("","").items():
-#    print(key,val)
+for key,val in get_algorithm_output("","").items():
+    print(key,val)
     
     
 def addLabels(x,y):

@@ -94,7 +94,8 @@ def viewproject(project_id):
             project_information = get_project_by_id(username,project_id,session["role"])
             item_id = retrieve_item_id(username,project_id,session["role"])
             print(item_id)
-            item_lists = retrieve_all_project_items(username,project_id,session["role"])
+            #item_lists = retrieve_all_project_items(username,project_id,session["role"])
+            item_lists = retrieve_all_project_recommendations(username,project_id,session["role"])
             return render_template("view_project.html",project_information=project_information,categories=get_category_for_dropdown(),item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
         return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
@@ -125,7 +126,7 @@ def createitem():
         try:
             input1 = category
             input2 = tcategory
-            list_of_recommendations,graph_output = get_algorithm_output("test",input1.lower().replace(' ',''),input2.lower().replace(' ',''))
+            list_of_recommendations,graph_output = get_algorithm_output(get_dataset_from_storage(),input1.lower().replace(' ',''),input2.lower().replace(' ',''))
             item_information["recommendations"] = list_of_recommendations
             item_information["statistics"] = graph_output
             set_project_item(username,project_id,item_id,item_information,session["role"])

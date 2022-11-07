@@ -9,8 +9,8 @@ import random
 import string
 import cryptocode
 import os
-
 from algo.testingalgo import *
+
 config = {
 	'apiKey': "",
 	'authDomain': "",
@@ -398,18 +398,22 @@ def retrieve_all_project_recommendations(username,project_id,role):
         user_role = "demo_users"
     try:
         all_project_items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
-        all_project_items_list_of_recommendations = []
-        if len(all_project_items.val()) == 1 or len(all_project_items.val()) == 2:#if there is only 1 item in the list
-            for item in all_project_items.val():            
-                if item != None:
-                    all_project_items_list_of_recommendations.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})
-            return all_project_items_list_of_recommendations
-        for item in all_project_items.val():
-            if item != None:
-                all_project_items_list_of_recommendations.append({"id":item["id"],"name":item["name"],"category":item["category"],"imageurl":item["imageurl"]})
-        return all_project_items_list_of_recommendations
+        #print(f'this + {all_project_items.val()["recommendations"]}')
+        return all_project_items.val()["recommendations"]
+    except KeyError as e:
+        project_csv_url = all_project_items.val()["projectcsv"]+".csv"
+        try:
+            print(urllib.request.urlopen(get_dataset_from_storage(project_csv_url)))
+            list_of_recommendations = get_algorithm_output(get_dataset_from_storage(),get_dataset_from_storage(project_csv_url))
+            print(list_of_recommendations)
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").update(list_of_recommendations)
+            return list_of_recommendations
+        except Exception as e:
+            print(e)
+            return {}
+        return 
     except TypeError as e:
-        return [] 
+        return {} 
 
 def set_url_to_crawl_list(crawl_information):
     database.child("crawl_lists").update(crawl_information)
