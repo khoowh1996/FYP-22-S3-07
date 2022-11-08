@@ -403,7 +403,7 @@ def retrieve_all_project_recommendations(username,project_id,role):
             list_of_recommendations_for_output = []
             for item in items.each():
                 if item != None:
-                    list_of_recommendations_for_output.append({"name":item.key().replace("_"," "),"category":item.val()["category"],"list":item.val()["list"],"statistics":"data:image/png;base64, "+ item.val()["statistics"] })      
+                    list_of_recommendations_for_output.append({"name":item.key().replace("_"," "),"category":item.val()["category"],"list":'<br><br>'.join(item.val()["list"]),"statistics":"data:image/png;base64, "+ item.val()["statistics"] })      
         return list_of_recommendations_for_output
     except KeyError as e:
         project_csv_url = all_project_items.val()["projectcsv"]+".csv"
