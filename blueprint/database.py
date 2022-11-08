@@ -398,19 +398,26 @@ def retrieve_all_project_recommendations(username,project_id,role):
         user_role = "demo_users"
     try:
         all_project_items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
-        #print(f'this + {all_project_items.val()["recommendations"]}')
-        return all_project_items.val()["recommendations"]
+        if all_project_items.val()["recommendations"] != None:
+            items = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").get()
+            list_of_recommendations_for_output = []
+            for item in items.each():
+                if item != None:
+                    list_of_recommendations_for_output.append({"name":item.key().replace("_"," "),"category":item.val()["category"],"list":item.val()["list"],"statistics":"data:image/png;base64, "+ item.val()["statistics"] })      
+        return list_of_recommendations_for_output
     except KeyError as e:
         project_csv_url = all_project_items.val()["projectcsv"]+".csv"
         try:
             print(urllib.request.urlopen(get_dataset_from_storage(project_csv_url)))
             list_of_recommendations,list_of_graphs = get_algorithm_output(get_dataset_from_storage(),get_dataset_from_storage(project_csv_url))
-            print(list_of_recommendations)
             database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").update(list_of_recommendations)
+            
+            list_of_recommendations_for_output = []
             for key,graph in list_of_graphs.items():
                 database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").child(key).update({"statistics":graph})
-                list_of_recommendations[key]["statistics"] = graph 
-            return list_of_recommendations
+                #list_of_recommendations[key]["statistics"] = "data:image/png;base64, "+ graph 
+                list_of_recommendations_for_output.append({"name":key.replace("_"," "),"category":list_of_recommendations[key]["category"],"list":list_of_recommendations[key]["list"],"statistics":"data:image/png;base64, "+ graph })
+            return list_of_recommendations_for_output
         except Exception as e:
             print(e)
             return {}
