@@ -404,9 +404,12 @@ def retrieve_all_project_recommendations(username,project_id,role):
         project_csv_url = all_project_items.val()["projectcsv"]+".csv"
         try:
             print(urllib.request.urlopen(get_dataset_from_storage(project_csv_url)))
-            list_of_recommendations = get_algorithm_output(get_dataset_from_storage(),get_dataset_from_storage(project_csv_url))
+            list_of_recommendations,list_of_graphs = get_algorithm_output(get_dataset_from_storage(),get_dataset_from_storage(project_csv_url))
             print(list_of_recommendations)
             database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").update(list_of_recommendations)
+            for key,graph in list_of_graphs.items():
+                database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").child(key).update({"statistics":graph})
+                list_of_recommendations[key]["statistics"] = graph 
             return list_of_recommendations
         except Exception as e:
             print(e)

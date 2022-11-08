@@ -10,7 +10,7 @@ import io
 import base64
 import matplotlib.pyplot as plt
 import numpy as np
-
+import unicodedata
 
 #url = get_database_from_storage()
 #webpage = urllib.request.urlopen(url)
@@ -31,8 +31,8 @@ import numpy as np
 #print(dataset)
 
 
-catList = []
-ratingList = []
+#catList = []
+#ratingList = []
 # Get unique set of items bought
 def uniqueCategories(dataset):
     uniqueCategoriesList = []
@@ -43,7 +43,7 @@ def uniqueCategories(dataset):
     uniqueCategoriesList = list(s)
     return uniqueCategoriesList
 
-def compareWithOne(dataset, input1, input2):
+def compareWithOne(dataset, input1, input2,catList,ratingList):
     listOfValues = []
     listOfRecommendation = []
     for i in dataset.values():
@@ -82,7 +82,7 @@ def compareWithOne(dataset, input1, input2):
     listOfValues.clear()
     return listOfRecommendation
 
-def compareWithAllItems(dataset,ownerinput1):
+def compareWithAllItems(dataset,ownerinput1,catList,ratingList):
     itemList = uniqueCategories(dataset)
     listOfRecommendation = []
     # Remove the item that the owner wants rating of
@@ -91,7 +91,7 @@ def compareWithAllItems(dataset,ownerinput1):
             itemList.remove(i)
     # Now compare it to all other items
     for item in itemList:
-        recommendations = compareWithOne(dataset, ownerinput1, item)
+        recommendations = compareWithOne(dataset, ownerinput1, item,catList,ratingList)
         for recommendation in recommendations:
             listOfRecommendation.append(recommendation)
     return listOfRecommendation
@@ -108,16 +108,18 @@ def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
         
     dataset = defaultdict(dict)
     listOfRecommendation = []
+    catList = []
+    ratingList = []
     # Put it in a dictionary
     for i in reader:
         n = i['1']
         newI = str(n).replace(n[0:3], '')
         dataset[newI.strip()][i['4'].replace(' ','')] = i['0'].replace(' ','')
     if ownerinput2 == "":
-        listOfRecommendation = compareWithAllItems(dataset,ownerinput1)
+        listOfRecommendation = compareWithAllItems(dataset,ownerinput1,catList,ratingList)
     else:
-        listOfRecommendation = compareWithOne(dataset, ownerinput1, ownerinput2)
-    return listOfRecommendation,get_graph()
+        listOfRecommendation = compareWithOne(dataset, ownerinput1, ownerinput2,catList,ratingList)
+    return listOfRecommendation,get_graph(catList,ratingList)
 
 
 def get_algorithm_output(main_url,project_url):
@@ -128,13 +130,14 @@ def get_algorithm_output(main_url,project_url):
         reader2 = csv.DictReader(io.TextIOWrapper(webpage2))
     except:
         #reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
-        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\main_dataset.csv'))
-        reader2 = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\ProjectID.csv'))
+        reader = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\project1.csv'))
+        reader2 = csv.DictReader(open(r'C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\project1details.csv'))
         # Read the CSV file #read from the url
         #reader = csv.DictReader(open(r'C:\Users\lyhe1\Documents\GitHub\FYP-22-S3-07\algo\Demo.csv'))
         
     dataset = defaultdict(dict)
     listOfRecommendation = {}
+    listOfGraph = {}
     # Put it in a dictionary
     for i in reader:
         #print(f'reader {i}')
@@ -152,16 +155,28 @@ def get_algorithm_output(main_url,project_url):
         list_of_categories[i['0']] = {"input_category":(i['3'].replace(' ','')),"item_category":item_category}
     
     for key,cat in list_of_categories.items():
-        listOfRecommendation[key] = {"list":compareWithAllItems(dataset,cat["input_category"]),"category":cat["item_category"]}
-    #print(f'this is listOfRecommendation {listOfRecommendation}')
-    return listOfRecommendation
+    
+        catList = []
+        ratingList = []
+        list_item = compareWithAllItems(dataset,cat["input_category"],catList,ratingList)
+        index = key.replace(' ','_')
+        index = index.replace('.','_')
+        index = index.replace('$','_')
+        index = index.replace('[','_')
+        index = index.replace('/','_')
+        index = index.replace(']','_')
+        index = unicodedata.normalize('NFKD', index).encode('ascii', 'ignore')
+        print()
+        listOfRecommendation[index.decode("utf-8")] = {"list":list_item,"category":cat["item_category"]}
+        listOfGraph[index.decode("utf-8")] = get_graph(catList,ratingList)
+    return listOfRecommendation,listOfGraph
     
     
 def addLabels(x,y):
     for i in range(len(x)):
         plt.text(i, y[i], y[i], ha = 'center')
 
-def get_graph():
+def get_graph(catList,ratingList):
     plt.bar(catList, ratingList)
     plt.title('Predicted ratings from other categories')
     plt.xlabel('Other categories') 
@@ -172,9 +187,11 @@ def get_graph():
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode()
     #plt.show()
-    plt.close()
+    plt.clf()
     return plot_url
-
+ 
+#list_reco,list_graph = get_algorithm_output("","")
+#print(list_reco)
 #ownerinput1 = 'highheels'
 #ownerinput2 = ''
 

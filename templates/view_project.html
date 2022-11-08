@@ -128,7 +128,7 @@
 					<!--<a href="" class="items">-->
                     <div class="row pt-3">
                         <div class="col-4 pb-3 border-bottom">
-                            <span class="ms-4" id="content">{{ key }}</span>
+                            <span class="ms-4" id="content">{{ key |replace("_", " ") }}</span>
                         </div>
                         <div class="col-3 border-bottom">
                             <span class="pt-4" id="content">{{ value["category"] }}</span>
@@ -139,7 +139,7 @@
 						{% endfor %}
                         </div>
                         <div class="col-2 border-bottom">
-                            <span class="pt-4" id="recommendation">Show the Stats</span>
+                            <img src="data:image/png;base64,{{ value['statistics'] }}">
                         </div>
                     </div>
 					<!--</a>-->
@@ -166,18 +166,22 @@
                     </div>-->
                 </div>
             </div>
+
             <!-- second box -->
-            <div class="container pt-4">
+            <!--<div class="container pt-4">
                 <div class="row pbox-m">
-                    <!-- first row -->
+				
+				
                     <div class="row pt-4 pb-2">
                         <span class="ms-3" id="headline">Items not doing well</span>
                     </div>
-                    <!-- second row -->
+					
+					
                     <div class="row">
                         <span class="ms-3 pb-2" id="subhead">Type of Project: Shoes</span>
                     </div>
-                    <!-- third row -->
+					
+					
                     <div class="row pt-3 pb-3">
                         <div class="col-4">
                             <span class="ms-3" id="headline">Products</span>
@@ -192,7 +196,8 @@
                             <span id="headline">Most Popular User Group</span>
                         </div>
                     </div>
-                    <!-- fourth row -->
+					
+					
                     <div class="row pt-3">
                         <div class="col-4 pb-3 border-bottom">
                             <img class="ms-3" src="images/shoe3.png">
@@ -213,7 +218,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- third row -->
             <div class="row pt-5 pb-5">
                 <span class="pb-4" id="pheadline">Test item to see rating</span>
