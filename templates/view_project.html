@@ -77,20 +77,20 @@
             <div class="row pt-4 pb-2">
                 <div class="col">
                     <div class="pbox-s-normal text-center">
-                        <span class="pt-4" id="attributehead">Visit</span>
-                        <span class="pt-2" id="attributecontent">2</span>
+                        <span class="pt-4" id="attributehead">Number of Sub Categories</span>
+                        <span class="pt-2" id="attributecontent">{{ project_information["subcategory"] }}</span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="pbox-s-blue text-center">
-                        <span class="pt-4" id="attributehead">Conversion Rate</span>
-                        <span class="pt-2" id="attributecontent">16%</span>
+                        <span class="pt-4" id="attributehead">Number of Comparison</span>
+                        <span class="pt-2" id="attributecontent">{{ project_information["compared"] }}</span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="pbox-s-normal text-center">
-                        <span class="pt-4" id="attributehead">Average Order Value</span>
-                        <span class="pt-2" id="attributecontent">$43</span>
+                        <span class="pt-4" id="attributehead">Number of Item Crawled</span>
+                        <span class="pt-2" id="attributecontent">{{ project_information["crawled"] }}</span>
                     </div>
                 </div>
             </div>
@@ -123,18 +123,21 @@
 							</div>
 						</div>					
 					</div>
-					<ul class="list list-group list-group-flush"  style="border-bottom: 2px solid #DFE0EB;width:1455px;"></ul>
-					<div class="d-flex justify-content-center mt-2" >
-						<ul class="pagination"></ul>
-					</div>
-				</div>
-				
-				{% if item_lists | length == 0 %}
+					
+					{% if item_lists | length == 0 %}
 					<div class="row pt-3">
 					<span class="ms-4" id="content">Product stats is currently empty...</span>
 					<span class="ms-4" id="content">Crawling is still in progress...</span>
 					</div>					
-				{% endif %}
+					{% else %}
+					<ul class="list list-group list-group-flush"  style="border-bottom: 2px solid #DFE0EB;width:1455px;"></ul>
+					<div class="d-flex justify-content-center mt-2" >
+						<ul class="pagination"></ul>
+					</div>
+					{% endif %}
+				</div>
+				
+				
                     <!-- fourth row -->
 					<!--<a href="" class="items">-->
                     

@@ -55,7 +55,7 @@ def manageprojects(): #need get rating and performance score oso
         project_limit_bool = check_if_project_limit(username,session["role"])
         print(project_limit_bool)
         project_limit = get_userproject_limit(username,session["role"])
-        return render_template("manage_project.html",project_lists=project_lists,fullname=session["fullname"],project_limit_bool=project_limit_bool,project_limit=project_limit)    
+        return render_template("manage_project.html",project_lists=project_lists,fullname=session["fullname"],project_limit_bool=project_limit_bool,project_limit=project_limit,role=session["role"])    
     elif "role" in session and session["role"] == "sign_up_user":
         flash("Please subscribe before accessing this feature")
         return redirect("/subscription")

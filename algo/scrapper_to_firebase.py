@@ -44,7 +44,7 @@ def stream_handler(message):
     try:
         with open('crawl_lists.txt','a') as f:
             for item,val in message["data"].items():
-                f.write(val["url"]+","+val["crawler"]+"\n")
+                f.write(val["url"]+","+val["crawler"]+","+val["projectcsv"]+"\n")
                 database.child("crawl_lists").child(item).remove()
     except AttributeError as e:
         print("no crawl list to crawl.")

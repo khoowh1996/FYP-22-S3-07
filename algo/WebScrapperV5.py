@@ -1,4 +1,3 @@
-
 import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -7,7 +6,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
+import os
+from scrapper_to_firebase import upload,download_csv,start_stream
 
 class ScrapeLazada():
 
@@ -223,7 +223,7 @@ class ScrapeLazada():
 
 
 sl = ScrapeLazada()
-start_stream() #start to read crawl lists from database and write a crawl_lists.txt
+#start_stream() #start to read crawl lists from database and write a crawl_lists.txt
 try:
     with open("crawl_lists.txt") as f: #try to read in crawl_lists.txt
         contents = f.read()
@@ -246,7 +246,7 @@ try:
                 elif mode == "single_item":               
                     download_csv()   
                     print("single mode")
-                    sl.singleProductPage(df,url,projectName)
+                    sl.singleProductPage(url,projectName)
 except FileNotFoundError as e:
     print(e)
     print("crawl stop")

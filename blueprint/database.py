@@ -209,7 +209,7 @@ def createDemoAccount():
 def set_demo_user(username,user_information):
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"counter":1,"limit":1})
-    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"https://www.lazada.sg/men-sports-clothing-t-shirts","counter":1,"crawler":"single_page","projectcsv":""}}) # set the projectcsv to be from the same for all demo
+    database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").update({1:{"category":"Shoes","id":1,"pname":"Demo Project","url":"https://www.lazada.sg/men-sports-clothing-t-shirts","counter":1,"crawler":"single_page","projectcsv":"52a73627f00516c35c27def6ce8271e3412d29d8dc44747d994ae882836056d5;1"}}) # set the projectcsv to be from the same for all demo
     database.child("demo_users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child("1").child("item").child("1").update({"tcategory":"highheels","category":"Shoes","id":1,"imageurl":"https://quirkytravelguy.com/wp-content/uploads/2021/01/giant-adidas-shoes.jpg","name":"Branded Shoes"})
 
 def demo_user_exist(username):
@@ -354,12 +354,20 @@ def retrieve_all_project(username,role):
         all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
         all_project_list = []
         if len(all_project.val()) == 1:#if there is only 1 item in the list
-            for proj in all_project.val():
-                all_project_list.append({"id":all_project.val()[proj]["id"],"pname":all_project.val()[proj]["pname"],"category":all_project.val()[proj]["category"],"url":all_project.val()[proj]["url"]})
+            for proj in all_project.val():        
+                try:
+                    all_project_list.append({"id":all_project.val()[proj]["id"],"pname":all_project.val()[proj]["pname"],"category":all_project.val()[proj]["category"],"url":all_project.val()[proj]["url"],"crawled":len(all_project.val()[proj]["recommendations"])})
+                except:
+                    all_project_list.append({"id":all_project.val()[proj]["id"],"pname":all_project.val()[proj]["pname"],"category":all_project.val()[proj]["category"],"url":all_project.val()[proj]["url"],"crawled":0})
             return all_project_list
         for proj in all_project.val():
-            if proj != None:
-                all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"]})
+            try:
+                if proj != None:
+                    print(len(proj["recommendations"]))
+                    all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":len(proj["recommendations"])})
+            except:
+                if proj != None:
+                    all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":0})
         return all_project_list
     except TypeError as e:
         return []
@@ -602,7 +610,16 @@ def get_project_by_id(username,project_id,role):
     try:
         all_project = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).get()
         if all_project.val() != None:
-            return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"]}
+            try:
+                compared = 0
+                no_of_sub_categories = []
+                for rec in all_project.val()["recommendations"]:
+                    compared += len(all_project.val()["recommendations"][rec]["list"])
+                    no_of_sub_categories.append(all_project.val()["recommendations"][rec]["category"])
+                unique_sub_cat = set(no_of_sub_categories)
+                return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"],"crawled":len(all_project.val()["recommendations"]),"compared":compared,"subcategory":len(unique_sub_cat)}
+            except:
+                return {"id":all_project.val()["id"],"pname":all_project.val()["pname"],"category":all_project.val()["category"],"url":all_project.val()["url"],"crawled":0,"compared":0,"subcategory":0}
         return None
     except TypeError as e:
         return None

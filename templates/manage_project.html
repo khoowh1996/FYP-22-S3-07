@@ -118,26 +118,28 @@
                             <span class="ms-3 pt-2" id="subtitle">Type of Project: {{ project_lists[n]["category"] }}</span>
                         </div>
                         <div class="row">
-                            <div class="col border-bottom">
-                                <span class="pt-4 ms-3 pb-3" id="content">Overall Rating</span>
+                            <div class="col">
+                                <span class="pt-4 ms-3 pb-3" id="content">Number of Crawled items</span>
                             </div>
-                            <div class="col border-bottom text-end">
-                                <span class="pt-4 pb-3" id="status">{{ project_lists[n]["rating"] }}</span>
+                            <div class="col text-end">
+                                <span class="pt-4 pb-3" id="status">{{ project_lists[n]["crawled"] }}</span>
                             </div>
                         </div>
                         <div class="row pb-5">
                             <div class="col border-bottom">
-                                <span class="pt-4 ms-3 pb-3" id="content">Performance</span>
                             </div>
                             <div class="col border-bottom text-end">
-                                <span class="pt-4 pb-3" id="status">{{ project_lists[n]["performance"] }}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-9"></div>
                             <div class="col-3">
 							<!--<form action="/deleteproject" method="POST">-->
+							{% if role == "demo_user" %}
+								<button class="ms-lg-5 btn btn-secondary disabled" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ project_lists[n]['id'] }}">Delete Project</button>
+							{% else %}
                                 <button class="ms-lg-5 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ project_lists[n]['id'] }}">Delete Project</button>
+							{% endif %}
 							<!--</form>-->
                             </div>
                         </div>
