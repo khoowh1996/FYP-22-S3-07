@@ -158,14 +158,16 @@ def get_email_verification(username,user,role):
         
     user_info = auth.get_account_info(user['idToken'])
     firebase_email_verification = user_info["users"][0]["emailVerified"]
-    
-    if firebase_email_verification:
-        if not database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get().val()["emailverification"]:
+    print(username)
+    print(firebase_email_verification)
+    database_email_verification = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get().val()["emailverification"]
+    if firebase_email_verification or database_email_verification:
+        if not database_email_verification:
             database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update({"emailverification": True})
     else:
         auth.send_email_verification(user['idToken'])
         
-    return firebase_email_verification
+    return (firebase_email_verification or database_email_verification)
 
 def get_general_user_information(username): #have a function that returns name, role dictionary object
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
