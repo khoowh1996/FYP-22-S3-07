@@ -96,7 +96,7 @@ def viewproject(project_id):
             print(item_id)
             #item_lists = retrieve_all_project_items(username,project_id,session["role"])
             item_lists = retrieve_all_project_recommendations(username,project_id,session["role"])
-            return render_template("view_project.html",project_information=project_information,categories=get_category_for_dropdown(),item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
+            return render_template("view_project.html",project_information=project_information,item_id=item_id,item_lists=item_lists,role=session["role"],fullname=session["fullname"])
         return redirect("/manageprojects") #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
     
@@ -108,7 +108,7 @@ def viewitem(project_id,item_id):
             project_information = get_project_by_id(username,project_id,session["role"])
             item_information = get_project_item_by_id(username,project_id,item_id,session["role"])
             print(item_information)
-            return render_template("test_item_rating.html",project_information=project_information,item_information=item_information,categories=get_category_for_dropdown(),role=session["role"],fullname=session["fullname"])
+            return render_template("test_item_rating.html",project_information=project_information,item_information=item_information,categories=get_subcategory_for_dropdown(project_information["category"]),role=session["role"],fullname=session["fullname"])
         return redirect("/project/"+project_id) #if store owner, but project not found redirect to manageprojects
     return redirect("/") #if not store owner redirect to homepage
 

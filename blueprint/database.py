@@ -161,7 +161,7 @@ def get_email_verification(username,user,role):
     
     if firebase_email_verification:
         if not database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get().val()["emailverification"]:
-        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update({"emailverification": True})
+            database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update({"emailverification": True})
     else:
         auth.send_email_verification(user['idToken'])
         
@@ -882,8 +882,15 @@ def upload(filename,file):
     
 def get_category_for_dropdown():
     categories = database.child("category").get()
+    list_of_categories = []
+    for cat in categories.each():
+        list_of_categories.append(cat.key())
+    return list_of_categories
+
+def get_subcategory_for_dropdown(category):
+    categories = database.child("category").child(category).get()
     return categories.val()
-    
+
 def get_category_for_algorithm(username,project_id,item_id):
     project_id = str(project_id)
     item_id = str(item_id)
