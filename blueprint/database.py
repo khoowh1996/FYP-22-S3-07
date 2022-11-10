@@ -111,6 +111,28 @@ def delete_store_owner(username):#does not delete from firebase authentication c
     decrypted_key = get_decrypted_id(delete_id,username)
     deleted_user = auth.sign_in_with_email_and_password(username,decrypted_key)
     auth.delete_user_account(deleted_user["idToken"])
+    user_projects = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
+    if user_projects.val() != None:
+        for proj in user_projects.each():
+            try:
+                if proj.key() == 0:
+                    continue
+                storage.delete(proj.val()["projectcsv"]+".csv",deleted_user["idToken"])
+            except:
+                print("fail to delete project csv")
+    issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
+    if issues.val() != None:
+        for issue in issues.each():
+            try:
+                if issue.key() == 0:
+                    continue
+                for image in issue.val()["images"]:
+                    print(image)
+                    delete_file = image.replace("%2F","/")[71:]
+                    delete_file = delete_file.split("?")[0]                    
+                    storage.delete(delete_file,deleted_user["idToken"])   
+            except:
+                print("fail to delete issue")    
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
     
 def delete_moderator(username):#does not delete from firebase authentication currently
