@@ -1,1 +1,1 @@
-"C:\Users\khoow\OneDrive\Desktop\flask\web1\venv\Scripts\"activate & python C:\Users\khoow\OneDrive\Desktop\flask\web1\algo\WebScrapperV5.py
+"C:\Users\khoow\OneDrive\Desktop\flask\web1\venv\Scripts\"activate & python %~dp0WebScrapperV5.py
