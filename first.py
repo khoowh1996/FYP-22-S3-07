@@ -113,7 +113,7 @@ def sendmail():
         name = request.args.get("name")
         with mail.connect() as conn:
             msg = Message(
-                            'MyRecommend Notification on Account status',
+                            'MyRecommend Notification on Account approval',
                             sender ='myrecommendservices@gmail.com',
                             recipients = [username]
                         )
@@ -126,7 +126,7 @@ def sendmail():
         name = request.args.get("name")        
         with mail.connect() as conn:
             msg = Message(
-                            'MyRecommend Notification on Account status',
+                            'MyRecommend Notification on Account approval',
                             sender ='myrecommendservices@gmail.com',
                             recipients = [username]
                         )
@@ -139,14 +139,41 @@ def sendmail():
         name = request.args.get("name")
         with mail.connect() as conn:
             msg = Message(
-                            'MyRecommend Notification on Account status',
+                            'MyRecommend Notification on Account subscription status',
                             sender ='myrecommendservices@gmail.com',
-                            recipients = [username,'myrecommendservices@gmail.com']
+                            recipients = [username]
                         )
             msg.body = 'Hello {},\n\nYou have started your subscription!\nPlease login to our website at https://myrecommend.herokuapp.com/login.\nIf your account has not been approved, Please allow up to 3 business days for your account to be approved. The account expiry will start after account has been approved.\n\nDo contact our customer services at myrecommendservices@gmail.com, for any issues encountered or information.\n'.format(name)
             conn.send(msg)
         flash("Subscription Email has been Sent...")
         return redirect("/login")
+    elif email_template == "freezed":    
+        username = request.args.get("user")
+        name = request.args.get("name")
+        with mail.connect() as conn:
+            msg = Message(
+                            'MyRecommend Notification on Account status',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username]
+                        )
+            msg.body = 'Hello {},\n\nYour account has been freezed, Due to a violation of our Usage Policy.\nDo reply or contact our customer services at myrecommendservices@gmail.com, for more information.\n'.format(name)
+            conn.send(msg)
+        flash("Subscription Email has been Sent...")
+        return redirect("/managestoreowners")
+        
+    elif email_template == "unfreezed":
+        username = request.args.get("user")
+        name = request.args.get("name")
+        with mail.connect() as conn:
+            msg = Message(
+                            'MyRecommend Notification on Account status',
+                            sender ='myrecommendservices@gmail.com',
+                            recipients = [username]
+                        )
+            msg.body = 'Hello {},\n\nYour account has been unfreezed!\nOur moderators has reviewed your case and has rescind status.\nPlease login to our website at https://myrecommend.herokuapp.com/login.\n\nDo reply or contact our customer services at myrecommendservices@gmail.com, for more information.\n'.format(name)
+            conn.send(msg)
+        flash("Subscription Email has been Sent...")
+        return redirect("/managestoreowners")
         
 @app.route("/contactus",methods=["POST","GET"])
 def contactus():

@@ -84,9 +84,12 @@ def deletestoreowner():
 def freezestoreowner():
     if request.method == "POST":
         freeze_user_email = request.form["freeze"]
-        freeze_unfreeze_store_owner(freeze_user_email)			
+        status = freeze_unfreeze_store_owner(freeze_user_email)			
         flash("Store Owner Account has been status updated!")
-        return redirect("/managestoreowners")
+        if status:
+            return redirect("/mail?user="+freeze_user_email+"&name="+session["fullname"]+"&EmailTemplate=unfreezed")   
+        else:
+            return redirect("/mail?user="+freeze_user_email+"&name="+session["fullname"]+"&EmailTemplate=freezed") 
     if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")

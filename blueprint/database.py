@@ -72,7 +72,7 @@ storage =firebase.storage()
 
 def register_user(username,password):
     user = auth.create_user_with_email_and_password(username,password)
-    #auth.send_email_verification(user['idToken'])
+    auth.send_email_verification(user['idToken'])
 
 def get_encrypted_id(message,password):
     return cryptocode.encrypt(message,hashlib.sha256(password.encode()).hexdigest())
@@ -85,6 +85,7 @@ def reset_password(username):
 
 def set_sign_up_user_information(username,user_information):
     database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+
 
 def create_store_owner(username,user_information):
     database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
@@ -99,8 +100,10 @@ def freeze_unfreeze_store_owner(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     if user.val()["status"]:
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":False})
+        return False
     else:
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":True})
+        return True
     
 def delete_store_owner(username):#does not delete from firebase authentication currently
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -147,6 +150,22 @@ def login_user(username,password):
     user = auth.sign_in_with_email_and_password(username,password)
     user_information = get_general_user_information(username)
     return user,user_information
+
+def get_email_verification(username,user,role):
+    user_role = "users"
+    if role == "sign_up_user":
+        user_role = "sign_up_users"
+        
+    user_info = auth.get_account_info(user['idToken'])
+    firebase_email_verification = user_info["users"][0]["emailVerified"]
+    
+    if firebase_email_verification:
+        if not database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get().val()["emailverification"]:
+        database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update({"emailverification": True})
+    else:
+        auth.send_email_verification(user['idToken'])
+        
+    return firebase_email_verification
 
 def get_general_user_information(username): #have a function that returns name, role dictionary object
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()

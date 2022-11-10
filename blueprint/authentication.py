@@ -15,9 +15,9 @@ def login():
 		try:
 			user,user_information = login_user(username,password)
 			print(user)
-			print(firebase_user_information(user))
+			#print(firebase_user_information(user))
 			if user_information != None:
-				print(user_information)
+				#print(user_information)
 				session["role"] = user_information["role"] 
 				session["fullname"] = user_information["fullname"]
 		except requests.HTTPError as e:
@@ -40,15 +40,24 @@ def login():
 			curr_url = session["url"]
 			session.pop("url",None)
 			return redirect(curr_url)
-		print(session["role"])
-		if session["role"] == "demo_user" or session["role"] == "sign_up_user":
+		if session["role"] == "demo_user":
 			flash("Login Successfully!")
 			return redirect("/projectoverview")
-		if session["role"] == "store_owner":
-			if get_status(username):
+		if session["role"] == "sign_up_user":
+			if get_email_verification(username,user,session["role"]):
 				flash("Login Successfully!")
 				return redirect("/projectoverview")
 			else:
+				flash("Your account has not been verified, We have sent the verification email, Please go and verify in your email.")
+				return redirect("/logout")
+		if session["role"] == "store_owner":
+			if not get_email_verification(username,user,session["role"]):
+				flash("Your account has not been verified, We have sent the verification email, Please go and verify in your email.")
+				return redirect("/logout")
+			if get_status(username):
+				flash("Login Successfully!")
+				return redirect("/projectoverview")
+            else:
 				flash("Your account has been frozen, Please contact our Moderator at myrecommendservices@gmail.com.")
 				return redirect("/logout")
 		elif session["role"] == "moderator": 
