@@ -96,7 +96,7 @@ def compareWithAllItems(dataset,ownerinput1,catList,ratingList):
             listOfRecommendation.append(recommendation)
     return listOfRecommendation
 
-def get_algorithm_output(url,ownerinput1='highheels',ownerinput2=""):
+def get_algorithm_output_item(url,ownerinput1='highheels',ownerinput2=""):
     try:
         webpage = urllib.request.urlopen(url)
         reader = csv.DictReader(io.TextIOWrapper(webpage))

@@ -126,7 +126,7 @@ def createitem():
         try:
             input1 = category
             input2 = tcategory
-            list_of_recommendations,graph_output = get_algorithm_output(get_dataset_from_storage(),input1.lower().replace(' ',''),input2.lower().replace(' ',''))
+            list_of_recommendations,graph_output = get_algorithm_output_item(get_dataset_from_storage(),input1.lower().replace(' ',''),input2.lower().replace(' ',''))
             item_information["recommendations"] = list_of_recommendations
             item_information["statistics"] = graph_output
             set_project_item(username,project_id,item_id,item_information,session["role"])
