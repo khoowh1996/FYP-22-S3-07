@@ -14,9 +14,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="{{ 	url_for('static', filename='css/styles.css')	}}">
+    <link rel="stylesheet" href="{{ 	url_for('static', filename='css/styles.css')	}}">	
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
 </head>
-
+	<style>
+.pagination li{position:relative;display:block;color:#0d6efd;text-decoration:none;background-color:#fff;border:1px solid #dee2e6}.pagination li:hover{z-index:2;color:#024dbc;background-color:#e9ecef;border-color:#dee2e6}.pagination li:focus{z-index:3;outline:0;box-shadow:0 0 0 .2rem rgba(13,110,253,.25)}.page-item:not(:first-child) .pagination li{margin-left:-1px}.page-item.active .pagination li{z-index:3;color:#fff;background-color:#0d6efd;border-color:#0d6efd}.page-item.disabled .pagination li{color:#6c757d;pointer-events:none;background-color:#fff;border-color:#dee2e6}.pagination li{padding:.375rem .75rem}.page-item:first-child .pagination li{border-top-left-radius:.25rem;border-bottom-left-radius:.25rem}.page-item:last-child .pagination li{border-top-right-radius:.25rem;border-bottom-right-radius:.25rem}.pagination-lg .pagination li{padding:.75rem 1.5rem;font-size:1.25rem}.pagination-lg .page-item:first-child .pagination li{border-top-left-radius:.3rem;border-bottom-left-radius:.3rem}.pagination-lg .page-item:last-child .pagination li{border-top-right-radius:.3rem;border-bottom-right-radius:.3rem}.pagination-sm .pagination li{padding:.25rem .5rem;font-size:.875rem}.pagination-sm .page-item:first-child .pagination li{border-top-left-radius:.2rem;border-bottom-left-radius:.2rem}.pagination-sm .page-item:last-child .pagination li{border-top-right-radius:.2rem;border-bottom-right-radius:.2rem}
+</style>
 <body style="background: #F7F8FC;">
     <div class="row">
         <div class="col col-2">
@@ -162,75 +166,98 @@
 		</form>
 			{% if item_information != None %}
             <!-- second box -->
-            <div class="container pt-4">
-                <div class="row pbox-m" style="width:1130px!important;height: 950px;">
-                    <!-- first row -->
-                    <div class="row pt-4 pb-2">
-                        <span class="ms-3" id="headline">Predicted Rating</span>
-                    </div>
-                    <!-- second row -->
-                    <div class="row">
-                        <span class="ms-3 pb-2" id="subhead">Type of Project: {{ project_information["category"] }}</span>
-                    </div>
-                    <!-- third row -->
-                    <div class="row pt-3 pb-3">
-                        <div class="col-4">
-                            <span class="ms-3" id="headline">Item Name</span>
-                        </div>
-                        <div class="col-4">
-                            <span id="headline">Inputted Category</span>
-                        </div>
-						<div class="col-4">
-                            <span id="headline">Targetted Category</span>
-                        </div>
-                    </div>
-                    <!-- fourth row -->
-                    <div class="row pt-3">
-                        <div class="col-4 d-flex align-items-center pb-3 border-bottom">
-                            <img class="ms-3" style="width: 72;height: 64;" src="{{ item_information['imageurl'] }}">
-                            <span class="ms-4" id="content">{{ item_information['name'] }}</span>
-                        </div>
-                        <div class="col-4 d-flex align-items-center pb-3 border-bottom">
-							<span class="ms-4" id="content">{{ item_information['category'] }}</span>
-                        </div>
-						<div class="col-4 d-flex align-items-center pb-3 border-bottom">
-						{% if item_information['tcategory'] == "" %}
-							<span class="ms-4" id="content">All</span>
-						{% else %}
-							<span class="ms-4" id="content">{{ item_information['tcategory'] }}</span>
-						{% endif %}
-                        </div>
-                    </div>
-					<div class="row pt-3">
-
-                        <div class="col-6">
-                            <span id="headline">Recommendation</span>
-                        </div>					
-                        <div class="col-3">
-                            <span id="headline">Statistics</span>
-                        </div>
-                    </div>
-					<div class="row">
-                        <span class="ms-3" id="subhead">*Very Well Rating is a score of 4.0 and above</span>
-						<span class="ms-3" id="subhead">*Average Rating is a score of 3.0 and above</span>
-						<span class="ms-3" id="subhead">*Poor Rating is a score of 2.5 and below</span>
-                    </div>
-					<div class="row pt-3">
-						<div class="col-5 pt-5 pb-3 border-bottom">     
-						{%	for n in range(0,item_information["recommendations"] | length)	%}	
-							<span id="content">{{ item_information["recommendations"][n] }}</span><br />
-						{% endfor %}
+			
+            <div class="container pt-4" style="margin-left:0;">
+				<div id="mylist">
+					<div class="row pbox-m" style="width:1400px!important;min-height: 450px;max-height:1500px;">
+						<!-- first row -->
+						<div class="row pt-4 pb-2">
+							<span class="ms-3" id="headline">Predicted Rating</span>
+								<div class ="row">
+							<span class="ms-3 pb-2" id="subhead">Type of Project: {{ project_information["category"] }}</span></div>
 						</div>
-                        <div class="col-7 border-bottom">
-						<img src="data:image/png;base64,{{ item_information['statistics'] }}">
+						<!-- third row -->
+						<div class="row pt-3 pb-3">
+							<div class="col-2 border-bottom">
+								<span class="ms-3" id="headline">Item Name</span>
+							</div>
+							<div class="col-2 border-bottom">
+								<span id="headline">Inputted Category</span>
+							</div>
+							<div class="col-2 border-bottom">
+								<span id="headline">Targetted Category</span>
+							</div>
+							<div class="col-3 border-bottom">
+								<div class="row">
+									<span id="headline">Recommendation</span>	
+								</div>
+								<div class="row">						
+									<span class="ms-3" id="subhead">*Very Well Rating is a score of 4.0 and above</span>
+								</div>
+								<div class="row">
+									<span class="ms-3" id="subhead">*Average Rating is a score of 3.0 and above</span>
+								</div>
+								<div class="row">
+									<span class="ms-3" id="subhead">*Poor Rating is a score of 2.5 and below</span>
+								</div>
+							</div>					
+							<div class="col-3 border-bottom">
+								<span id="headline">Statistics</span>
+							</div>
+						</div>
+						<!-- fourth row -->			
+						<ul class="list list-group list-group-flush"  style="border-bottom: 2px solid #DFE0EB;width:1455px;"></ul>
+						<div class="d-flex justify-content-center mt-2" >
+							<ul class="pagination"></ul>
+						</div>
 						
-                        </div>
-                    </div>
-                </div>
+					</div>
+				</div>
+				
+				<div><!-- third row -->
+					<div style="display:none;">
+						<li id="myitem" class="list-group-item" style="width:1455px;padding-left: 0px;">
+								
+							<div class="row pt-3" >
+								<div class="col-2 d-flex align-items-center pb-3 border-bottom">
+									<img class="ms-3 imageurl" style="width: 72;height: 64;" />
+									<span class="ms-4 name" id="content"></span>
+								</div>
+								<div class="col-2 d-flex align-items-center pb-3 border-bottom">
+									<span class="ms-4 category" id="content"></span>
+								</div>
+								<div class="col-2 d-flex align-items-center pb-3 border-bottom">							
+									<span class="ms-4 tcategory" id="content"></span>
+								</div>
+								
+								<div class="col-3 border-bottom">     
+								
+									<div class="listing" id="content" style="height: 400px;overflow-y: scroll;border: 1px solid #DFE0EB;
+    border-radius: 8px;margin-top: 50px;padding-left:0;"></div>
+								</div>
+								<div class="col-3 border-bottom">
+								<img class="statistics" style="height:480px;width:480px;"/>
+								
+								</div>
+							</div>
+						</li>
+					</div>
+				</div>
+				
             </div>
 			{% endif %}
         </div>
     </div>
 </body>
-
+<script>
+        
+		const data = {{ item_information | tojson }};
+        const options = {
+            valueNames: [ 'category','tcategory',{name:'imageurl',attr:'src'},{name:'statistics',attr:'src'},'name','listing'],
+            item: 'myitem',
+            page: 5,
+            pagination: true
+        }
+		var l = new List('mylist', options, data);
+</script>
 </html>

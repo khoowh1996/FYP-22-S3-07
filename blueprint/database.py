@@ -678,6 +678,24 @@ def get_project_item_by_id(username,project_id,item_id,role):
         return None
     except TypeError as e:
         return None
+
+def get_all_project_item(username,project_id,role):
+    user_role = "users"
+    if role == "demo_user":
+        user_role = "demo_users"
+    list_of_items = []
+    try:
+        all_project_item = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("items").get()
+        for item in all_project_item.each():
+            if item.key() != None and item.key() != 0:
+                tcategory = item.val()["tcategory"]
+                if item.val()["tcategory"] == "":
+                    tcategory = "All"
+                    
+                list_of_items.append({"id":item.val()["id"],"category":item.val()["category"],"tcategory":tcategory,"imageurl":item.val()["imageurl"],"name":item.val()["name"],"listing":'<br><br>'.join(item.val()["recommendations"]),"statistics":"data:image/png;base64, "+ item.val()["statistics"]})
+                return list_of_items
+    except TypeError as e:
+        return []
         
 def retrieve_project_id(username,role):
     user_role = "users"
