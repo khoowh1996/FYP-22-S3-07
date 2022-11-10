@@ -13,3 +13,4 @@ build/
 *.pyc
 algo/__pycache__/algorithm.cpython-39.pyc
 blueprint/__pycache__/authentication.cpython-39.pyc
+blueprint/__pycache__/authentication.cpython-39.pyc
