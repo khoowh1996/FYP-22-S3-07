@@ -888,13 +888,24 @@ def retrieve_all_issues_count():
         try:
             #print(user.val()["issues"]["userissues"])
             for issue in user.val()["issues"]["userissues"]:
-                if issue != None:
-                    #all_issues.update(user.val()["username"]:{all_issues})
-                    if issue["status"] == "Processing":
+                try:
+                    if issue != None:
+                        #all_issues.update(user.val()["username"]:{all_issues})
+                        #print(f'{issue}\n')
+                        #print(type(issue))
+                        #print(f'{issue["status"]}\n')
+                        if issue["status"] == "Processing":
+                            current_issues["active"] += 1
+                        else:
+                            current_issues["closed"] += 1
+                except TypeError as e:
+                    if user.val()["issues"]["userissues"][issue]["status"] == "Processing":
                         current_issues["active"] += 1
                     else:
                         current_issues["closed"] += 1
         except KeyError as e:
+            continue
+        except:
             continue
     return current_issues
     
