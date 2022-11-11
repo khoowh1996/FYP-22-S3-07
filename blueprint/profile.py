@@ -21,15 +21,15 @@ def userprofile(): #need get rating and performance score oso
 def updateprofile():
     if request.method == "POST":
         username = session["user"]    
-        company = request.form["cname"]
-        if check_if_company_name_unique(company):
-            user_information= {"firstname":request.form["fname"],"lastname":request.form["lname"],"company":company,"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"]}
-            update_user_information(username,user_information,session["role"])
-            flash("Profile Updated Successfully!")#need to add to view profile flash message
-            return redirect("/userprofile")     
-        else:
-            flash("Company Name already exists")#need to add to view profile flash message
-            return redirect("/userprofile")     
+        #company = request.form["cname"]
+        #if check_if_company_name_unique(company):
+        user_information= {"firstname":request.form["fname"],"lastname":request.form["lname"],"industry":request.form["industry"],"contact":request.form["contact"],"url":request.form["url"]}
+        update_user_information(username,user_information,session["role"])
+        flash("Profile Updated Successfully!")#need to add to view profile flash message
+        return redirect("/userprofile")     
+        #else:
+            #flash("Company Name already exists")#need to add to view profile flash message
+            #return redirect("/userprofile")     
     elif "role" in session and (session["role"] == "store_owner" or session["role"] == "sign_up_user"):
         return redirect("/userprofile")
     elif "role" in session:
