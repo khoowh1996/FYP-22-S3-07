@@ -217,6 +217,20 @@ class ScrapeLazada():
                 except:
                     break
                 time.sleep(3)
+                
+        if not results:
+
+            for item in soup.find('div', class_='mod-reviews').find_all('div', class_='item'):
+
+                stars = len(item.find('div', class_='top').find_all('img'))
+                _by = item.find('div', class_='middle').find('span').text
+                startList = [stars, _by]
+                for details in soup.findAll('li', class_='key-li'):
+                    temp = details.find('div', class_='key-value').text
+                    startList.append(temp)
+                products.append(startList)
+                
+                time.sleep(2)
 
         df = df.append(products)
         fileName = projectName + ".csv"
