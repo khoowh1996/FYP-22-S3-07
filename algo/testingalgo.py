@@ -149,12 +149,10 @@ def get_algorithm_output(main_url,project_url):
     for i in reader2:
         #print(f'reader2 {i}')
         if i['5'] == '':
-            continue
-        if i['6'] == '':
-            item_category = i['5']
+            item_category = i['4']
         else:
-            item_category = i['5'] + ", " + i['6']
-        list_of_categories[i['2']] = {"input_category":(i['4'].replace(' ','')),"item_category":item_category}
+            item_category = i['4'] + ", " + i['5']
+        list_of_categories[i['0']] = {"input_category":(i['3'].replace(' ','')),"item_category":item_category}
     
     for key,cat in list_of_categories.items():
     
