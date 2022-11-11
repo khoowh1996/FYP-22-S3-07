@@ -65,7 +65,7 @@
             <!-- overview header -->
 			
 			<form action="/createitem" method="post">
-            <div class="row pb-1">
+            <div class="row pb-1  crawl-boxes">
                 <div class="col-8">
                     <span id="mnheadline">Project <input type="hidden" name="project_id" value="{{ project_information['id'] }}">{{ project_information["id"] }}</input></span>
                 </div>
@@ -76,13 +76,13 @@
                     <span class="me-5" id="mnsubhead"><a style="text-decoration:none;color:black;" href="/userprofile">{{ fullname }}</a></span>
                 </div>
             </div>
-            <div class="row pt-3 pb-2">
+            <div class="row pt-3 pb-2  crawl-boxes">
                 <span id="testhead">Test Item Rating</span>
             </div>
             <!-- first box -->
 			{% if role == "store_owner" %}
             <div class="container pt-3">
-                <div class="row cpbox">
+                <div class="row cpbox  crawl-boxes">
                         <!-- first row -->
                         <div class="row pb-4">
                             <span class="ms-3" id="headline">Enter Item Details</span>
@@ -123,7 +123,7 @@
             </div>
 			{% else %}
 			<div class="container pt-3">
-                <div class="row cpbox">
+                <div class="row cpbox crawl-boxes">
                         <!-- first row -->
                         <div class="row pb-4">
                             <span class="ms-3" id="headline">Enter Item Details</span>
@@ -169,7 +169,7 @@
 			
             <div class="container pt-4" style="margin-left:0;">
 				<div id="mylist">
-					<div class="row pbox-m" style="width:1400px!important;min-height: 450px;max-height:1500px;">
+					<div class="row pbox-m crawl-boxes" style="width:1400px!important;min-height: 450px;max-height:1500px;">
 						<!-- first row -->
 						<div class="row pt-4 pb-2">
 							<span class="ms-3" id="headline">Predicted Rating</span>
