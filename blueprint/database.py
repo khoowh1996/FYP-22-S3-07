@@ -327,11 +327,13 @@ def check_if_project_limit(username,role):
         user_role = "demo_users"
     user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
     all_projects = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
-    try:
-        if all_projects.val()[0] != None:
-            return len(all_projects.val()) == user.val()["projects"]["limit"]
-        else:
-            return (len(all_projects.val()) -1) == user.val()["projects"]["limit"]
+    try:    
+        counter = 0;
+        for proj in all_projects.each():
+            if proj.val() == None:
+                continue
+            counter+=1
+        return counter == user.val()["projects"]["limit"]
     except TypeError as e:
         print(e)
         return False
