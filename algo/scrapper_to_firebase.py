@@ -43,7 +43,7 @@ def download_csv():
     txt_url = storage.child("main_dataset.csv").get_url(None)
     webpage = urllib.request.urlopen(txt_url)
 
-    with open("main_dataset.csv", mode='w') as f:
+    with open("main_dataset.csv", mode='w', encoding='utf-8') as f:
         for line in webpage:            
             f.write(line.decode('utf-8').rstrip()+"\n")
             

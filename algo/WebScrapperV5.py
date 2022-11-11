@@ -16,7 +16,8 @@ class ScrapeLazada():
 
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
         driver.execute_script("window.scrollTo(0, 1080)")
 
@@ -77,7 +78,8 @@ class ScrapeLazada():
         urlNew = url
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(urlNew)
         driver.execute_script("window.scrollTo(0, 1080)")
 
@@ -104,7 +106,8 @@ class ScrapeLazada():
 
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(url)
         driver.execute_script("window.scrollTo(0, 1080)")
 
@@ -133,7 +136,8 @@ class ScrapeLazada():
         urlNew = url
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(urlNew)
         driver.execute_script("window.scrollTo(0, 1080)")
 
@@ -175,7 +179,8 @@ class ScrapeLazada():
         urlNew = url
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install())
         driver.get(urlNew)
         driver.execute_script("window.scrollTo(0, 1080)")
 
@@ -223,7 +228,7 @@ class ScrapeLazada():
 
 
 sl = ScrapeLazada()
-#start_stream() #start to read crawl lists from database and write a crawl_lists.txt
+start_stream() #start to read crawl lists from database and write a crawl_lists.txt
 try:
     with open("crawl_lists.txt") as f: #try to read in crawl_lists.txt
         contents = f.read()
