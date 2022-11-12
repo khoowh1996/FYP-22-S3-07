@@ -469,7 +469,7 @@ def retrieve_all_project_recommendations(username,project_id,role):
             for key,graph in list_of_graphs.items():
                 database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").child(project_id).child("recommendations").child(key).update({"statistics":graph})
                 #list_of_recommendations[key]["statistics"] = "data:image/png;base64, "+ graph 
-                list_of_recommendations_for_output.append({"name":key.replace("_"," "),"category":list_of_recommendations[key]["category"],"list":list_of_recommendations[key]["list"],"statistics":"data:image/png;base64, "+ graph })
+                list_of_recommendations_for_output.append({"name":key.replace("_"," "),"category":list_of_recommendations[key]["category"],"list":'<br><br>'.join(list_of_recommendations[key]["list"]),"statistics":"data:image/png;base64, "+ graph })
             return list_of_recommendations_for_output
         except Exception as e:
             print(e)
@@ -695,7 +695,7 @@ def get_all_project_item(username,project_id,role):
                     tcategory = "All"
                     
                 list_of_items.append({"id":item.val()["id"],"category":item.val()["category"],"tcategory":tcategory,"imageurl":item.val()["imageurl"],"name":item.val()["name"],"listing":'<br><br>'.join(item.val()["recommendations"]),"statistics":"data:image/png;base64, "+ item.val()["statistics"]})
-                return list_of_items
+        return list_of_items
     except TypeError as e:
         return []
         
