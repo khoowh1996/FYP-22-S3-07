@@ -16,3 +16,6 @@ blueprint/__pycache__/authentication.cpython-39.pyc
 blueprint/__pycache__/authentication.cpython-39.pyc
 algo/main_dataset.csv
 algo/main_datasetActual.csv
+algo/main.csv
+algo/data.py
+algo/crawl_lists.txt
