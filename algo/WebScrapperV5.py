@@ -68,8 +68,12 @@ class ScrapeLazada():
                 time.sleep(3)
 
         fileName = projectName + ".csv"
-        df.to_csv(fileName, index=False)
+        df2.to_csv(fileName, index=False)
         df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
+        df.to_csv('main_datasetBackup.csv', mode='a', index=False, header=False)
+        df3 = pd.read_csv('main_dataset.csv', on_bad_lines='skip', names=['0','1','2','3','4','5','6','7'])
+        df3.drop_duplicates(subset=['0','1','2','3','4','5','6','7'], keep=False)
+        df3.to_csv('main_dataset.csv', index=False, header=False)
         upload('main_dataset.csv','main_dataset.csv')
         upload(fileName,fileName)
         driver.close()
@@ -126,8 +130,12 @@ class ScrapeLazada():
             df = self.intoPageToGetReview(url, df)
 
         fileName = projectName + ".csv"
-        df.to_csv(fileName, index=False)
-        df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
+        df2.to_csv(fileName, index=False)
+        df.to_csv('main_dataset.csv', mode='a', index=False, header=False)     
+        df.to_csv('main_datasetBackup.csv', mode='a', index=False, header=False)
+        df3 = pd.read_csv('main_dataset.csv', on_bad_lines='skip', names=['0','1','2','3','4','5','6','7'])
+        df3.drop_duplicates(subset=['0','1','2','3','4','5','6','7'], keep=False)
+        df3.to_csv('main_dataset.csv', index=False, header=False)
         upload('main_dataset.csv','main_dataset.csv')
         upload(fileName,fileName)        
         driver.close()
@@ -234,8 +242,12 @@ class ScrapeLazada():
 
         df = df.append(products)
         fileName = projectName + ".csv"
-        df.to_csv(fileName, index=False)
+        df2.to_csv(fileName, index=False)
         df.to_csv('main_dataset.csv', mode='a', index=False, header=False)
+        df.to_csv('main_datasetBackup.csv', mode='a', index=False, header=False)
+        df3 = pd.read_csv('main_dataset.csv', on_bad_lines='skip', names=['0','1','2','3','4','5','6','7'])
+        df3.drop_duplicates(subset=['0','1','2','3','4','5','6','7'], keep=False)
+        df3.to_csv('main_dataset.csv', index=False, header=False)
         upload('main_dataset.csv','main_dataset.csv')
         upload(fileName,fileName)
         driver.close()
@@ -266,6 +278,7 @@ try:
                     download_csv()   
                     print("single mode")
                     sl.singleProductPage(url,projectName)
+                os.remove(projectName+".csv")
 except FileNotFoundError as e:
     print(e)
     print("crawl stop")

@@ -14,3 +14,5 @@ build/
 algo/__pycache__/algorithm.cpython-39.pyc
 blueprint/__pycache__/authentication.cpython-39.pyc
 blueprint/__pycache__/authentication.cpython-39.pyc
+algo/main_dataset.csv
+algo/main_datasetActual.csv
