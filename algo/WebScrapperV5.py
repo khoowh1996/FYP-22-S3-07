@@ -122,13 +122,15 @@ class ScrapeLazada():
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
         df = pd.DataFrame()
+        df2 = pdf.DataFrame()
         products = []
         for item in soup.findAll('div', class_='Bm3ON'):
             urlRaw = item.find("div", {"class": "_95X4G"}
                                ).find("a", recursive=False)
             url = "https:" + urlRaw["href"]
             df = self.intoPageToGetReview(url, df)
-
+        df2 = self.intoPageToGetProductDetails(url, df2)
+        print(df2)
         fileName = projectName + ".csv"
         df2.to_csv(fileName, index=False)
         df.to_csv('main_dataset.csv', mode='a', index=False, header=False)     
