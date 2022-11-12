@@ -122,7 +122,7 @@ class ScrapeLazada():
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
         df = pd.DataFrame()
-        df2 = pdf.DataFrame()
+        df2 = pd.DataFrame()
         products = []
         for item in soup.findAll('div', class_='Bm3ON'):
             urlRaw = item.find("div", {"class": "_95X4G"}
