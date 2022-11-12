@@ -867,7 +867,7 @@ def retrieve_all_issues_for_problem_reported():
         try:
             #print(user.val()["issues"]["userissues"])
             for issue in user.val()["issues"]["userissues"]:
-                if issue != None:
+                if issue != None and type(issue) is dict:
                     #all_issues.update(user.val()["username"]:{all_issues})
                     if issue["status"] == "Processing":
                         status = "images/active.png"
