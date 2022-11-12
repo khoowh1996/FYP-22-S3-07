@@ -113,7 +113,7 @@ def rejectstoreowner():
         approve_reject_user(reject_user_email,False)			
         flash("Store Owner Account has been rejected!")
         #return redirect("/managestoreowners")
-        return redirect("/mail?user="+approve_user_email+"&name="+session["fullname"]+"&EmailTemplate=rejected") 
+        return redirect("/mail?user="+reject_user_email+"&name="+session["fullname"]+"&EmailTemplate=rejected") 
     if "user" in session and session["role"] == "administrator" or session["role"] == "moderator":
         return redirect("/managestoreowners")
     return redirect("/pagenotfound")
