@@ -273,7 +273,7 @@ try:
                 if mode == "single_page":
                     print("single page mode")                
                     download_csv()                           
-                    sl.singlePage(url,projectName)
+                    sl.scrapeOnePage(url,projectName)
                 elif mode == "single_item":               
                     download_csv()   
                     print("single mode")
