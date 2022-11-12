@@ -129,7 +129,7 @@ class ScrapeLazada():
                                ).find("a", recursive=False)
             url = "https:" + urlRaw["href"]
             df = self.intoPageToGetReview(url, df)
-        df2 = self.intoPageToGetProductDetails(url, df2)
+        df2 = self.intoPageToGetProductDetails(url, df)
         print(df2)
         fileName = projectName + ".csv"
         df2.to_csv(fileName, index=False)
