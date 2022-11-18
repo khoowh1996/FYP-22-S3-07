@@ -161,7 +161,9 @@ def shift_approved_user(username): #maybe can do a automatic trigger?
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update(plan) 
         database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(plan["desc"])}) 
         database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
-        
+        return True
+    else:  
+        return False
 def update_user_information(username,user_information,role):
     user_role = "users"
     if role == "demo_user":
@@ -515,6 +517,7 @@ def get_project_by_id_exists(username,project_id,role):
 
 def get_all_store_owner_information_for_manage_store_owner():
     all_users = database.child("users").get()
+    all_sign_users = database.child("sign_up_users").get()
     all_users_list = []
     try:
         for user in all_users.each():
@@ -527,7 +530,8 @@ def get_all_store_owner_information_for_manage_store_owner():
                 freezetext = "Unfreeze"
             userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
             all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
-        return all_users_list
+        #return all_users_list
+
     except TypeError as e:
         return all_users_list
 

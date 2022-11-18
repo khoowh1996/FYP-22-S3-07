@@ -58,7 +58,10 @@ def payment_finalized():
         username = session["user"]
         print(request.form["pay"])
         set_subscription(username,request.form["pay"],session["role"])
-        shift_approved_user(username)
+        results = shift_approved_user(username)
+        if results:#if successfully shift sign_up_user to store_owner
+            session.pop("role",None)
+            session["role"] = "store_owner"
         flash("Payment success, Subscription has started. Email will be send to you for notification")    
         #return redirect("/")
         return redirect("/mail?user="+username+"&name="+session["fullname"]+"&EmailTemplate=payment_success") 
