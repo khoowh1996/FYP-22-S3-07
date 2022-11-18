@@ -187,7 +187,8 @@ def get_email_verification(username,user,role):
         if not database_email_verification:
             database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).update({"emailverification": True})
     else:
-        auth.send_email_verification(user['idToken'])
+        #auth.send_email_verification(user['idToken'])
+        print("send email")
         
     return (firebase_email_verification or database_email_verification)
 
