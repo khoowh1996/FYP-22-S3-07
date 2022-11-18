@@ -98,13 +98,22 @@ def create_moderator(username,user_information):
 
 def freeze_unfreeze_store_owner(username):
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
-    if user.val()["status"]:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":False})
-        return False
-    else:
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":True})
-        return True
-    
+    try:
+        if user.val()["status"]:
+            database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":False})
+            return False
+        else:
+            database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":True})
+            return True
+    except TypeError as e:
+        sign_up_user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        if user.val()["status"] == "approved":
+            database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"pending"})
+            return False
+        else:
+            database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).update({"status":"approved"})
+            return True
+            
 def delete_store_owner(username):#does not delete from firebase authentication currently
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     current_user = "store_owner"
