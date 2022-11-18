@@ -107,33 +107,38 @@ def freeze_unfreeze_store_owner(username):
     
 def delete_store_owner(username):#does not delete from firebase authentication currently
     user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+    current_user = "store_owner"
+    if user.val() == None:
+        user = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+        current_user = "sign_up_user"
     delete_id = user.val()["deleteid"]
     decrypted_key = get_decrypted_id(delete_id,username)
     deleted_user = auth.sign_in_with_email_and_password(username,decrypted_key)
     auth.delete_user_account(deleted_user["idToken"])
-    user_projects = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
-    if user_projects.val() != None:
-        for proj in user_projects.each():
-            try:
-                if proj.key() == 0:
-                    continue
-                storage.delete(proj.val()["projectcsv"]+".csv",deleted_user["idToken"])
-            except:
-                print("fail to delete project csv")
-    issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
-    if issues.val() != None:
-        for issue in issues.each():
-            try:
-                if issue.key() == 0:
-                    continue
-                for image in issue.val()["images"]:
-                    print(image)
-                    delete_file = image.replace("%2F","/")[71:]
-                    delete_file = delete_file.split("?")[0]                    
-                    storage.delete(delete_file,deleted_user["idToken"])   
-            except:
-                print("fail to delete issue")    
-    database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
+    if current_user == "store_owner"
+        user_projects = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
+        if user_projects.val() != None:
+            for proj in user_projects.each():
+                try:
+                    if proj.key() == 0:
+                        continue
+                    storage.delete(proj.val()["projectcsv"]+".csv",deleted_user["idToken"])
+                except:
+                    print("fail to delete project csv")
+        issues = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("issues").child("userissues").get()
+        if issues.val() != None:
+            for issue in issues.each():
+                try:
+                    if issue.key() == 0:
+                        continue
+                    for image in issue.val()["images"]:
+                        print(image)
+                        delete_file = image.replace("%2F","/")[71:]
+                        delete_file = delete_file.split("?")[0]                    
+                        storage.delete(delete_file,deleted_user["idToken"])   
+                except:
+                    print("fail to delete issue")    
+        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
     
 def delete_moderator(username):#does not delete from firebase authentication currently
     user = database.child("moderators").child(hashlib.sha256(username.encode()).hexdigest()).get()
@@ -154,15 +159,18 @@ def approve_reject_user(username,action):#maybe send email to user that it has b
 def shift_approved_user(username): #maybe can do a automatic trigger?
     sign_up_users = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).get()
     sign_up_users_plan = database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").get()
-    if sign_up_users.val()["approval"] and sign_up_users.val()["status"] == "approved" and sign_up_users_plan.val() != None:
-        plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
-        user_information= {"username":sign_up_users.val()["username"],"deleteid":sign_up_users.val()["deleteid"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update(plan) 
-        database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(plan["desc"])}) 
-        database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
-        return True
-    else:  
+    try:
+        if sign_up_users.val()["approval"] and sign_up_users.val()["status"] == "approved" and sign_up_users_plan.val() != None:
+            plan = {"cost":sign_up_users_plan.val()["cost"],"desc":sign_up_users_plan.val()["desc"],"expiry":set_expiry_date(sign_up_users_plan.val()["cost"]) ,"renew":sign_up_users_plan.val()["renew"],"type":sign_up_users_plan.val()["type"]}
+            user_information= {"username":sign_up_users.val()["username"],"deleteid":sign_up_users.val()["deleteid"], "firstname":sign_up_users.val()["firstname"],"lastname":sign_up_users.val()["lastname"],"company":sign_up_users.val()["company"],"industry":sign_up_users.val()["industry"],"contact":sign_up_users.val()["contact"],"url":sign_up_users.val()["url"],"status":sign_up_users.val()["approval"],"emailverification":sign_up_users.val()["emailverification"],"role":"store_owner"}
+            database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).set(user_information)
+            database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("plan").update(plan) 
+            database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").update({"limit":get_limit_by_plan(plan["desc"])}) 
+            database.child("sign_up_users").child(hashlib.sha256(username.encode()).hexdigest()).remove()
+            return True
+        else:  
+            return False
+    except KeyError as e:
         return False
 def update_user_information(username,user_information,role):
     user_role = "users"
@@ -237,7 +245,7 @@ def get_status(username,role):
     user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
     if user.val() != None:
         if type(user.val()["status"]) is string:
-            return user.val()["status"] == "approved"
+            return user.val()["status"] == "approved" or user.val()["status"] == "pending"
         return user.val()["status"]
     else:
         return None
@@ -531,9 +539,21 @@ def get_all_store_owner_information_for_manage_store_owner():
             userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
             all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
         #return all_users_list
-
+    try:
+        for user in all_sign_users.each():
+            fullname = user.val()["firstname"] + " " + user.val()["lastname"]
+            if user.val()["status"]:
+                image = "images/active.png"
+                freezetext = "Freeze"
+            else:
+                image = "images/inactive.png"
+                freezetext = "Unfreeze"
+            userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+            all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
+        
     except TypeError as e:
         return all_users_list
+    return all_users_list
 
 def get_all_store_owner_information_for_approve_reject():
     all_users = database.child("sign_up_users").get()
