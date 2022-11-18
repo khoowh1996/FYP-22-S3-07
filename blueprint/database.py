@@ -540,15 +540,13 @@ def get_all_store_owner_information_for_manage_store_owner():
             all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
         #return all_users_list
         for user in all_sign_users.each():
-            fullname = user.val()["firstname"] + " " + user.val()["lastname"]
-            if user.val()["status"]:
+        
+            if user.val()["status"] == "approved":
+                fullname = user.val()["firstname"] + " " + user.val()["lastname"]
                 image = "images/active.png"
                 freezetext = "Freeze"
-            else:
-                image = "images/inactive.png"
-                freezetext = "Unfreeze"
-            userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
-            all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
+                userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
+                all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
         
     except TypeError as e:
         return all_users_list
