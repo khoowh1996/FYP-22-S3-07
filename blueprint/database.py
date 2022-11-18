@@ -539,7 +539,6 @@ def get_all_store_owner_information_for_manage_store_owner():
             userhash = hashlib.sha1(user.val()["username"].encode()).hexdigest()
             all_users_list.append({"industry":user.val()["industry"],"freezebutton":user.val()["username"],"deletebutton":user.val()["username"],"name":fullname,"company":user.val()["company"],"status":image,"freezetext":freezetext,"freezemodaltarget":"#fmodal"+userhash,"deletemodaltarget":"#dmodal"+userhash,"deletemodalbox":"dmodal"+userhash,"freezemodalbox":"fmodal"+userhash})
         #return all_users_list
-    try:
         for user in all_sign_users.each():
             fullname = user.val()["firstname"] + " " + user.val()["lastname"]
             if user.val()["status"]:
