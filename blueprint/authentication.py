@@ -45,7 +45,7 @@ def login():
 			return redirect("/projectoverview")
 		if session["role"] == "sign_up_user":
 			if get_email_verification(username,user,session["role"]):
-                if get_status(username):
+                if get_status(username,session["role"]):
                     flash("Login Successfully!")
                     return redirect("/projectoverview")
                 else:
@@ -58,7 +58,7 @@ def login():
 			if not get_email_verification(username,user,session["role"]):
 				flash("Your account has not been verified, We have sent the verification email, Please go and verify in your email.")
 				return redirect("/logout")
-			if get_status(username):
+			if get_status(username,session["role"]):
 				flash("Login Successfully!")
 				return redirect("/projectoverview")
 			else:

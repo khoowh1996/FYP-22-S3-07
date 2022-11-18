@@ -227,9 +227,14 @@ def get_general_user_information(username): #have a function that returns name, 
         return {"fullname":name,"role":role}
     return None
 
-def get_status(username):
-    user = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).get()
+def get_status(username,role):
+    user_role = "users"
+    if role == "sign_up_user":
+        user_role = "sign_up_users"
+    user = database.child(user_role).child(hashlib.sha256(username.encode()).hexdigest()).get()
     if user.val() != None:
+        if type(user.val()["status"]) is string:
+            return user.val()["status"] == "approved"
         return user.val()["status"]
     else:
         return None
