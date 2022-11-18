@@ -45,12 +45,12 @@ def login():
 			return redirect("/projectoverview")
 		if session["role"] == "sign_up_user":
 			if get_email_verification(username,user,session["role"]):
-                if get_status(username,session["role"]):
-                    flash("Login Successfully!")
-                    return redirect("/projectoverview")
-                else:
-                    flash("Your account has been rejected, Please contact our Moderator at myrecommendservices@gmail.com for more information.")
-                    return redirect("/logout")
+				if get_status(username,session["role"]):
+					flash("Login Successfully!")
+					return redirect("/projectoverview")
+				else:
+					flash("Your account has been rejected, Please contact our Moderator at myrecommendservices@gmail.com for more information.")
+					return redirect("/logout")
 			else:
 				flash("Your account has not been verified, We have sent the verification email, Please go and verify in your email.")
 				return redirect("/logout")
