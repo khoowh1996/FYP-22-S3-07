@@ -412,10 +412,20 @@ def retrieve_all_project(username,role):
                     all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":len(proj["recommendations"])})
             except:
                 if proj != None:
-                    all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":0})
+                    all_project_list.append({"id":all_project.val()[proj]["id"],"pname":all_project.val()[proj]["pname"],"category":all_project.val()[proj]["category"],"url":all_project.val()[proj]["url"],"crawled":len(all_project.val()[proj]["recommendations"])})
         return all_project_list
     except TypeError as e:
-        return []
+        if all_project.val() == None:
+            return []
+        for proj in all_project.val():
+            try:
+                if proj != None:
+                    print(len(proj["recommendations"]))
+                    all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":len(proj["recommendations"])})
+            except:
+                if proj != None:
+                    all_project_list.append({"id":proj["id"],"pname":proj["pname"],"category":proj["category"],"url":proj["url"],"crawled":0})
+        return all_project_list
 
 def get_userproject_limit(username,role):
     user_role = "users"
