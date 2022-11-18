@@ -115,7 +115,7 @@ def delete_store_owner(username):#does not delete from firebase authentication c
     decrypted_key = get_decrypted_id(delete_id,username)
     deleted_user = auth.sign_in_with_email_and_password(username,decrypted_key)
     auth.delete_user_account(deleted_user["idToken"])
-    if current_user == "store_owner"
+    if current_user == "store_owner":
         user_projects = database.child("users").child(hashlib.sha256(username.encode()).hexdigest()).child("projects").child("userprojects").get()
         if user_projects.val() != None:
             for proj in user_projects.each():
